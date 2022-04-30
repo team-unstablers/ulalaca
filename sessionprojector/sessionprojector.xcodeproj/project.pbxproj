@@ -1,0 +1,377 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F4EBD09F9EC835EE41DBAF7F /* UnixSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD1DED67C843D26DE344C /* UnixSocket.cpp */; };
+		F4EBD136805519C3F8D8314A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */; };
+		F4EBD455F06C38A5ABA1EA20 /* ProjectionSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDEADE7680E1D1466830F /* ProjectionSession.swift */; };
+		F4EBD517D25C43D7397EA0FD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4EBD2D2B450575F0A669D2E /* MainMenu.xib */; };
+		F4EBD76B113987454A7E147B /* ScreenRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDFE9D9C626281B0C28CA /* ScreenRecorder.swift */; };
+		F4EBD956FE871FFA877A4E29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4EBD72F7A1676E55BB21493 /* Assets.xcassets */; };
+		F4EBDA50756B5EC9B2C6CFF3 /* SystemCallException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD6DC3BEE4D8E754D45B9 /* SystemCallException.cpp */; };
+		F4EBDAAB9256FE9A06E67E70 /* ProjectionMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD494498F922F07EA68BF /* ProjectionMessage.swift */; };
+		F4EBDD17FAA0490AEE57B16A /* MMUnixSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDFBC111E8CA8DA6C9DF0 /* MMUnixSocket.mm */; };
+		F4EBDF22913EDAFF95D17357 /* ProjectionServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDB589E76D41675D27BF0 /* ProjectionServer.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8599DA13281D109C00D3BDA8 /* sessionprojector-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = "sessionprojector-Bridging-Header.h"; sourceTree = "<group>"; };
+		F4EBD1DED67C843D26DE344C /* UnixSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnixSocket.cpp; sourceTree = "<group>"; };
+		F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F4EBD494498F922F07EA68BF /* ProjectionMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectionMessage.swift; sourceTree = "<group>"; };
+		F4EBD4FAC6CE68F9E6E2A43E /* sessionprojector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sessionprojector.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4EBD6C091A4FF3454101566 /* SystemCallException.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SystemCallException.hpp; sourceTree = "<group>"; };
+		F4EBD6DC3BEE4D8E754D45B9 /* SystemCallException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemCallException.cpp; sourceTree = "<group>"; };
+		F4EBD72F7A1676E55BB21493 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F4EBD79BDC8C0F21EC5B9271 /* MMUnixSocket.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = MMUnixSocket.h; sourceTree = "<group>"; };
+		F4EBDB589E76D41675D27BF0 /* ProjectionServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectionServer.swift; sourceTree = "<group>"; };
+		F4EBDB6CE8B3BF020BD4FE81 /* sessionprojector.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = sessionprojector.entitlements; sourceTree = "<group>"; };
+		F4EBDE7D5A58EDBEE55EB920 /* UnixSocket.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UnixSocket.hpp; sourceTree = "<group>"; };
+		F4EBDEADE7680E1D1466830F /* ProjectionSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectionSession.swift; sourceTree = "<group>"; };
+		F4EBDEC6CB9E4322333D6C24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		F4EBDFBC111E8CA8DA6C9DF0 /* MMUnixSocket.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MMUnixSocket.mm; sourceTree = "<group>"; };
+		F4EBDFE9D9C626281B0C28CA /* ScreenRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenRecorder.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F4EBDC344872D4051F53DDB7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F4EBD04EE5384ECCE555441A /* sessionprojector */ = {
+			isa = PBXGroup;
+			children = (
+				F4EBD72F7A1676E55BB21493 /* Assets.xcassets */,
+				F4EBDB6CE8B3BF020BD4FE81 /* sessionprojector.entitlements */,
+				F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */,
+				F4EBD2D2B450575F0A669D2E /* MainMenu.xib */,
+				F4EBDFE9D9C626281B0C28CA /* ScreenRecorder.swift */,
+				F4EBDB589E76D41675D27BF0 /* ProjectionServer.swift */,
+				F4EBD1DED67C843D26DE344C /* UnixSocket.cpp */,
+				F4EBDE7D5A58EDBEE55EB920 /* UnixSocket.hpp */,
+				F4EBD6C091A4FF3454101566 /* SystemCallException.hpp */,
+				F4EBD6DC3BEE4D8E754D45B9 /* SystemCallException.cpp */,
+				F4EBDFBC111E8CA8DA6C9DF0 /* MMUnixSocket.mm */,
+				F4EBD79BDC8C0F21EC5B9271 /* MMUnixSocket.h */,
+				8599DA13281D109C00D3BDA8 /* sessionprojector-Bridging-Header.h */,
+				F4EBDEADE7680E1D1466830F /* ProjectionSession.swift */,
+				F4EBD494498F922F07EA68BF /* ProjectionMessage.swift */,
+			);
+			path = sessionprojector;
+			sourceTree = "<group>";
+		};
+		F4EBD395941AA1C0143EE05A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F4EBD4FAC6CE68F9E6E2A43E /* sessionprojector.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F4EBDE03F3D9B15B1CC3E38B = {
+			isa = PBXGroup;
+			children = (
+				F4EBD395941AA1C0143EE05A /* Products */,
+				F4EBD04EE5384ECCE555441A /* sessionprojector */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F4EBDE2C5FCD00665BEE5C74 /* sessionprojector */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4EBD8ED5E373931443FB66D /* Build configuration list for PBXNativeTarget "sessionprojector" */;
+			buildPhases = (
+				F4EBDADE5C9CC513189DA386 /* Sources */,
+				F4EBDC344872D4051F53DDB7 /* Frameworks */,
+				F4EBD76277FDFC494C5C1093 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sessionprojector;
+			productName = sessionprojector;
+			productReference = F4EBD4FAC6CE68F9E6E2A43E /* sessionprojector.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F4EBDD9F2CE690A0962F1060 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1330;
+				TargetAttributes = {
+					F4EBDE2C5FCD00665BEE5C74 = {
+						DevelopmentTeam = WAU5X3RZPC;
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = F4EBDF30DCA3B8F1407ADCAB /* Build configuration list for PBXProject "sessionprojector" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				en,
+				Base,
+			);
+			mainGroup = F4EBDE03F3D9B15B1CC3E38B;
+			productRefGroup = F4EBD395941AA1C0143EE05A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F4EBDE2C5FCD00665BEE5C74 /* sessionprojector */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F4EBD76277FDFC494C5C1093 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4EBD956FE871FFA877A4E29 /* Assets.xcassets in Resources */,
+				F4EBD517D25C43D7397EA0FD /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F4EBDADE5C9CC513189DA386 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4EBD136805519C3F8D8314A /* AppDelegate.swift in Sources */,
+				F4EBD76B113987454A7E147B /* ScreenRecorder.swift in Sources */,
+				F4EBDF22913EDAFF95D17357 /* ProjectionServer.swift in Sources */,
+				F4EBD09F9EC835EE41DBAF7F /* UnixSocket.cpp in Sources */,
+				F4EBDA50756B5EC9B2C6CFF3 /* SystemCallException.cpp in Sources */,
+				F4EBDD17FAA0490AEE57B16A /* MMUnixSocket.mm in Sources */,
+				F4EBD455F06C38A5ABA1EA20 /* ProjectionSession.swift in Sources */,
+				F4EBDAAB9256FE9A06E67E70 /* ProjectionMessage.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F4EBD2D2B450575F0A669D2E /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4EBDEC6CB9E4322333D6C24 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F4EBD33BCC59C0E1F9D944F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = sessionprojector/sessionprojector.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WAU5X3RZPC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ulalaca: Session Projector";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.sessionprojector;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "sessionprojector/sessionprojector-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F4EBD73FB876295C3001260C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = sessionprojector;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F4EBDD15CD06368AF1675240 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = sessionprojector;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+			};
+			name = Release;
+		};
+		F4EBDF8AFC8AC620A2716EFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = sessionprojector/sessionprojector.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WAU5X3RZPC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ulalaca: Session Projector";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.sessionprojector;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "sessionprojector/sessionprojector-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F4EBD8ED5E373931443FB66D /* Build configuration list for PBXNativeTarget "sessionprojector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4EBD33BCC59C0E1F9D944F5 /* Debug */,
+				F4EBDF8AFC8AC620A2716EFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F4EBDF30DCA3B8F1407ADCAB /* Build configuration list for PBXProject "sessionprojector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4EBD73FB876295C3001260C /* Debug */,
+				F4EBDD15CD06368AF1675240 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F4EBDD9F2CE690A0962F1060 /* Project object */;
+}
