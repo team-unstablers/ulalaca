@@ -22,7 +22,7 @@ ssize_t UnixSocketBase::read(void *buffer, size_t size) {
     return ::read(descriptor(), buffer, size);
 }
 
-ssize_t UnixSocketBase::write(void *buffer, size_t size) {
+ssize_t UnixSocketBase::write(const void *buffer, size_t size) {
     return ::write(descriptor(), buffer, size);
 }
 
@@ -92,6 +92,7 @@ void UnixSocket::connect() {
     sockaddr_un address = {};
     address.sun_family = AF_UNIX;
     std::strncpy(address.sun_path, _path.c_str(), _path.size());
+    address.sun_len = _path.size();
 
     int retval = ::connect(_descriptor, (sockaddr *) &address, sizeof(address));
     if (retval < 0) {

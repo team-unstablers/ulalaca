@@ -44,7 +44,7 @@ public:
      * @return 소켓에 실제로 쓰여진 데이터의 크기를 반환합니다.
      *         플랫폼에 따라 오류가 발생하면 음수 값이 반환될 수 있습니다.
      */
-    ssize_t write(void *buffer, size_t size);
+    ssize_t write(const void *buffer, size_t size);
 
     /**
      * 소켓을 닫습니다.

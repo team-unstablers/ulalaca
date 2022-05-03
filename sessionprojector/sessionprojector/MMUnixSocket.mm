@@ -15,8 +15,8 @@
 - (MMUnixSocketConnection *)initWithCppInstance:(UnixSocketConnection &)instance {
     self = [super init];
 
-    self->_impl = std::unique_ptr<UnixSocketConnection>(
-        (UnixSocketConnection *) malloc(sizeof (UnixSocketConnection))
+    self->_impl = std::make_unique<UnixSocketConnection>(
+         instance
     );
 
     *(self->_impl) = instance;
@@ -32,7 +32,7 @@
     return self->_impl->read(buffer, size);
 }
 
-- (ssize_t)write:(void *)buffer size:(size_t)size {
+- (ssize_t)write:(const void *)buffer size:(size_t)size {
     return self->_impl->write(buffer, size);
 }
 
@@ -63,7 +63,7 @@
     return self->_impl->read(buffer, size);
 }
 
-- (ssize_t)write:(void *)buffer size:(size_t)size {
+- (ssize_t)write:(const void *)buffer size:(size_t)size {
     return self->_impl->write(buffer, size);
 }
 

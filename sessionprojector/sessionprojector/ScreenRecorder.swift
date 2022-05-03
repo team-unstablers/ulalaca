@@ -5,7 +5,7 @@
 import Foundation
 
 import CoreGraphics
-import AVFoundation
+import VideoToolbox
 import ScreenCaptureKit
 
 enum ScreenRecorderError: Error {
@@ -50,41 +50,64 @@ struct FrameInfo {
 }
 
 protocol ScreenUpdateSubscriber {
-    func screenUpdated(_ image: CIImage, where rect: CGRect)
+    func screenUpdateBegin()
+    func screenUpdateEnd()
+    func screenUpdated(where rect: CGRect)
+    func screenReady(image: CGImage, rect: CGRect)
     func screenResolutionChanged(to resolution: (Int, Int))
 }
 
 class ScreenRecorder: NSObject {
-    private var captureSession = AVCaptureSession()
     private var streamQueue = DispatchQueue(
         label: "UlalacaStreamRecorder",
         qos: .userInteractive
     )
-
-    private let screenInput: AVCaptureScreenInput
-    private let output: AVCaptureVideoDataOutput
+    
+    private var coreImageContext: CIContext = createCoreImageContext(useMetal: true)
 
     private var stream: SCStream?
     private var subscriptions: [ScreenUpdateSubscriber] = []
+    private var prevDisplayTime: UInt64 = 0
+    
+
+    private static func createCoreImageContext(useMetal: Bool = false) -> CIContext {
+        if let ciContext = NSGraphicsContext.current?.ciContext {
+            return ciContext
+        }
+
+        if (useMetal) {
+            if let metalDevice = MTLCreateSystemDefaultDevice() {
+                return CIContext(mtlDevice: metalDevice)
+            }
+        }
+
+        if let cgContext = NSGraphicsContext.current?.cgContext {
+            print("using CGContext")
+            return CIContext(cgContext: cgContext)
+        } else {
+            print("using software renderer")
+            return CIContext(options: [
+                .useSoftwareRenderer: true
+            ])
+        }
+    }
 
     override init() {
-
-        // TODO: 다중 디스플레이 지원하려면 list로 바꾸거나 해야 할지도
-        screenInput = AVCaptureScreenInput()
-
-        output = AVCaptureVideoDataOutput()
-
         super.init()
+    }
+
+    func subscribeUpdate(_ subscriber: ScreenUpdateSubscriber) {
+        subscriptions.append(subscriber)
     }
 
     func prepare() async throws {
         let configuration = SCStreamConfiguration()
-
-        configuration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(45))
-        configuration.queueDepth = 4
+        
+        configuration.pixelFormat = kCVPixelFormatType_32BGRA
+        configuration.queueDepth = 1
         configuration.showsCursor = false
 
-        let displays = try! await SCShareableContent.current.displays
+        let displays = try await SCShareableContent.current.displays
         guard let primaryDisplay = displays.first else {
             throw ScreenRecorderError.initializationError
         }
@@ -118,40 +141,43 @@ extension ScreenRecorder: SCStreamOutput {
         guard let frameInfo = FrameInfo(from: sampleBuffer) else {
             return
         }
-
+            
         if (frameInfo.status != .complete) {
             // not ready to draw
             return
         }
-
-        let pixelBuffer = sampleBuffer.imageBuffer
-        guard let surfaceRef = CVPixelBufferGetIOSurface(pixelBuffer)?.takeUnretainedValue() else {
+        
+        if (subscriptions.count == 0) {
             return
         }
 
-        let image = CIImage(ioSurface: surfaceRef)
+        subscriptions.forEach { $0.screenUpdateBegin() }
 
+        var image: CGImage?
+        VTCreateCGImageFromCVPixelBuffer(sampleBuffer.imageBuffer!, options: nil, imageOut: &image)
+        CVPixelBufferUnlockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
+
+        
+        let now = CMTime(value: Int64(mach_absolute_time()), timescale: 1000000000).convertScale(1, method: .quickTime)
+        let frameTimestamp = sampleBuffer.presentationTimeStamp.convertScale(1, method: .quickTime)
+        
+        let timedelta = abs(now.seconds - frameTimestamp.seconds)
+    
+        
+        if (timedelta > ((1.0 / 60) * 4)) {
+            print("skipping frame")
+            return
+        }
+
+        print("updating screeen: \(timedelta)")
         if let dirtyRects = frameInfo.dirtyRects {
             dirtyRects.forEach { rect in
-                print("updating dirty rects: \(rect)")
-                publishScreenUpdate(image.cropped(to: rect), where: rect)
+                // print("updating dirty rects: \(rect)")
+                subscriptions.forEach { $0.screenUpdated(where: rect) }
             }
-        } else {
-            print("updating entire screen")
-            publishScreenUpdate(image, where: frameInfo.contentRect!)
         }
-    }
-
-    func publishScreenUpdate(_ image: CIImage, where rect: CGRect) {
-        subscriptions.forEach { $0.screenUpdated(image, where: rect) }
+        subscriptions.forEach { $0.screenReady(image: image!, rect: frameInfo.contentRect!) }
+        subscriptions.forEach { $0.screenUpdateEnd() }
     }
 }
 
-extension ScreenRecorder: AVCaptureVideoDataOutputSampleBufferDelegate {
-    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        print("caputreOutput:didOutput called: \(sampleBuffer)")
-    }
-
-    public func captureOutput(_ output: AVCaptureOutput, didDrop sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-    }
-}

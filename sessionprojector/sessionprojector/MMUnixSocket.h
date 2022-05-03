@@ -8,7 +8,7 @@
 -(int) descriptor;
 
 -(ssize_t) read: (void *) buffer size: (size_t) size;
--(ssize_t) write: (void *) buffer size: (size_t) size;
+-(ssize_t) write: (const void *) buffer size: (size_t) size;
 
 -(void) close;
 @end
@@ -18,7 +18,7 @@
 -(int) descriptor;
 
 -(ssize_t) read: (void *) buffer size: (size_t) size;
--(ssize_t) write: (void *) buffer size: (size_t) size;
+-(ssize_t) write: (const void *) buffer size: (size_t) size;
 
 -(void) close;
 

@@ -20,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		85935F5F281FBB1D0078D16A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8599DA13281D109C00D3BDA8 /* sessionprojector-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = "sessionprojector-Bridging-Header.h"; sourceTree = "<group>"; };
 		F4EBD1DED67C843D26DE344C /* UnixSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnixSocket.cpp; sourceTree = "<group>"; };
 		F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -52,6 +53,7 @@
 		F4EBD04EE5384ECCE555441A /* sessionprojector */ = {
 			isa = PBXGroup;
 			children = (
+				85935F5F281FBB1D0078D16A /* Info.plist */,
 				F4EBD72F7A1676E55BB21493 /* Assets.xcassets */,
 				F4EBDB6CE8B3BF020BD4FE81 /* sessionprojector.entitlements */,
 				F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */,
@@ -194,6 +196,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WAU5X3RZPC;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = sessionprojector/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Ulalaca: Session Projector";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
@@ -335,6 +338,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WAU5X3RZPC;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = sessionprojector/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Ulalaca: Session Projector";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;

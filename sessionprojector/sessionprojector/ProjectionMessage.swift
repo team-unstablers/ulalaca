@@ -4,9 +4,25 @@
 
 import Foundation
 
+extension FixedWidthInteger {
+    func writeInto(data: inout Data) {
+        withUnsafeBytes(of: self) {
+            data.append(contentsOf: $0)
+        }
+    }
+}
+
 struct MessageHeader {
     var id: UInt64
     var replyTo: UInt64 = 0
+}
+
+protocol IncomingMessage {
+    init(from data: Data)
+}
+
+protocol OutgoingMessage {
+    func asData() -> Data
 }
 
 enum KeyboardEventType: UInt8 {
@@ -43,10 +59,26 @@ struct CreateMouseEvent {
 enum ScreenUpdateType: UInt8 {
     case entireScreen = 0
     case partial = 1
+
+    // TODO: 별도 메시지로 분리할 것
+    case beginUpdate = 2
+    case endUpdate = 3
 }
 
-struct ScreenUpdateNotice {
-    var type: UInt8
+struct ScreenUpdateNotice: OutgoingMessage {
+
+    init(type: ScreenUpdateType, rect: CGRect, contentLength: UInt32) {
+        self.type = type
+
+        self.x = UInt16(rect.origin.x)
+        self.y = UInt16(rect.origin.y)
+        self.width = UInt16(rect.size.width)
+        self.height = UInt16(rect.size.height)
+
+        self.contentLength = contentLength
+    }
+
+    var type: ScreenUpdateType
 
     var x: UInt16
     var y: UInt16
@@ -54,5 +86,20 @@ struct ScreenUpdateNotice {
     var height: UInt16
 
     var contentLength: UInt32
-    var content: Data
+
+    func asData() -> Data {
+        var data = Data()
+
+        type.rawValue.writeInto(data: &data)
+
+        x.writeInto(data: &data)
+        y.writeInto(data: &data)
+
+        width.writeInto(data: &data)
+        height.writeInto(data: &data)
+
+        contentLength.writeInto(data: &data)
+
+        return data
+    }
 }

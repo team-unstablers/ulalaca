@@ -7,9 +7,16 @@ import Foundation
 
 import CoreGraphics
 
+protocol ProjectionServerDelegate {
+    func projectionServer(sessionInitiated session: ProjectionSession, id: UInt64)
+    func projectionServer(sessionClosed id: UInt64)
+}
+
 class ProjectionServer {
-    private let serverSocket = MMUnixSocket("/User/unstabler/ulalaca-projector.socket")!
+    private let serverSocket = MMUnixSocket("/Users/unstabler/ulalaca-projector.socket")!
     private(set) public var sessions: Array<ProjectionSession> = []
+
+    public var delegate: ProjectionServerDelegate?
 
     func start() {
         serverSocket.bind()
@@ -23,6 +30,7 @@ class ProjectionServer {
 
             sessions.append(session)
             session.startSession()
+            delegate?.projectionServer(sessionInitiated: session, id: 0)
         }
     }
 }
