@@ -25,18 +25,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             do {
                 try await screenRecorder.prepare()
                 try await screenRecorder.start()
-
             } catch {
                 print(error.localizedDescription)
             }
             
+            await window.close()
             projectionServer.start()
         }
     }
 
 
     func applicationWillTerminate(_ aNotification: Notification) {
-    // Insert code here to tear down your application
+        // Insert code here to tear down your application
     }
 
 

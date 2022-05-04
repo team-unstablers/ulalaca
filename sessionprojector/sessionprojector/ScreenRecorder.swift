@@ -158,8 +158,8 @@ extension ScreenRecorder: SCStreamOutput {
         CVPixelBufferUnlockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
 
         
-        let now = CMTime(value: Int64(mach_absolute_time()), timescale: 1000000000).convertScale(1, method: .quickTime)
-        let frameTimestamp = sampleBuffer.presentationTimeStamp.convertScale(1, method: .quickTime)
+        let now = CMTime(value: Int64(mach_absolute_time()), timescale: 1000000000)
+        let frameTimestamp = sampleBuffer.presentationTimeStamp
         
         let timedelta = abs(now.seconds - frameTimestamp.seconds)
     
