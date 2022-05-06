@@ -13,8 +13,29 @@ extension FixedWidthInteger {
 }
 
 struct MessageHeader {
+    var messageType: UInt16
+    
     var id: UInt64
     var replyTo: UInt64 = 0
+    
+    var timestamp: UInt64
+    
+    var length: UInt64
+    
+    func asData() -> Data {
+        var data = Data()
+    
+        messageType.writeInto(data: &data)
+        
+        id.writeInto(data: &data)
+        replyTo.writeInto(data: &data)
+        
+        timestamp.writeInto(data: &data)
+        
+        length.writeInto(data: &data)
+        
+        return data
+    }
 }
 
 protocol IncomingMessage {
@@ -22,6 +43,7 @@ protocol IncomingMessage {
 }
 
 protocol OutgoingMessage {
+    static func getType() -> UInt16
     func asData() -> Data
 }
 
@@ -59,37 +81,31 @@ struct CreateMouseEvent {
 enum ScreenUpdateType: UInt8 {
     case entireScreen = 0
     case partial = 1
-
-    // TODO: 별도 메시지로 분리할 것
-    case beginUpdate = 2
-    case endUpdate = 3
 }
 
-struct ScreenUpdateNotice: OutgoingMessage {
-
-    init(type: ScreenUpdateType, rect: CGRect, contentLength: UInt32) {
+struct ScreenUpdateEvent: OutgoingMessage {
+    static func getType() -> UInt16 {
+        return 0x0101
+    }
+    
+    init(type: ScreenUpdateType, rect: CGRect) {
         self.type = type
-
         self.x = UInt16(rect.origin.x)
         self.y = UInt16(rect.origin.y)
         self.width = UInt16(rect.size.width)
         self.height = UInt16(rect.size.height)
-
-        self.contentLength = contentLength
     }
 
     var type: ScreenUpdateType
-
+    
     var x: UInt16
     var y: UInt16
     var width: UInt16
     var height: UInt16
 
-    var contentLength: UInt32
-
     func asData() -> Data {
         var data = Data()
-
+        
         type.rawValue.writeInto(data: &data)
 
         x.writeInto(data: &data)
@@ -98,7 +114,42 @@ struct ScreenUpdateNotice: OutgoingMessage {
         width.writeInto(data: &data)
         height.writeInto(data: &data)
 
-        contentLength.writeInto(data: &data)
+        return data
+    }
+}
+
+struct ScreenCommitUpdate: OutgoingMessage {
+
+    static func getType() -> UInt16 {
+        return 0x0102
+    }
+    
+    init(rect: CGRect, bitmapLength: UInt64) {
+        self.x = UInt16(rect.origin.x)
+        self.y = UInt16(rect.origin.y)
+        self.width = UInt16(rect.size.width)
+        self.height = UInt16(rect.size.height)
+
+        self.bitmapLength = bitmapLength
+    }
+
+    var x: UInt16
+    var y: UInt16
+    var width: UInt16
+    var height: UInt16
+
+    var bitmapLength: UInt64
+
+    func asData() -> Data {
+        var data = Data()
+
+        x.writeInto(data: &data)
+        y.writeInto(data: &data)
+
+        width.writeInto(data: &data)
+        height.writeInto(data: &data)
+
+        bitmapLength.writeInto(data: &data)
 
         return data
     }

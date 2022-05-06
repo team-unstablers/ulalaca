@@ -12,6 +12,8 @@ class ProjectionSession {
     public let mainDisplayId = CGMainDisplayID()
     public let serialQueue = DispatchQueue(label: "ProjectionSession")
     public let updateLock = DispatchSemaphore(value: 1)
+    
+    private(set) public var messageId: UInt64 = 1;
 
     init(_ socket: MMUnixSocketConnection) {
         self.socket = socket
@@ -27,19 +29,29 @@ class ProjectionSession {
         var buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 128)
         var bufferPtr = UnsafeMutableRawPointer(buffer)
         while (true) {
-            let bytesRead = socket.read(bufferPtr, size: 128)
             // updateLock.signal()
-            
+            socket.read(buffer, size: 128)
         }
+    }
+    
+    private func writeMessage<T>(_ message: T) where T: OutgoingMessage {
+        let body = message.asData()
+        let header = MessageHeader(
+            messageType: T.getType(),
+            id: messageId,
+            timestamp: UInt64(Date.now.timeIntervalSince1970),
+            length: UInt64(body.count)
+        ).asData()
+        
+        socket.write(header)
+        socket.write(body)
+        
+        messageId += 1
     }
 
     func movePointer(to pos:(Int, Int)) {
         let position = CGPoint(x: pos.0, y: pos.1)
         CGWarpMouseCursorPosition(position)
-    }
-
-    func performClick() {
-
     }
 }
 
@@ -53,33 +65,12 @@ extension MMUnixSocketConnection {
 
 extension ProjectionSession: ScreenUpdateSubscriber {
     func screenUpdated(where rect: CGRect) {
-        let message = ScreenUpdateNotice(
-            type: .partial,
-            rect: rect,
-            contentLength: 0
-        )
-        
-        socket.write(message.asData())
-    }
-
-    func screenUpdateBegin() {
-        let message = ScreenUpdateNotice(
-            type: .beginUpdate,
-            rect: CGRect(),
-            contentLength: 0
-        )
-
-        socket.write(message.asData())
-    }
-
-    func screenUpdateEnd() {
-        let message = ScreenUpdateNotice(
-                type: .endUpdate,
-                rect: CGRect(),
-                contentLength: 0
-        )
-
-        socket.write(message.asData())
+        self.serialQueue.sync {
+            self.writeMessage(ScreenUpdateEvent(
+                type: .partial,
+                rect: rect
+            ))
+        }
     }
 
     func screenReady(image: CGImage, rect: CGRect) {
@@ -89,33 +80,13 @@ extension ProjectionSession: ScreenUpdateSubscriber {
             let pointer = CFDataGetBytePtr(rawData)!
             let length = CFDataGetLength(rawData)
 
-            /*
-            let actualSize = image.width * image.height * 4
-            var buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: actualSize)
-            var bytesPerRow = image.bytesPerRow
-
-            let lineSize = (image.width * 4)
-
-            for line in 0..<image.height {
-                let start = bytesPerRow * line
-
-                memcpy(buffer.advanced(by: lineSize * line), pointer.advanced(by: start), lineSize)
-            }
-             */
-
-            let message = ScreenUpdateNotice(
-                type: .entireScreen,
+            let message = ScreenCommitUpdate(
                 rect: rect,
-                contentLength: UInt32(length)
+                bitmapLength: UInt64(length)
             )
-             
-            // self.updateLock.wait()
-            
-            self.socket.write(message.asData())
+        
+            self.writeMessage(message)
             self.socket.write(pointer, size: length)
-                
-                
-            // buffer.deallocate()
         }
     }
 

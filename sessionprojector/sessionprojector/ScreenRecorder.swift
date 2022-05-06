@@ -50,8 +50,6 @@ struct FrameInfo {
 }
 
 protocol ScreenUpdateSubscriber {
-    func screenUpdateBegin()
-    func screenUpdateEnd()
     func screenUpdated(where rect: CGRect)
     func screenReady(image: CGImage, rect: CGRect)
     func screenResolutionChanged(to resolution: (Int, Int))
@@ -151,8 +149,6 @@ extension ScreenRecorder: SCStreamOutput {
             return
         }
 
-        subscriptions.forEach { $0.screenUpdateBegin() }
-
         var image: CGImage?
         VTCreateCGImageFromCVPixelBuffer(sampleBuffer.imageBuffer!, options: nil, imageOut: &image)
         CVPixelBufferUnlockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
@@ -177,7 +173,6 @@ extension ScreenRecorder: SCStreamOutput {
             }
         }
         subscriptions.forEach { $0.screenReady(image: image!, rect: frameInfo.contentRect!) }
-        subscriptions.forEach { $0.screenUpdateEnd() }
     }
 }
 
