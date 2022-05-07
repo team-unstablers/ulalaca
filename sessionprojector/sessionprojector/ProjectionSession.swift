@@ -4,6 +4,7 @@
 
 import Foundation
 import CoreImage
+import CoreGraphics
 
 
 class ProjectionSession {
@@ -13,10 +14,23 @@ class ProjectionSession {
     public let serialQueue = DispatchQueue(label: "ProjectionSession")
     public let updateLock = DispatchSemaphore(value: 1)
     
+    let source = CGEventSource(stateID: .combinedSessionState)
+    var tapPort: CFMachPort
+
     private(set) public var messageId: UInt64 = 1;
 
     init(_ socket: MMUnixSocketConnection) {
         self.socket = socket
+        self.tapPort = CGEvent.tapCreate(
+            tap: .cgSessionEventTap,
+            place: .headInsertEventTap,
+            options: .defaultTap,
+            eventsOfInterest: UInt64(CGEventType.mouseMoved.rawValue),
+            callback: { (proxy, type, event, refcon) in
+                nil
+            },
+            userInfo: nil
+        )!
     }
 
     func startSession() {
@@ -26,11 +40,51 @@ class ProjectionSession {
     }
 
     private func sessionLoop() async throws {
-        var buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 128)
-        var bufferPtr = UnsafeMutableRawPointer(buffer)
+        var buffer = UnsafeMutableRawPointer.allocate(byteCount: 256, alignment: 0)
         while (true) {
-            // updateLock.signal()
-            socket.read(buffer, size: 128)
+            socket.read(buffer, size: 34)
+
+            let header = MessageHeader.from(buffer)
+            socket.read(buffer, size: Int(header.length))
+
+            if (header.messageType == KeyboardEvent.getType()) {
+                let event = KeyboardEvent(from: buffer)
+                print("sending keyevent \(event.keyCode) \(event.type)")
+
+                CGEvent(
+                    keyboardEventSource: nil,
+                    virtualKey: CGKeyCode(event.keyCode),
+                    keyDown: event.type == 2
+                )?.post(tap: .cgSessionEventTap)
+            } else if (header.messageType == MouseMoveEvent.getType()) {
+                let event = MouseMoveEvent(from: buffer)
+                print("moving mouse to \(event.x), \(event.y)")
+
+                CGEvent(
+                    mouseEventSource: nil,
+                    mouseType: .mouseMoved,
+                    mouseCursorPosition: CGPoint(x: Int(event.x), y: Int(event.y)),
+                    mouseButton: .left
+                )?.post(tap: .cgSessionEventTap)
+            } else if (header.messageType == MouseButtonEvent.getType()) {
+                let event = MouseButtonEvent(from: buffer)
+                print("sending mouseButton \(event.button) \(event.type)")
+                
+                var mouseType: CGEventType = .null
+
+                if (event.button == 0) {
+                    mouseType = event.type == 1 ? .leftMouseUp : .leftMouseDown
+                } else if (event.button == 1) {
+                    mouseType = event.type == 1 ? .rightMouseUp : .rightMouseDown
+                }
+
+                CGEvent(
+                    mouseEventSource: nil,
+                    mouseType: mouseType,
+                    mouseCursorPosition: CGEvent(source: nil)!.location,
+                    mouseButton: .left
+                )?.post(tap: .cgSessionEventTap)
+            }
         }
     }
     
@@ -47,11 +101,6 @@ class ProjectionSession {
         socket.write(body)
         
         messageId += 1
-    }
-
-    func movePointer(to pos:(Int, Int)) {
-        let position = CGPoint(x: pos.0, y: pos.1)
-        CGWarpMouseCursorPosition(position)
     }
 }
 

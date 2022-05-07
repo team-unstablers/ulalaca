@@ -12,7 +12,27 @@ extension FixedWidthInteger {
     }
 }
 
+extension UnsafeRawPointer {
+    func unalignedLoad<T>(offset: Int, as: T.Type) -> T {
+        self.advanced(by: offset).assumingMemoryBound(to: T.self).pointee
+    }
+}
+
 struct MessageHeader {
+
+    static func from(_ pointer: UnsafeRawPointer) -> MessageHeader {
+        return MessageHeader(
+            messageType: pointer.unalignedLoad(offset: 0, as: UInt16.self),
+
+            id: pointer.unalignedLoad(offset: 2, as: UInt64.self),
+            replyTo: pointer.unalignedLoad(offset: 10, as: UInt64.self),
+
+            timestamp: pointer.unalignedLoad(offset: 18, as: UInt64.self),
+
+            length: pointer.unalignedLoad(offset: 26, as: UInt64.self)
+        )
+    }
+
     var messageType: UInt16
     
     var id: UInt64
@@ -39,7 +59,8 @@ struct MessageHeader {
 }
 
 protocol IncomingMessage {
-    init(from data: Data)
+    static func getType() -> UInt16
+    init(from pointer: UnsafeRawPointer)
 }
 
 protocol OutgoingMessage {
@@ -52,10 +73,30 @@ enum KeyboardEventType: UInt8 {
     case keyDown = 1
 }
 
-struct CreateKeyboardEvent {
+struct KeyboardEvent: IncomingMessage {
+    static func getType() -> UInt16 {
+        0x0311
+    }
+
     var type: UInt8
     var keyCode: UInt32
-    var timestamp: UInt64
+
+    var flags: UInt16
+
+    init() {
+        type = 0
+        keyCode = 0
+        flags = 0
+    }
+
+    init(from pointer: UnsafeRawPointer) {
+        self.init()
+
+        type = pointer.unalignedLoad(offset: 0, as: UInt8.self)
+        keyCode = pointer.unalignedLoad(offset: 1, as: UInt32.self)
+        flags = pointer.unalignedLoad(offset: 5, as: UInt16.self)
+    }
+
 }
 
 struct QueryKeyboardState {
@@ -69,13 +110,59 @@ enum MouseEventType: UInt8 {
     case wheel = 3
 }
 
-struct CreateMouseEvent {
-    var type: UInt8
+struct MouseMoveEvent: IncomingMessage {
+    static func getType() -> UInt16 {
+        0x0321
+    }
 
-    var arg1: UInt32
-    var arg2: UInt32
-    var arg3: UInt32
-    var arg4: UInt32
+    var x: UInt16
+    var y: UInt16
+
+    var flags: UInt16
+
+    init() {
+        x = 0
+        y = 0
+
+        flags = 0
+    }
+
+    init(from pointer: UnsafeRawPointer) {
+        self.init()
+
+        x = pointer.unalignedLoad(offset: 0, as: UInt16.self)
+        y = pointer.unalignedLoad(offset: 2, as: UInt16.self)
+
+        flags = pointer.unalignedLoad(offset: 4, as: UInt16.self)
+    }
+}
+
+
+struct MouseButtonEvent: IncomingMessage {
+    static func getType() -> UInt16 {
+        0x0322
+    }
+
+    var type: UInt8
+    var button: UInt8
+
+    var flags: UInt16
+
+    init() {
+        type = 0
+        button = 0
+
+        flags = 0
+    }
+
+    init(from pointer: UnsafeRawPointer) {
+        self.init()
+
+        type = pointer.unalignedLoad(offset: 0, as: UInt8.self)
+        button = pointer.unalignedLoad(offset: 1, as: UInt8.self)
+
+        flags = pointer.unalignedLoad(offset: 2, as: UInt16.self)
+    }
 }
 
 enum ScreenUpdateType: UInt8 {
