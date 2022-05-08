@@ -165,7 +165,7 @@ extension ScreenRecorder: SCStreamOutput {
             return
         }
 
-        print("updating screeen: \(timedelta)")
+        // print("updating screeen: \(timedelta)")
         if let dirtyRects = frameInfo.dirtyRects {
             dirtyRects.forEach { rect in
                 // print("updating dirty rects: \(rect)")

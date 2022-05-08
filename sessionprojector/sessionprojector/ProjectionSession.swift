@@ -13,24 +13,13 @@ class ProjectionSession {
     public let mainDisplayId = CGMainDisplayID()
     public let serialQueue = DispatchQueue(label: "ProjectionSession")
     public let updateLock = DispatchSemaphore(value: 1)
-    
-    let source = CGEventSource(stateID: .combinedSessionState)
-    var tapPort: CFMachPort
 
     private(set) public var messageId: UInt64 = 1;
 
+    public var eventInjector: EventInjector? = nil
+
     init(_ socket: MMUnixSocketConnection) {
         self.socket = socket
-        self.tapPort = CGEvent.tapCreate(
-            tap: .cgSessionEventTap,
-            place: .headInsertEventTap,
-            options: .defaultTap,
-            eventsOfInterest: UInt64(CGEventType.mouseMoved.rawValue),
-            callback: { (proxy, type, event, refcon) in
-                nil
-            },
-            userInfo: nil
-        )!
     }
 
     func startSession() {
@@ -49,41 +38,17 @@ class ProjectionSession {
 
             if (header.messageType == KeyboardEvent.getType()) {
                 let event = KeyboardEvent(from: buffer)
-                print("sending keyevent \(event.keyCode) \(event.type)")
 
-                CGEvent(
-                    keyboardEventSource: nil,
-                    virtualKey: CGKeyCode(event.keyCode),
-                    keyDown: event.type == 2
-                )?.post(tap: .cgSessionEventTap)
+                eventInjector?.post(keyEvent: event)
             } else if (header.messageType == MouseMoveEvent.getType()) {
                 let event = MouseMoveEvent(from: buffer)
-                print("moving mouse to \(event.x), \(event.y)")
 
-                CGEvent(
-                    mouseEventSource: nil,
-                    mouseType: .mouseMoved,
-                    mouseCursorPosition: CGPoint(x: Int(event.x), y: Int(event.y)),
-                    mouseButton: .left
-                )?.post(tap: .cgSessionEventTap)
+                eventInjector?.post(mouseMoveEvent: event)
             } else if (header.messageType == MouseButtonEvent.getType()) {
                 let event = MouseButtonEvent(from: buffer)
-                print("sending mouseButton \(event.button) \(event.type)")
-                
-                var mouseType: CGEventType = .null
+                // print("sending mouseButton \(event.button) \(event.type)")
 
-                if (event.button == 0) {
-                    mouseType = event.type == 1 ? .leftMouseUp : .leftMouseDown
-                } else if (event.button == 1) {
-                    mouseType = event.type == 1 ? .rightMouseUp : .rightMouseDown
-                }
-
-                CGEvent(
-                    mouseEventSource: nil,
-                    mouseType: mouseType,
-                    mouseCursorPosition: CGEvent(source: nil)!.location,
-                    mouseButton: .left
-                )?.post(tap: .cgSessionEventTap)
+                eventInjector?.post(mouseButtonEvent: event)
             }
         }
     }

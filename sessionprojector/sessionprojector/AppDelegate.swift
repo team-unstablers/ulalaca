@@ -14,8 +14,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet var window: NSWindow!
 
-    var screenRecorder = ScreenRecorder()
-    var projectionServer = ProjectionServer()
+    let screenRecorder = ScreenRecorder()
+    let eventInjector = EventInjector()
+    let projectionServer = ProjectionServer()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -48,8 +49,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 extension AppDelegate: ProjectionServerDelegate {
     func projectionServer(sessionInitiated session: ProjectionSession, id: UInt64) {
         screenRecorder.subscribeUpdate(session)
+        session.eventInjector = eventInjector
     }
 
     func projectionServer(sessionClosed id: UInt64) {
+
     }
 }

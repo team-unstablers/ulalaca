@@ -18,6 +18,10 @@ class ProjectionServer {
 
     public var delegate: ProjectionServerDelegate?
 
+    init() {
+        signal(SIGPIPE, SIG_IGN)
+    }
+
     func start() {
         serverSocket.bind()
         serverSocket.listen()
