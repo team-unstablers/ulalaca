@@ -177,8 +177,8 @@ struct ScreenUpdateEvent: OutgoingMessage {
     
     init(type: ScreenUpdateType, rect: CGRect) {
         self.type = type
-        self.x = UInt16(rect.origin.x)
-        self.y = UInt16(rect.origin.y)
+        self.x = UInt16(max(rect.origin.x, 0))
+        self.y = UInt16(max(rect.origin.y, 0))
         self.width = UInt16(rect.size.width)
         self.height = UInt16(rect.size.height)
     }
