@@ -52,7 +52,8 @@ extension AppDelegate: ProjectionServerDelegate {
         session.eventInjector = eventInjector
     }
 
-    func projectionServer(sessionClosed id: UInt64) {
-
+    func projectionServer(sessionClosed session: ProjectionSession, id: UInt64) {
+        screenRecorder.unsubscribeUpdate(session)
+        session.eventInjector = nil
     }
 }

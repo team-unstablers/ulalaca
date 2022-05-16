@@ -9,7 +9,7 @@ import CoreGraphics
 
 protocol ProjectionServerDelegate {
     func projectionServer(sessionInitiated session: ProjectionSession, id: UInt64)
-    func projectionServer(sessionClosed id: UInt64)
+    func projectionServer(sessionClosed session: ProjectionSession, id: UInt64)
 }
 
 class ProjectionServer {
@@ -33,8 +33,12 @@ class ProjectionServer {
             let session = ProjectionSession.init(clientSocket)
 
             sessions.append(session)
-            session.startSession()
+
             delegate?.projectionServer(sessionInitiated: session, id: 0)
+
+            session.startSession(errorHandler: { error in
+                self.delegate?.projectionServer(sessionClosed: session, id: 0)
+            })
         }
     }
 }

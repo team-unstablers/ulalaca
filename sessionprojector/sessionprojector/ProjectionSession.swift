@@ -6,6 +6,10 @@ import Foundation
 import CoreImage
 import CoreGraphics
 
+enum ProjectionSessionError: Error {
+    case unknownError
+    case socketReadError
+}
 
 class ProjectionSession {
     public let socket: MMUnixSocketConnection
@@ -22,19 +26,23 @@ class ProjectionSession {
         self.socket = socket
     }
 
-    func startSession() {
+    func startSession(errorHandler: @escaping (Error) -> Void) {
         Task {
-            try! await sessionLoop()
+            do {
+                try await sessionLoop()
+            } catch {
+                errorHandler(error)
+            }
         }
     }
 
     private func sessionLoop() async throws {
         var buffer = UnsafeMutableRawPointer.allocate(byteCount: 256, alignment: 0)
         while (true) {
-            socket.read(buffer, size: 34)
+            try socket.readEx(buffer, size: 34)
 
             let header = MessageHeader.from(buffer)
-            socket.read(buffer, size: Int(header.length))
+            try socket.readEx(buffer, size: Int(header.length))
 
             if (header.messageType == KeyboardEvent.getType()) {
                 let event = KeyboardEvent(from: buffer)
@@ -67,9 +75,20 @@ class ProjectionSession {
         
         messageId += 1
     }
+
 }
 
-extension MMUnixSocketConnection {
+fileprivate extension MMUnixSocketConnection {
+    func readEx(_ buffer: UnsafeMutableRawPointer, size: Int) throws -> Int {
+        let bytesRead = read(buffer, size: size)
+
+        if (bytesRead <= 0) {
+            throw ProjectionSessionError.socketReadError
+        }
+
+        return bytesRead
+    }
+
     func write(_ data: Data) {
         data.withUnsafeBytes { ptr in
             self.write(UnsafeRawPointer(ptr)!, size: data.count)
@@ -78,6 +97,10 @@ extension MMUnixSocketConnection {
 }
 
 extension ProjectionSession: ScreenUpdateSubscriber {
+    var identifier: Int {
+        get { Int(socket.descriptor()) }
+    }
+
     func screenUpdated(where rect: CGRect) {
         self.serialQueue.sync {
             self.writeMessage(ScreenUpdateEvent(
@@ -107,4 +130,5 @@ extension ProjectionSession: ScreenUpdateSubscriber {
     func screenResolutionChanged(to resolution: (Int, Int)) {
 
     }
+
 }

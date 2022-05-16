@@ -50,6 +50,10 @@ struct FrameInfo {
 }
 
 protocol ScreenUpdateSubscriber {
+    var identifier: Int {
+        get
+    }
+
     func screenUpdated(where rect: CGRect)
     func screenReady(image: CGImage, rect: CGRect)
     func screenResolutionChanged(to resolution: (Int, Int))
@@ -95,7 +99,20 @@ class ScreenRecorder: NSObject {
     }
 
     func subscribeUpdate(_ subscriber: ScreenUpdateSubscriber) {
+        let isExists = subscriptions.filter { $0.identifier == subscriber.identifier }.first != nil
+        if (isExists) {
+            return
+        }
+
         subscriptions.append(subscriber)
+    }
+
+    func unsubscribeUpdate(_ subscriber: ScreenUpdateSubscriber) {
+        guard let index = subscriptions.firstIndex(where: {
+            $0.identifier == subscriber.identifier
+        }) else { return }
+
+        subscriptions.remove(at: index)
     }
 
     func prepare() async throws {
@@ -159,11 +176,12 @@ extension ScreenRecorder: SCStreamOutput {
         
         let timedelta = abs(now.seconds - frameTimestamp.seconds)
     
-        
+        /*
         if (timedelta > ((1.0 / 60) * 4)) {
             print("skipping frame")
             return
         }
+         */
 
         // print("updating screeen: \(timedelta)")
         if let dirtyRects = frameInfo.dirtyRects {
