@@ -1,0 +1,453 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		85987D2D282FAA2A00B03735 /* sessionbrokerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85987D2C282FAA2A00B03735 /* sessionbrokerTests.swift */; };
+		85D4F9BC28352AC800BF3AEB /* socketlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D4F9BB28352AC800BF3AEB /* socketlib.framework */; };
+		85D4F9BD28352AC800BF3AEB /* socketlib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 85D4F9BB28352AC800BF3AEB /* socketlib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		85E99E832832862200743D34 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85987D45282FAAD600B03735 /* SessionManager.swift */; };
+		85E99E842832862500743D34 /* UserAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDC1642C597087D2A20A6 /* UserAuthenticator.swift */; };
+		F4EBD6F992BEB752C8284EA8 /* SessionBrokerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */; };
+		F4EBD7D670E389B3E78D61E1 /* SessionBrokerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD73F36033A5317C4C3C8 /* SessionBrokerMessage.swift */; };
+		F4EBDE3592B1F8DDA691F765 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDD5B8380C7D75FAE8EA3 /* main.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		85E99E79283285FA00743D34 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		85E99EE42832886300743D34 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				85D4F9BD28352AC800BF3AEB /* socketlib.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		85987D1E282FAA2A00B03735 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		85987D23282FAA2A00B03735 /* sessionbroker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = sessionbroker.entitlements; sourceTree = "<group>"; };
+		85987D28282FAA2A00B03735 /* sessionbrokerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sessionbrokerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		85987D2C282FAA2A00B03735 /* sessionbrokerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sessionbrokerTests.swift; sourceTree = "<group>"; };
+		85987D45282FAAD600B03735 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		85987D48282FAC4E00B03735 /* sessionbroker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "sessionbroker-Bridging-Header.h"; sourceTree = "<group>"; };
+		85987D49282FAC4E00B03735 /* Dummy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dummy.h; sourceTree = "<group>"; };
+		85987D4A282FAC4E00B03735 /* Dummy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Dummy.m; sourceTree = "<group>"; };
+		85D4F9BB28352AC800BF3AEB /* socketlib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = socketlib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		85E99E7B283285FA00743D34 /* sessionbroker */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sessionbroker; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionBrokerServer.swift; sourceTree = "<group>"; };
+		F4EBD73F36033A5317C4C3C8 /* SessionBrokerMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionBrokerMessage.swift; sourceTree = "<group>"; };
+		F4EBD7A7483F435056F0F836 /* CGSSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSSession.h; sourceTree = "<group>"; };
+		F4EBDC1642C597087D2A20A6 /* UserAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAuthenticator.swift; sourceTree = "<group>"; };
+		F4EBDD5B8380C7D75FAE8EA3 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		85987D25282FAA2A00B03735 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85E99E78283285FA00743D34 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85D4F9BC28352AC800BF3AEB /* socketlib.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		85987D10282FAA2800B03735 = {
+			isa = PBXGroup;
+			children = (
+				85987D1B282FAA2800B03735 /* sessionbroker */,
+				85987D2B282FAA2A00B03735 /* sessionbrokerTests */,
+				85987D1A282FAA2800B03735 /* Products */,
+				85E99EBC283287A000743D34 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		85987D1A282FAA2800B03735 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				85987D28282FAA2A00B03735 /* sessionbrokerTests.xctest */,
+				85E99E7B283285FA00743D34 /* sessionbroker */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		85987D1B282FAA2800B03735 /* sessionbroker */ = {
+			isa = PBXGroup;
+			children = (
+				85987D48282FAC4E00B03735 /* sessionbroker-Bridging-Header.h */,
+				85987D47282FAC2700B03735 /* private_headers */,
+				85987D1E282FAA2A00B03735 /* Assets.xcassets */,
+				85987D23282FAA2A00B03735 /* sessionbroker.entitlements */,
+				85987D45282FAAD600B03735 /* SessionManager.swift */,
+				F4EBDC1642C597087D2A20A6 /* UserAuthenticator.swift */,
+				F4EBDD5B8380C7D75FAE8EA3 /* main.swift */,
+				F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */,
+				F4EBD73F36033A5317C4C3C8 /* SessionBrokerMessage.swift */,
+			);
+			path = sessionbroker;
+			sourceTree = "<group>";
+		};
+		85987D2B282FAA2A00B03735 /* sessionbrokerTests */ = {
+			isa = PBXGroup;
+			children = (
+				85987D2C282FAA2A00B03735 /* sessionbrokerTests.swift */,
+			);
+			path = sessionbrokerTests;
+			sourceTree = "<group>";
+		};
+		85987D47282FAC2700B03735 /* private_headers */ = {
+			isa = PBXGroup;
+			children = (
+				85987D49282FAC4E00B03735 /* Dummy.h */,
+				85987D4A282FAC4E00B03735 /* Dummy.m */,
+				F4EBD7A7483F435056F0F836 /* CGSSession.h */,
+			);
+			path = private_headers;
+			sourceTree = "<group>";
+		};
+		85E99EBC283287A000743D34 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				85D4F9BB28352AC800BF3AEB /* socketlib.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		85987D27282FAA2A00B03735 /* sessionbrokerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85987D3F282FAA2A00B03735 /* Build configuration list for PBXNativeTarget "sessionbrokerTests" */;
+			buildPhases = (
+				85987D24282FAA2A00B03735 /* Sources */,
+				85987D25282FAA2A00B03735 /* Frameworks */,
+				85987D26282FAA2A00B03735 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sessionbrokerTests;
+			productName = sessionbrokerTests;
+			productReference = 85987D28282FAA2A00B03735 /* sessionbrokerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		85E99E7A283285FA00743D34 /* sessionbroker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85E99E7F283285FA00743D34 /* Build configuration list for PBXNativeTarget "sessionbroker" */;
+			buildPhases = (
+				85E99E77283285FA00743D34 /* Sources */,
+				85E99E78283285FA00743D34 /* Frameworks */,
+				85E99E79283285FA00743D34 /* CopyFiles */,
+				85E99EE42832886300743D34 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sessionbroker;
+			productName = sessionbroker;
+			productReference = 85E99E7B283285FA00743D34 /* sessionbroker */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		85987D11282FAA2800B03735 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1330;
+				LastUpgradeCheck = 1330;
+				TargetAttributes = {
+					85987D27282FAA2A00B03735 = {
+						CreatedOnToolsVersion = 13.3.1;
+						TestTargetID = 85987D18282FAA2800B03735;
+					};
+					85E99E7A283285FA00743D34 = {
+						CreatedOnToolsVersion = 13.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 85987D14282FAA2800B03735 /* Build configuration list for PBXProject "sessionbroker" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 85987D10282FAA2800B03735;
+			productRefGroup = 85987D1A282FAA2800B03735 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				85E99E7A283285FA00743D34 /* sessionbroker */,
+				85987D27282FAA2A00B03735 /* sessionbrokerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		85987D26282FAA2A00B03735 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		85987D24282FAA2A00B03735 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85987D2D282FAA2A00B03735 /* sessionbrokerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85E99E77283285FA00743D34 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85E99E842832862500743D34 /* UserAuthenticator.swift in Sources */,
+				85E99E832832862200743D34 /* SessionManager.swift in Sources */,
+				F4EBDE3592B1F8DDA691F765 /* main.swift in Sources */,
+				F4EBD6F992BEB752C8284EA8 /* SessionBrokerServer.swift in Sources */,
+				F4EBD7D670E389B3E78D61E1 /* SessionBrokerMessage.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		85987D3A282FAA2A00B03735 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		85987D3B282FAA2A00B03735 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		85987D40282FAA2A00B03735 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.sessionbrokerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sessionbroker.app/Contents/MacOS/sessionbroker";
+			};
+			name = Debug;
+		};
+		85987D41282FAA2A00B03735 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.sessionbrokerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sessionbroker.app/Contents/MacOS/sessionbroker";
+			};
+			name = Release;
+		};
+		85E99E80283285FA00743D34 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "sessionbroker/sessionbroker-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		85E99E81283285FA00743D34 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "sessionbroker/sessionbroker-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		85987D14282FAA2800B03735 /* Build configuration list for PBXProject "sessionbroker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85987D3A282FAA2A00B03735 /* Debug */,
+				85987D3B282FAA2A00B03735 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85987D3F282FAA2A00B03735 /* Build configuration list for PBXNativeTarget "sessionbrokerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85987D40282FAA2A00B03735 /* Debug */,
+				85987D41282FAA2A00B03735 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85E99E7F283285FA00743D34 /* Build configuration list for PBXNativeTarget "sessionbroker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85E99E80283285FA00743D34 /* Debug */,
+				85E99E81283285FA00743D34 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 85987D11282FAA2800B03735 /* Project object */;
+}
