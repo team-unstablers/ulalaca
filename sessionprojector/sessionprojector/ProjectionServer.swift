@@ -13,13 +13,19 @@ protocol ProjectionServerDelegate {
 }
 
 class ProjectionServer {
-    private let serverSocket = MMUnixSocket("/Users/unstabler/ulalaca-projector.socket")!
+    private lazy var serverSocket: MMUnixSocket = MMUnixSocket(getSocketPath())
     private(set) public var sessions: Array<ProjectionSession> = []
 
     public var delegate: ProjectionServerDelegate?
 
     init() {
         signal(SIGPIPE, SIG_IGN)
+    }
+
+    func getSocketPath() -> String {
+        return FileManager.default.homeDirectoryForCurrentUser
+                .appendingPathComponent(".ulalaca_projector.sock", isDirectory: false)
+                .path
     }
 
     func start() {
