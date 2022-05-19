@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:socketlib/socketlib.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:sessionbroker/sessionbroker.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:sessionprojector/sessionprojector.xcodeproj">
    </FileRef>
 </Workspace>
