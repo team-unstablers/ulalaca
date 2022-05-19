@@ -11,9 +11,7 @@ import Cocoa
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-
-    @IBOutlet var window: NSWindow!
-
+    
     let screenRecorder = ScreenRecorder()
     let eventInjector = EventInjector()
     let projectionServer = ProjectionServer()
