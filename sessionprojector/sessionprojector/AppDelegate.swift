@@ -72,6 +72,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func initializeTrayItem() {
         trayItem.menu = trayMenu
+        trayItem.button?.image = NSImage(named: "TrayIcon")
     }
 
     func updateTrayStatusIndicator() {
