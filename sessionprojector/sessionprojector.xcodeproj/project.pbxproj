@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		850165492837FD54001C6F08 /* pl.unstabler.ulalaca.sessionprojector.plist in Resources */ = {isa = PBXBuildFile; fileRef = 850165482837FD54001C6F08 /* pl.unstabler.ulalaca.sessionprojector.plist */; };
 		85D4F9B92832974700BF3AEB /* socketlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D4F9B82832974700BF3AEB /* socketlib.framework */; };
 		85D4F9BA2832974700BF3AEB /* socketlib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 85D4F9B82832974700BF3AEB /* socketlib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4EBD136805519C3F8D8314A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		850165482837FD54001C6F08 /* pl.unstabler.ulalaca.sessionprojector.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = pl.unstabler.ulalaca.sessionprojector.plist; sourceTree = "<group>"; };
 		85935F5F281FBB1D0078D16A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8599DA13281D109C00D3BDA8 /* sessionprojector-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = "sessionprojector-Bridging-Header.h"; sourceTree = "<group>"; };
 		85D4F9B82832974700BF3AEB /* socketlib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = socketlib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +100,7 @@
 		F4EBDE03F3D9B15B1CC3E38B = {
 			isa = PBXGroup;
 			children = (
+				850165482837FD54001C6F08 /* pl.unstabler.ulalaca.sessionprojector.plist */,
 				F4EBD395941AA1C0143EE05A /* Products */,
 				F4EBD04EE5384ECCE555441A /* sessionprojector */,
 				85E99EB22832878F00743D34 /* Frameworks */,
@@ -163,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4EBD956FE871FFA877A4E29 /* Assets.xcassets in Resources */,
+				850165492837FD54001C6F08 /* pl.unstabler.ulalaca.sessionprojector.plist in Resources */,
 				F4EBD517D25C43D7397EA0FD /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
