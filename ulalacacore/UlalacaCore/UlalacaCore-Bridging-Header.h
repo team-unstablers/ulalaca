@@ -8,6 +8,9 @@
 #ifndef UlalacaCore_Bridging_Header_h
 #define UlalacaCore_Bridging_Header_h
 
-#import "MMUnixSocket.h"
+#import "ipc/MMUnixSocket.h"
+
+#import "ipc/messages/projector.h"
+#import "ipc/messages/broker.h"
 
 #endif /* UlalacaCore_Bridging_Header_h */

@@ -7,17 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8572115E283B7DC000C36D5F /* UlalacaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8572115D283B7DC000C36D5F /* UlalacaCore.framework */; };
+		8572115F283B7DC000C36D5F /* UlalacaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8572115D283B7DC000C36D5F /* UlalacaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85987D2D282FAA2A00B03735 /* sessionbrokerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85987D2C282FAA2A00B03735 /* sessionbrokerTests.swift */; };
-		85D4F9BC28352AC800BF3AEB /* socketlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D4F9BB28352AC800BF3AEB /* socketlib.framework */; };
-		85D4F9BD28352AC800BF3AEB /* socketlib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 85D4F9BB28352AC800BF3AEB /* socketlib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85E99E832832862200743D34 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85987D45282FAAD600B03735 /* SessionManager.swift */; };
 		85E99E842832862500743D34 /* UserAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDC1642C597087D2A20A6 /* UserAuthenticator.swift */; };
 		F4EBD6F992BEB752C8284EA8 /* SessionBrokerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */; };
-		F4EBD7D670E389B3E78D61E1 /* SessionBrokerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD73F36033A5317C4C3C8 /* SessionBrokerMessage.swift */; };
 		F4EBDE3592B1F8DDA691F765 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDD5B8380C7D75FAE8EA3 /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		85721160283B7DC000C36D5F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8572115F283B7DC000C36D5F /* UlalacaCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		85E99E79283285FA00743D34 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -27,20 +37,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
-		85E99EE42832886300743D34 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				85D4F9BD28352AC800BF3AEB /* socketlib.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8572115D283B7DC000C36D5F /* UlalacaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UlalacaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85987D1E282FAA2A00B03735 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		85987D23282FAA2A00B03735 /* sessionbroker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = sessionbroker.entitlements; sourceTree = "<group>"; };
 		85987D28282FAA2A00B03735 /* sessionbrokerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sessionbrokerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,7 +52,6 @@
 		85D4F9BB28352AC800BF3AEB /* socketlib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = socketlib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85E99E7B283285FA00743D34 /* sessionbroker */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sessionbroker; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionBrokerServer.swift; sourceTree = "<group>"; };
-		F4EBD73F36033A5317C4C3C8 /* SessionBrokerMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionBrokerMessage.swift; sourceTree = "<group>"; };
 		F4EBD7A7483F435056F0F836 /* CGSSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSSession.h; sourceTree = "<group>"; };
 		F4EBDC1642C597087D2A20A6 /* UserAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAuthenticator.swift; sourceTree = "<group>"; };
 		F4EBDD5B8380C7D75FAE8EA3 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -70,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85D4F9BC28352AC800BF3AEB /* socketlib.framework in Frameworks */,
+				8572115E283B7DC000C36D5F /* UlalacaCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,7 +106,6 @@
 				F4EBDC1642C597087D2A20A6 /* UserAuthenticator.swift */,
 				F4EBDD5B8380C7D75FAE8EA3 /* main.swift */,
 				F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */,
-				F4EBD73F36033A5317C4C3C8 /* SessionBrokerMessage.swift */,
 			);
 			path = sessionbroker;
 			sourceTree = "<group>";
@@ -133,6 +131,7 @@
 		85E99EBC283287A000743D34 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8572115D283B7DC000C36D5F /* UlalacaCore.framework */,
 				85D4F9BB28352AC800BF3AEB /* socketlib.framework */,
 			);
 			name = Frameworks;
@@ -165,7 +164,7 @@
 				85E99E77283285FA00743D34 /* Sources */,
 				85E99E78283285FA00743D34 /* Frameworks */,
 				85E99E79283285FA00743D34 /* CopyFiles */,
-				85E99EE42832886300743D34 /* Embed Frameworks */,
+				85721160283B7DC000C36D5F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -241,7 +240,6 @@
 				85E99E832832862200743D34 /* SessionManager.swift in Sources */,
 				F4EBDE3592B1F8DDA691F765 /* main.swift in Sources */,
 				F4EBD6F992BEB752C8284EA8 /* SessionBrokerServer.swift in Sources */,
-				F4EBD7D670E389B3E78D61E1 /* SessionBrokerMessage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

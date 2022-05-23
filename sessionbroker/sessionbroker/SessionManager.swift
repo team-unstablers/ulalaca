@@ -9,6 +9,10 @@ import Foundation
 import CoreFoundation
 import CoreGraphics
 
+enum SessionPreparationError: Error {
+    case internalError
+    case sessionNotExists
+}
 
 class SessionManager {
     public static let instance = SessionManager()
@@ -48,10 +52,25 @@ class SessionManager {
         return String(sessionDict["kCGSSessionIDKey"] as! Int)
     }
 
-    func getProjectionSessionPath(forUser username: String) throws -> String {
-        let sessionId = try getSessionId(forUser: username)
+    func isSessionExists(forUser username: String) -> Bool {
+        let sessionList = try? getCGSSessionList()
 
-        return "TODO_WHERE_IS_MY_SESSION_SOCKET"
+        return sessionList?.filter({
+            $0["kCGSSessionUserNameKey"] as? String == username
+        }).count != 0
+    }
+
+    func getProjectionSessionPath(forUser username: String) throws -> String {
+        let fileManager = FileManager.default
+        let socketPath = fileManager.homeDirectory(forUser: username)!
+                .appendingPathComponent(".ulalaca_projector.sock")
+                .path
+
+        if (!isSessionExists(forUser: username) || !fileManager.fileExists(atPath: socketPath)) {
+            throw SessionPreparationError.sessionNotExists
+        }
+
+        return socketPath
     }
 
 }
