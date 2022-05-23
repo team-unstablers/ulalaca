@@ -7,6 +7,8 @@ import Foundation
 
 import CoreGraphics
 
+import UlalacaCore
+
 protocol ProjectionServerDelegate {
     func projectionServer(sessionInitiated session: ProjectionSession, id: UInt64)
     func projectionServer(sessionClosed session: ProjectionSession, id: UInt64)
@@ -37,12 +39,15 @@ class ProjectionServer {
                 continue
             }
             let session = ProjectionSession.init(clientSocket)
-
             sessions.append(session)
 
             delegate?.projectionServer(sessionInitiated: session, id: 0)
 
             session.startSession(errorHandler: { error in
+                if let index = self.sessions.index(where: { $0.socket.descriptor() == session.socket.descriptor() }) {
+                    self.sessions.remove(at: index)
+                }
+
                 self.delegate?.projectionServer(sessionClosed: session, id: 0)
             })
         }

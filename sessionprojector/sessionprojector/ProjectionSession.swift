@@ -6,6 +6,8 @@ import Foundation
 import CoreImage
 import CoreGraphics
 
+import UlalacaCore
+
 enum ProjectionSessionError: Error {
     case unknownError
     case socketReadError
@@ -76,24 +78,6 @@ class ProjectionSession {
         messageId += 1
     }
 
-}
-
-fileprivate extension MMUnixSocketConnection {
-    func readEx(_ buffer: UnsafeMutableRawPointer, size: Int) throws -> Int {
-        let bytesRead = read(buffer, size: size)
-
-        if (bytesRead <= 0) {
-            throw ProjectionSessionError.socketReadError
-        }
-
-        return bytesRead
-    }
-
-    func write(_ data: Data) {
-        data.withUnsafeBytes { ptr in
-            self.write(UnsafeRawPointer(ptr)!, size: data.count)
-        }
-    }
 }
 
 extension ProjectionSession: ScreenUpdateSubscriber {

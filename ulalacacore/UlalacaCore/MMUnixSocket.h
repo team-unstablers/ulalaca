@@ -4,7 +4,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MMUnixSocketConnection: NSObject
+@protocol MMUnixSocketBase
+-(ssize_t) read: (void *) buffer size: (size_t) size;
+-(ssize_t) write: (const void *) buffer size: (size_t) size;
+@end
+
+@interface MMUnixSocketConnection: NSObject<MMUnixSocketBase>
 -(int) descriptor;
 
 -(ssize_t) read: (void *) buffer size: (size_t) size;
@@ -13,7 +18,7 @@
 -(void) close;
 @end
 
-@interface MMUnixSocket : NSObject
+@interface MMUnixSocket : NSObject<MMUnixSocketBase>
 -(MMUnixSocket *) init: (NSString *) path;
 -(int) descriptor;
 

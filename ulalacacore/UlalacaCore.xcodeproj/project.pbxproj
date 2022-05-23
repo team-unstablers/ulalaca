@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8572115A283B614D00C36D5F /* MMUnixSocket+readEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85721159283B614D00C36D5F /* MMUnixSocket+readEx.swift */; };
+		8572115C283B619500C36D5F /* UlalacaCore-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 8572115B283B619500C36D5F /* UlalacaCore-Bridging-Header.h */; };
 		85D4F9A5283296C200BF3AEB /* UlalacaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D4F99D283296C100BF3AEB /* UlalacaCore.framework */; };
 		85D4F9AA283296C200BF3AEB /* socketlibTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D4F9A9283296C200BF3AEB /* socketlibTests.m */; };
 		85D4F9B2283296F400BF3AEB /* UnixSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85E99EA92832876900743D34 /* UnixSocket.cpp */; };
@@ -15,6 +17,7 @@
 		85D4F9B52832972E00BF3AEB /* MMUnixSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 85E99EA82832876900743D34 /* MMUnixSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		85D4F9B62832972E00BF3AEB /* UnixSocket.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 85E99EAB2832876A00743D34 /* UnixSocket.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		85D4F9B72832972E00BF3AEB /* SystemCallException.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 85E99EAA2832876900743D34 /* SystemCallException.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		F4EBD7B8E451AF2977387C9F /* MMUnixSocketError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDF47DE67DAC5D9176560 /* MMUnixSocketError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +31,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		85721159283B614D00C36D5F /* MMUnixSocket+readEx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MMUnixSocket+readEx.swift"; sourceTree = "<group>"; };
+		8572115B283B619500C36D5F /* UlalacaCore-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UlalacaCore-Bridging-Header.h"; sourceTree = "<group>"; };
 		85D4F99D283296C100BF3AEB /* UlalacaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UlalacaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85D4F9A4283296C200BF3AEB /* UlalacaCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UlalacaCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		85D4F9A9283296C200BF3AEB /* socketlibTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = socketlibTests.m; sourceTree = "<group>"; };
@@ -37,6 +42,7 @@
 		85E99EA92832876900743D34 /* UnixSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnixSocket.cpp; sourceTree = "<group>"; };
 		85E99EAA2832876900743D34 /* SystemCallException.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SystemCallException.hpp; sourceTree = "<group>"; };
 		85E99EAB2832876A00743D34 /* UnixSocket.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UnixSocket.hpp; sourceTree = "<group>"; };
+		F4EBDF47DE67DAC5D9176560 /* MMUnixSocketError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MMUnixSocketError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,12 +67,15 @@
 		85D4F99E283296C100BF3AEB /* UlalacaCore */ = {
 			isa = PBXGroup;
 			children = (
+				85721159283B614D00C36D5F /* MMUnixSocket+readEx.swift */,
 				85E99EAB2832876A00743D34 /* UnixSocket.hpp */,
 				85E99EAA2832876900743D34 /* SystemCallException.hpp */,
 				85E99EA62832876900743D34 /* SystemCallException.cpp */,
 				85E99EA72832876900743D34 /* MMUnixSocket.mm */,
 				85E99EA82832876900743D34 /* MMUnixSocket.h */,
 				85E99EA92832876900743D34 /* UnixSocket.cpp */,
+				8572115B283B619500C36D5F /* UlalacaCore-Bridging-Header.h */,
+				F4EBDF47DE67DAC5D9176560 /* MMUnixSocketError.swift */,
 			);
 			path = UlalacaCore;
 			sourceTree = "<group>";
@@ -104,6 +113,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8572115C283B619500C36D5F /* UlalacaCore-Bridging-Header.h in Headers */,
 				85D4F9B52832972E00BF3AEB /* MMUnixSocket.h in Headers */,
 				85D4F9B62832972E00BF3AEB /* UnixSocket.hpp in Headers */,
 				85D4F9B72832972E00BF3AEB /* SystemCallException.hpp in Headers */,
@@ -161,6 +171,7 @@
 				TargetAttributes = {
 					85D4F99C283296C100BF3AEB = {
 						CreatedOnToolsVersion = 13.3.1;
+						LastSwiftMigration = 1330;
 					};
 					85D4F9A3283296C200BF3AEB = {
 						CreatedOnToolsVersion = 13.3.1;
@@ -211,6 +222,8 @@
 				85D4F9B3283296FE00BF3AEB /* MMUnixSocket.mm in Sources */,
 				85D4F9B2283296F400BF3AEB /* UnixSocket.cpp in Sources */,
 				85D4F9B4283296FE00BF3AEB /* SystemCallException.cpp in Sources */,
+				8572115A283B614D00C36D5F /* MMUnixSocket+readEx.swift in Sources */,
+				F4EBD7B8E451AF2977387C9F /* MMUnixSocketError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +249,7 @@
 		85D4F9AD283296C200BF3AEB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -260,6 +274,9 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "UlalacaCore/UlalacaCore-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -268,6 +285,7 @@
 		85D4F9AE283296C200BF3AEB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -292,6 +310,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "UlalacaCore/UlalacaCore-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -300,6 +320,7 @@
 		85D4F9B0283296C200BF3AEB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -313,6 +334,7 @@
 		85D4F9B1283296C200BF3AEB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
