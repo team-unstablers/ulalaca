@@ -1,0 +1,6 @@
+#ifndef ULALACA_CORE_IPC_MESSAGES_GLOBAL_H
+#define ULALACA_CORE_IPC_MESSAGES_GLOBAL_H
+
+#define FIXME_MARK_AS_PACKED_STRUCT __attribute__ ((packed))
+
+#endif
