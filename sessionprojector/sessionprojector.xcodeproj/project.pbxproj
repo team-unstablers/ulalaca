@@ -38,7 +38,6 @@
 		85721155283B607000C36D5F /* UlalacaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UlalacaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85935F5F281FBB1D0078D16A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8599DA13281D109C00D3BDA8 /* sessionprojector-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = "sessionprojector-Bridging-Header.h"; sourceTree = "<group>"; };
-		85D4F9B82832974700BF3AEB /* socketlib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = socketlib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EBD26D71490B77A9B122E0 /* EventInjector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventInjector.swift; sourceTree = "<group>"; };
 		F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4EBD494498F922F07EA68BF /* ProjectionMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectionMessage.swift; sourceTree = "<group>"; };
@@ -68,7 +67,6 @@
 			isa = PBXGroup;
 			children = (
 				85721155283B607000C36D5F /* UlalacaCore.framework */,
-				85D4F9B82832974700BF3AEB /* socketlib.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

@@ -8,10 +8,9 @@
 
 import Cocoa
 
-
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-    
+
     let screenRecorder = ScreenRecorder()
     let eventInjector = EventInjector()
     let projectionServer = ProjectionServer()
@@ -51,13 +50,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func startProjectionServer() {
         Task {
             do {
+                try eventInjector.prepare()
                 try await screenRecorder.prepare()
                 try await screenRecorder.start()
+
+                projectionServer.start()
             } catch {
                 print(error.localizedDescription)
+
+                let errorDialog = await NSAlert(error: error)
+                await errorDialog.runModal()
+
+                quitApplication()
             }
 
-            projectionServer.start()
         }
     }
 
@@ -67,6 +73,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc
     func quitApplication() {
+        destroyProjectionServer()
+
         NSApp.terminate(self)
     }
 
