@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		85D4F9A5283296C200BF3AEB /* socketlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D4F99D283296C100BF3AEB /* socketlib.framework */; };
+		85D4F9A5283296C200BF3AEB /* UlalacaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D4F99D283296C100BF3AEB /* UlalacaCore.framework */; };
 		85D4F9AA283296C200BF3AEB /* socketlibTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D4F9A9283296C200BF3AEB /* socketlibTests.m */; };
 		85D4F9B2283296F400BF3AEB /* UnixSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85E99EA92832876900743D34 /* UnixSocket.cpp */; };
 		85D4F9B3283296FE00BF3AEB /* MMUnixSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85E99EA72832876900743D34 /* MMUnixSocket.mm */; };
@@ -28,8 +28,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		85D4F99D283296C100BF3AEB /* socketlib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = socketlib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		85D4F9A4283296C200BF3AEB /* socketlibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = socketlibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		85D4F99D283296C100BF3AEB /* UlalacaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UlalacaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		85D4F9A4283296C200BF3AEB /* UlalacaCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UlalacaCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		85D4F9A9283296C200BF3AEB /* socketlibTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = socketlibTests.m; sourceTree = "<group>"; };
 		85E99EA62832876900743D34 /* SystemCallException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemCallException.cpp; sourceTree = "<group>"; };
 		85E99EA72832876900743D34 /* MMUnixSocket.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MMUnixSocket.mm; sourceTree = "<group>"; };
@@ -51,14 +51,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85D4F9A5283296C200BF3AEB /* socketlib.framework in Frameworks */,
+				85D4F9A5283296C200BF3AEB /* UlalacaCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		85D4F99E283296C100BF3AEB /* socketlib */ = {
+		85D4F99E283296C100BF3AEB /* UlalacaCore */ = {
 			isa = PBXGroup;
 			children = (
 				85E99EAB2832876A00743D34 /* UnixSocket.hpp */,
@@ -68,22 +68,22 @@
 				85E99EA82832876900743D34 /* MMUnixSocket.h */,
 				85E99EA92832876900743D34 /* UnixSocket.cpp */,
 			);
-			path = socketlib;
+			path = UlalacaCore;
 			sourceTree = "<group>";
 		};
-		85D4F9A8283296C200BF3AEB /* socketlibTests */ = {
+		85D4F9A8283296C200BF3AEB /* UlalacaCoreTests */ = {
 			isa = PBXGroup;
 			children = (
 				85D4F9A9283296C200BF3AEB /* socketlibTests.m */,
 			);
-			path = socketlibTests;
+			path = UlalacaCoreTests;
 			sourceTree = "<group>";
 		};
 		85E99E852832872B00743D34 = {
 			isa = PBXGroup;
 			children = (
-				85D4F99E283296C100BF3AEB /* socketlib */,
-				85D4F9A8283296C200BF3AEB /* socketlibTests */,
+				85D4F99E283296C100BF3AEB /* UlalacaCore */,
+				85D4F9A8283296C200BF3AEB /* UlalacaCoreTests */,
 				85E99E8F2832872C00743D34 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,8 +91,8 @@
 		85E99E8F2832872C00743D34 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				85D4F99D283296C100BF3AEB /* socketlib.framework */,
-				85D4F9A4283296C200BF3AEB /* socketlibTests.xctest */,
+				85D4F99D283296C100BF3AEB /* UlalacaCore.framework */,
+				85D4F9A4283296C200BF3AEB /* UlalacaCoreTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,9 +113,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		85D4F99C283296C100BF3AEB /* socketlib */ = {
+		85D4F99C283296C100BF3AEB /* UlalacaCore */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 85D4F9AC283296C200BF3AEB /* Build configuration list for PBXNativeTarget "socketlib" */;
+			buildConfigurationList = 85D4F9AC283296C200BF3AEB /* Build configuration list for PBXNativeTarget "UlalacaCore" */;
 			buildPhases = (
 				85D4F998283296C100BF3AEB /* Headers */,
 				85D4F999283296C100BF3AEB /* Sources */,
@@ -126,14 +126,14 @@
 			);
 			dependencies = (
 			);
-			name = socketlib;
+			name = UlalacaCore;
 			productName = socketlib;
-			productReference = 85D4F99D283296C100BF3AEB /* socketlib.framework */;
+			productReference = 85D4F99D283296C100BF3AEB /* UlalacaCore.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		85D4F9A3283296C200BF3AEB /* socketlibTests */ = {
+		85D4F9A3283296C200BF3AEB /* UlalacaCoreTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 85D4F9AF283296C200BF3AEB /* Build configuration list for PBXNativeTarget "socketlibTests" */;
+			buildConfigurationList = 85D4F9AF283296C200BF3AEB /* Build configuration list for PBXNativeTarget "UlalacaCoreTests" */;
 			buildPhases = (
 				85D4F9A0283296C200BF3AEB /* Sources */,
 				85D4F9A1283296C200BF3AEB /* Frameworks */,
@@ -144,9 +144,9 @@
 			dependencies = (
 				85D4F9A7283296C200BF3AEB /* PBXTargetDependency */,
 			);
-			name = socketlibTests;
+			name = UlalacaCoreTests;
 			productName = socketlibTests;
-			productReference = 85D4F9A4283296C200BF3AEB /* socketlibTests.xctest */;
+			productReference = 85D4F9A4283296C200BF3AEB /* UlalacaCoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -167,7 +167,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 85E99E892832872B00743D34 /* Build configuration list for PBXProject "socketlib" */;
+			buildConfigurationList = 85E99E892832872B00743D34 /* Build configuration list for PBXProject "UlalacaCore" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -180,8 +180,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				85D4F99C283296C100BF3AEB /* socketlib */,
-				85D4F9A3283296C200BF3AEB /* socketlibTests */,
+				85D4F99C283296C100BF3AEB /* UlalacaCore */,
+				85D4F9A3283296C200BF3AEB /* UlalacaCoreTests */,
 			);
 		};
 /* End PBXProject section */
@@ -227,7 +227,7 @@
 /* Begin PBXTargetDependency section */
 		85D4F9A7283296C200BF3AEB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 85D4F99C283296C100BF3AEB /* socketlib */;
+			target = 85D4F99C283296C100BF3AEB /* UlalacaCore */;
 			targetProxy = 85D4F9A6283296C200BF3AEB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -255,7 +255,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.socketlib;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.ulalacacore;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -287,7 +287,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.socketlib;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.ulalacacore;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -435,7 +435,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		85D4F9AC283296C200BF3AEB /* Build configuration list for PBXNativeTarget "socketlib" */ = {
+		85D4F9AC283296C200BF3AEB /* Build configuration list for PBXNativeTarget "UlalacaCore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				85D4F9AD283296C200BF3AEB /* Debug */,
@@ -444,7 +444,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		85D4F9AF283296C200BF3AEB /* Build configuration list for PBXNativeTarget "socketlibTests" */ = {
+		85D4F9AF283296C200BF3AEB /* Build configuration list for PBXNativeTarget "UlalacaCoreTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				85D4F9B0283296C200BF3AEB /* Debug */,
@@ -453,7 +453,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		85E99E892832872B00743D34 /* Build configuration list for PBXProject "socketlib" */ = {
+		85E99E892832872B00743D34 /* Build configuration list for PBXProject "UlalacaCore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				85E99E952832872C00743D34 /* Debug */,
