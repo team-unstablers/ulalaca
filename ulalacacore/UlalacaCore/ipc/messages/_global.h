@@ -1,6 +1,8 @@
 #ifndef ULALACA_CORE_IPC_MESSAGES_GLOBAL_H
 #define ULALACA_CORE_IPC_MESSAGES_GLOBAL_H
 
+#include <stdint.h>
+
 /**
  * FIXME: naming
  */

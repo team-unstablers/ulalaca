@@ -15,6 +15,7 @@ class SessionBrokerServer {
     private let userAuthenticator = UserAuthenticator()
     private let sessionManager = SessionManager()
 
+
     init() {
         signal(SIGPIPE, SIG_IGN)
     }
@@ -39,13 +40,21 @@ class SessionBrokerServer {
     }
 
     func clientLoop(_ clientSocket: MMUnixSocketConnection) async {
+        var messageId: UInt64 = 0
+
+        func getMessageId() -> UInt64 {
+            messageId += 1;
+
+            return messageId
+        }
+
         while (true) {
-            guard let header = try? clientSocket.readCStruct(BrokerMessageHeader.self) else {
+            guard let header = try? clientSocket.readCStruct(ULIPCHeader.self) else {
                 break
             }
 
-            if (header.messageType == REQUEST_SESSION) {
-                guard let message = try? clientSocket.readCStruct(RequestSession.self) else {
+            if (header.messageType == TYPE_SESSION_REQUEST) {
+                guard let message = try? clientSocket.readCStruct(ULIPCSessionRequest.self) else {
                     break
                 }
                 let username = withUnsafePointer(to: message.username) { String(fromUnsafeCStr: $0, length: 64) }
@@ -63,10 +72,11 @@ class SessionBrokerServer {
                 }
                 let cSessionPath = sessionPath.cString(using: String.Encoding.utf8)!
 
-                var response = SessionReady()
+                var response = ULIPCSessionRequestResolved()
                 response.sessionId = UInt64(0)
                 response.isLoginSession = 0
 
+                // :'(
                 withUnsafeMutablePointer(to: &response.path) { dstPtr in
                     var dst = dstPtr.withMemoryRebound(to: CChar.self, capacity: 1024, { $0 })
                     cSessionPath.withUnsafeBufferPointer { srcPtr in
@@ -74,27 +84,34 @@ class SessionBrokerServer {
                     }
                 }
 
-                clientSocket.writeMessage(response, type: RESPONSE_SESSION_READY)
+                clientSocket.writeMessage(
+                        response,
+                        type: TYPE_SESSION_REQUEST_RESOLVED,
+                        id: getMessageId()
+                )
                 clientSocket.close()
             }
         }
 
         clientSocket.writeMessage(
-                RequestRejection(reason: REJECT_REASON_AUTHENTICATION_FAILED),
-                type: RESPONSE_REJECTION
+                ULIPCSessionRequestRejected(reason: REJECT_REASON_AUTHENTICATION_FAILED),
+                type: TYPE_SESSION_REQUEST_REJECTED,
+                id: getMessageId()
         )
         clientSocket.close()
     }
 }
 
 fileprivate extension MMUnixSocketConnection {
-    func writeMessage<T>(_ message: T, type: UInt16) {
+    func writeMessage<T>(_ message: T, type: UInt16, id: UInt64 = 0) {
         let messageLength = MemoryLayout.size(ofValue: message)
-
-        let header = BrokerMessageHeader(
-                version: UInt32(0),
+        let header = ULIPCHeader(
                 messageType: type,
-                timestamp: 0,
+                id: id, // FIXME
+                replyTo: UInt64(0), // FIXME
+
+                timestamp: UInt64(Date.now.timeIntervalSince1970 * 1000),
+
                 length: UInt64(messageLength)
         )
 
