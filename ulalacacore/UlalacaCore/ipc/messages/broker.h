@@ -5,39 +5,35 @@
 
 #include "_global.h"
 
-static const uint16_t RESPONSE_SESSION_READY = 0xA100;
-static const uint16_t RESPONSE_REJECTION = 0xA101;
-static const uint16_t REQUEST_SESSION = 0xA011;
+/* constants: message type (server -> client) */
+static const uint16_t TYPE_SESSION_REQUEST_RESOLVED = 0xA100;
+static const uint16_t TYPE_SESSION_REQUEST_REJECTED = 0xA101;
 
-struct BrokerMessageHeader {
-    uint32_t version;
+/* constants: message type (client -> server) */
+static const uint16_t TYPE_SESSION_REQUEST = 0xA011;
 
-    uint16_t messageType;
-    uint64_t timestamp;
 
-    uint64_t length;
-} FIXME_MARK_AS_PACKED_STRUCT;
-
+/* constants: reject reason */
 static const uint8_t REJECT_REASON_INTERNAL_ERROR = 0;
 static const uint8_t REJECT_REASON_AUTHENTICATION_FAILED = 1;
 static const uint8_t REJECT_REASON_SESSION_NOT_AVAILABLE = 2;
 static const uint8_t REJECT_REASON_INCOMPATIBLE_VERSION = 3;
 
-/**
- * incoming message
- */
-struct SessionReady {
+
+/* message definition: server -> client */
+struct ULIPCSessionRequestResolved {
     uint64_t sessionId;
     uint8_t isLoginSession;
 
     char path[1024];
 } FIXME_MARK_AS_PACKED_STRUCT;
 
-struct RequestRejection {
+struct ULIPCSessionRequestRejected {
     uint8_t reason;
 } FIXME_MARK_AS_PACKED_STRUCT;
 
-struct RequestSession {
+/* message definition: client -> server */
+struct ULIPCSessionRequest {
     char username[64];
     char password[256];
 } FIXME_MARK_AS_PACKED_STRUCT;
