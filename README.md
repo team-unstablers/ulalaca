@@ -13,7 +13,28 @@ xrdp-powered remote session broker / projector for macOS
 
 # INSTALLATION
 
-TODO
+```
+$ git clone https://github.com/unstabler/Ulalaca.git ulalaca
+$ cd ulalaca
+
+# build sessionprojector
+$ xcodebuild DSTROOT=/usr/local/opt -workspace Ulalaca.xcworkspace -scheme sessionbroker
+$ sudo xcodebuild DSTROOT=/usr/local/opt -workspace Ulalaca.xcworkspace -scheme sessionbroker install
+
+# enable launchd service
+$ sudo cp /usr/local/opt/ulalaca-sessionprojector/pl.unstabler.ulalaca.sessionbroker.plist /Library/LaunchDaemons
+$ launchctl start pl.unstabler.ulalaca.sessionbroker
+
+# build sessionprojector
+$ xcodebuild DSTROOT=`pwd`/build -workspace Ulalaca.workspace -scheme sessionprojector
+
+# copy sessionprojector.app to /Applications
+$ open build/ 
+
+# register autostart entry
+$ sudo cp sessionprojector/LaunchAgents/pl.unstabler.ulalaca.sessionprojector.plist /Library/LaunchAgents/
+
+```
 
 # AUTHOR
 
