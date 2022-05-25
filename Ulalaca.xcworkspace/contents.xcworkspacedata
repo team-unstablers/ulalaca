@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:socketlib/socketlib.xcodeproj">
+      location = "group:ulalacacore/UlalacaCore.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:sessionbroker/sessionbroker.xcodeproj">

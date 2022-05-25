@@ -7,15 +7,26 @@ import Foundation
 import Carbon
 import CoreGraphics
 
+
+enum EventInjectorError: LocalizedError {
+    case initializationError
+
+    var errorDescription: String? {
+        switch (self) {
+        case .initializationError:
+            return "could not initialize EventInjector instance. (insufficient permission?)"
+        }
+    }
+}
+
 class EventInjector {
     public static let MOUSE_DOWN_STATE_LEFT: UInt16 = 0b1
     public static let MOUSE_DOWN_STATE_RIGHT: UInt16 = 0b10
 
-
     public let serialQueue = DispatchQueue(label: "EventInjector", qos: .userInteractive)
 
-    private let eventSource: CGEventSource
-    private let eventTap: CFMachPort
+    private var eventSource: CGEventSource!
+    private var eventTap: CFMachPort!
 
     private(set) public var keyDownState = Set<Int>()
 
@@ -23,20 +34,22 @@ class EventInjector {
     private(set) public var lastMousePosition: CGPoint? = nil
 
     init() {
+    }
+
+    func prepare() throws {
         guard let eventTap = CGEvent.tapCreate(
-            tap: .cgSessionEventTap,
-            place: .headInsertEventTap,
-            options: .defaultTap,
-            eventsOfInterest: UInt64(CGEventType.keyDown.rawValue),
-            callback: { (proxy, type, event, refcon) in
-                return Unmanaged.passUnretained(event)
-            },
-            userInfo: nil
+                tap: .cgSessionEventTap,
+                place: .headInsertEventTap,
+                options: .defaultTap,
+                eventsOfInterest: UInt64(CGEventType.keyDown.rawValue),
+                callback: { (proxy, type, event, refcon) in
+                    return Unmanaged.passUnretained(event)
+                },
+                userInfo: nil
         ), let eventSource = CGEventSource(
-            stateID: .combinedSessionState
-        )
-        else {
-            fatalError("")
+                stateID: .combinedSessionState
+        ) else {
+            throw EventInjectorError.initializationError
         }
 
         self.eventTap = eventTap

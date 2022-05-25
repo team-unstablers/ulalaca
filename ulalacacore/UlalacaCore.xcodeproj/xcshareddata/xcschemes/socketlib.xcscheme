@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "85D4F99C283296C100BF3AEB"
-               BuildableName = "socketlib.framework"
-               BlueprintName = "socketlib"
-               ReferencedContainer = "container:socketlib.xcodeproj">
+               BuildableName = "UlalacaCore.framework"
+               BlueprintName = "UlalacaCore"
+               ReferencedContainer = "container:UlalacaCore.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -51,9 +51,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "85D4F99C283296C100BF3AEB"
-            BuildableName = "socketlib.framework"
-            BlueprintName = "socketlib"
-            ReferencedContainer = "container:socketlib.xcodeproj">
+            BuildableName = "UlalacaCore.framework"
+            BlueprintName = "UlalacaCore"
+            ReferencedContainer = "container:UlalacaCore.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

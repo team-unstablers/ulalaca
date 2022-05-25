@@ -8,10 +8,24 @@ import CoreGraphics
 import VideoToolbox
 import ScreenCaptureKit
 
-enum ScreenRecorderError: Error {
-    case unknownError
-    case initializationError
+enum ScreenRecorderError: LocalizedError {
+    case unknown
 
+    case initializationError
+    case streamStartFailure
+
+    var errorDescription: String? {
+        switch (self) {
+        case .unknown:
+            return "unknown error"
+
+        case .initializationError:
+            return "could not initialize ScreenCaptureKit stream"
+
+        case .streamStartFailure:
+            return "failed to start ScreenCaptureKit stream (insufficient permission?)"
+        }
+    }
 }
 
 struct FrameInfo {
@@ -65,35 +79,10 @@ class ScreenRecorder: NSObject {
         qos: .userInteractive
     )
     
-    private var coreImageContext: CIContext = createCoreImageContext(useMetal: true)
-
     private var stream: SCStream?
     private var subscriptions: [ScreenUpdateSubscriber] = []
     private var prevDisplayTime: UInt64 = 0
     
-
-    private static func createCoreImageContext(useMetal: Bool = false) -> CIContext {
-        if let ciContext = NSGraphicsContext.current?.ciContext {
-            return ciContext
-        }
-
-        if (useMetal) {
-            if let metalDevice = MTLCreateSystemDefaultDevice() {
-                return CIContext(mtlDevice: metalDevice)
-            }
-        }
-
-        if let cgContext = NSGraphicsContext.current?.cgContext {
-            print("using CGContext")
-            return CIContext(cgContext: cgContext)
-        } else {
-            print("using software renderer")
-            return CIContext(options: [
-                .useSoftwareRenderer: true
-            ])
-        }
-    }
-
     override init() {
         super.init()
     }
@@ -137,7 +126,11 @@ class ScreenRecorder: NSObject {
     }
 
     func start() async throws {
-        try await stream!.startCapture()
+        do {
+            try await stream!.startCapture()
+        } catch {
+            throw ScreenRecorderError.streamStartFailure
+        }
     }
 
     func stop() throws {
@@ -158,7 +151,6 @@ extension ScreenRecorder: SCStreamOutput {
         }
             
         if (frameInfo.status != .complete) {
-            // not ready to draw
             return
         }
         
@@ -176,17 +168,8 @@ extension ScreenRecorder: SCStreamOutput {
         
         let timedelta = abs(now.seconds - frameTimestamp.seconds)
     
-        /*
-        if (timedelta > ((1.0 / 60) * 4)) {
-            print("skipping frame")
-            return
-        }
-         */
-
-        // print("updating screeen: \(timedelta)")
         if let dirtyRects = frameInfo.dirtyRects {
             dirtyRects.forEach { rect in
-                // print("updating dirty rects: \(rect)")
                 subscriptions.forEach { $0.screenUpdated(where: rect) }
             }
         }
