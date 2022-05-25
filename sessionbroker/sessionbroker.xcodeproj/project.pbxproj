@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8532B086283E2696001B5D90 /* sessionbroker in CopyFiles */ = {isa = PBXBuildFile; fileRef = 85E99E7B283285FA00743D34 /* sessionbroker */; };
+		8532B089283E2709001B5D90 /* pl.unstabler.ulalaca.sessionbroker.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4EBD0F0C7F9AE77EFAD7CA6 /* pl.unstabler.ulalaca.sessionbroker.plist */; };
 		8572115E283B7DC000C36D5F /* UlalacaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8572115D283B7DC000C36D5F /* UlalacaCore.framework */; };
 		8572115F283B7DC000C36D5F /* UlalacaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8572115D283B7DC000C36D5F /* UlalacaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85987D2D282FAA2A00B03735 /* sessionbrokerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85987D2C282FAA2A00B03735 /* sessionbrokerTests.swift */; };
@@ -17,6 +19,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		8532B088283E26F8001B5D90 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = "/usr/local/opt/ulalaca-sessionbroker";
+			dstSubfolderSpec = 0;
+			files = (
+				8532B089283E2709001B5D90 /* pl.unstabler.ulalaca.sessionbroker.plist in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		85721160283B7DC000C36D5F /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -31,9 +43,10 @@
 		85E99E79283285FA00743D34 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			dstPath = "/usr/local/opt/ulalaca-sessionbroker/bin";
 			dstSubfolderSpec = 0;
 			files = (
+				8532B086283E2696001B5D90 /* sessionbroker in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -51,6 +64,7 @@
 		85987D4A282FAC4E00B03735 /* Dummy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Dummy.m; sourceTree = "<group>"; };
 		85D4F9BB28352AC800BF3AEB /* socketlib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = socketlib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85E99E7B283285FA00743D34 /* sessionbroker */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sessionbroker; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4EBD0F0C7F9AE77EFAD7CA6 /* pl.unstabler.ulalaca.sessionbroker.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = pl.unstabler.ulalaca.sessionbroker.plist; sourceTree = "<group>"; };
 		F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionBrokerServer.swift; sourceTree = "<group>"; };
 		F4EBD7A7483F435056F0F836 /* CGSSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSSession.h; sourceTree = "<group>"; };
 		F4EBDC1642C597087D2A20A6 /* UserAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAuthenticator.swift; sourceTree = "<group>"; };
@@ -83,6 +97,7 @@
 				85987D2B282FAA2A00B03735 /* sessionbrokerTests */,
 				85987D1A282FAA2800B03735 /* Products */,
 				85E99EBC283287A000743D34 /* Frameworks */,
+				F4EBDBC8660E7875C7B2F885 /* LaunchDaemons */,
 			);
 			sourceTree = "<group>";
 		};
@@ -137,6 +152,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F4EBDBC8660E7875C7B2F885 /* LaunchDaemons */ = {
+			isa = PBXGroup;
+			children = (
+				F4EBD0F0C7F9AE77EFAD7CA6 /* pl.unstabler.ulalaca.sessionbroker.plist */,
+			);
+			path = LaunchDaemons;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -163,8 +186,9 @@
 			buildPhases = (
 				85E99E77283285FA00743D34 /* Sources */,
 				85E99E78283285FA00743D34 /* Frameworks */,
-				85E99E79283285FA00743D34 /* CopyFiles */,
 				85721160283B7DC000C36D5F /* Embed Frameworks */,
+				8532B088283E26F8001B5D90 /* CopyFiles */,
+				85E99E79283285FA00743D34 /* CopyFiles */,
 			);
 			buildRules = (
 			);
