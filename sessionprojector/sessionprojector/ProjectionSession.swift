@@ -52,6 +52,9 @@ class ProjectionSession {
             case TYPE_EVENT_MOUSE_BUTTON:
                 eventInjector?.post(mouseButtonEvent: try socket.readCStruct(ULIPCMouseButtonEvent.self))
                 break
+            case TYPE_EVENT_MOUSE_WHEEL:
+                eventInjector?.post(mouseWheelEvent: try socket.readCStruct(ULIPCMouseWheelEvent.self))
+                break
 
             default:
                 let buffer = UnsafeMutableRawPointer.allocate(byteCount: Int(header.length), alignment: 0)

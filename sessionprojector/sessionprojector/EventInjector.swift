@@ -141,6 +141,25 @@ class EventInjector {
         cgEvent.sanitizeModifierFlags(with: keyDownState)
         cgEvent.post(tap: .cgSessionEventTap)
     }
+
+    func post(mouseWheelEvent event: ULIPCMouseWheelEvent) {
+        var mouseType: CGEventType = .null
+
+        guard let cgEvent = CGEvent(
+                scrollWheelEvent2Source: eventSource,
+                units: .pixel,
+                wheelCount: 1,
+                wheel1: -event.deltaY,
+                wheel2: event.deltaX,
+                wheel3: 0
+        )
+        else {
+            return
+        }
+
+        cgEvent.sanitizeModifierFlags(with: keyDownState)
+        cgEvent.post(tap: .cgSessionEventTap)
+    }
 }
 
 fileprivate extension CGEvent {
