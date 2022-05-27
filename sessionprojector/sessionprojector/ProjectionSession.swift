@@ -39,41 +39,39 @@ class ProjectionSession {
     }
 
     private func sessionLoop() async throws {
-        var buffer = UnsafeMutableRawPointer.allocate(byteCount: 256, alignment: 0)
         while (true) {
-            try socket.readEx(buffer, size: 34)
+            let header = try socket.readCStruct(ULIPCHeader.self)
 
-            let header = MessageHeader.from(buffer)
-            try socket.readEx(buffer, size: Int(header.length))
+            switch (header.messageType) {
+            case TYPE_EVENT_KEYBOARD:
+                eventInjector?.post(keyEvent: try socket.readCStruct(ULIPCKeyboardEvent.self))
+                break
+            case TYPE_EVENT_MOUSE_MOVE:
+                eventInjector?.post(mouseMoveEvent: try socket.readCStruct(ULIPCMouseMoveEvent.self))
+                break
+            case TYPE_EVENT_MOUSE_BUTTON:
+                eventInjector?.post(mouseButtonEvent: try socket.readCStruct(ULIPCMouseButtonEvent.self))
+                break
 
-            if (header.messageType == KeyboardEvent.getType()) {
-                let event = KeyboardEvent(from: buffer)
-
-                eventInjector?.post(keyEvent: event)
-            } else if (header.messageType == MouseMoveEvent.getType()) {
-                let event = MouseMoveEvent(from: buffer)
-
-                eventInjector?.post(mouseMoveEvent: event)
-            } else if (header.messageType == MouseButtonEvent.getType()) {
-                let event = MouseButtonEvent(from: buffer)
-                // print("sending mouseButton \(event.button) \(event.type)")
-
-                eventInjector?.post(mouseButtonEvent: event)
+            default:
+                let buffer = UnsafeMutableRawPointer.allocate(byteCount: Int(header.length), alignment: 0)
+                try socket.readEx(buffer, size: Int(header.length))
             }
         }
     }
     
-    private func writeMessage<T>(_ message: T) where T: OutgoingMessage {
-        let body = message.asData()
-        let header = MessageHeader(
-            messageType: T.getType(),
+    private func writeMessage<T>(_ message: T, type: UInt16) {
+        let messageLength = MemoryLayout.size(ofValue: message)
+        let header = ULIPCHeader(
+            messageType: type,
             id: messageId,
+            replyTo: UInt64(0),
             timestamp: UInt64(Date.now.timeIntervalSince1970),
-            length: UInt64(body.count)
-        ).asData()
-        
-        socket.write(header)
-        socket.write(body)
+            length: UInt64(messageLength)
+        )
+
+        socket.write(withUnsafePointer(to: header) { $0 }, size: MemoryLayout.size(ofValue: header))
+        socket.write(withUnsafePointer(to: message) { $0 }, size: messageLength)
         
         messageId += 1
     }
@@ -87,10 +85,18 @@ extension ProjectionSession: ScreenUpdateSubscriber {
 
     func screenUpdated(where rect: CGRect) {
         self.serialQueue.sync {
-            self.writeMessage(ScreenUpdateEvent(
-                type: .partial,
-                rect: rect
-            ))
+            self.writeMessage(
+                ULIPCScreenUpdateNotify(
+                    type: SCREEN_UPDATE_NOTIFY_TYPE_PARTIAL,
+                    rect: ULIPCRect(
+                            x: Int16(rect.origin.x),
+                            y: Int16(rect.origin.y),
+                            width: Int16(rect.size.width),
+                            height: Int16(rect.size.height)
+                    )
+                ),
+                type: TYPE_SCREEN_UPDATE_NOTIFY
+            )
         }
     }
 
@@ -101,12 +107,17 @@ extension ProjectionSession: ScreenUpdateSubscriber {
             let pointer = CFDataGetBytePtr(rawData)!
             let length = CFDataGetLength(rawData)
 
-            let message = ScreenCommitUpdate(
-                rect: rect,
+            let message = ULIPCScreenUpdateCommit(
+                screenRect: ULIPCRect(
+                        x: Int16(rect.origin.x),
+                        y: Int16(rect.origin.y),
+                        width: Int16(rect.size.width),
+                        height: Int16(rect.size.height)
+                ),
                 bitmapLength: UInt64(length)
             )
         
-            self.writeMessage(message)
+            self.writeMessage(message, type: TYPE_SCREEN_UPDATE_COMMIT)
             self.socket.write(pointer, size: length)
         }
     }

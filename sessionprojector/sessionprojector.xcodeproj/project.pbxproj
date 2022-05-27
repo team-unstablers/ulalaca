@@ -14,7 +14,6 @@
 		F4EBD517D25C43D7397EA0FD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4EBD2D2B450575F0A669D2E /* MainMenu.xib */; };
 		F4EBD76B113987454A7E147B /* ScreenRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDFE9D9C626281B0C28CA /* ScreenRecorder.swift */; };
 		F4EBD956FE871FFA877A4E29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4EBD72F7A1676E55BB21493 /* Assets.xcassets */; };
-		F4EBDAAB9256FE9A06E67E70 /* ProjectionMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD494498F922F07EA68BF /* ProjectionMessage.swift */; };
 		F4EBDB56734BFEB96256AD50 /* pl.unstabler.ulalaca.sessionprojector.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4EBD5938B6F75A2117975F5 /* pl.unstabler.ulalaca.sessionprojector.plist */; };
 		F4EBDBE0AAD914D9EFF51690 /* EventInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD26D71490B77A9B122E0 /* EventInjector.swift */; };
 		F4EBDF22913EDAFF95D17357 /* ProjectionServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDB589E76D41675D27BF0 /* ProjectionServer.swift */; };
@@ -40,7 +39,6 @@
 		8599DA13281D109C00D3BDA8 /* sessionprojector-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = "sessionprojector-Bridging-Header.h"; sourceTree = "<group>"; };
 		F4EBD26D71490B77A9B122E0 /* EventInjector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventInjector.swift; sourceTree = "<group>"; };
 		F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F4EBD494498F922F07EA68BF /* ProjectionMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectionMessage.swift; sourceTree = "<group>"; };
 		F4EBD4FAC6CE68F9E6E2A43E /* sessionprojector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sessionprojector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EBD5938B6F75A2117975F5 /* pl.unstabler.ulalaca.sessionprojector.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = pl.unstabler.ulalaca.sessionprojector.plist; sourceTree = "<group>"; };
 		F4EBD72F7A1676E55BB21493 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -83,7 +81,6 @@
 				F4EBDB589E76D41675D27BF0 /* ProjectionServer.swift */,
 				8599DA13281D109C00D3BDA8 /* sessionprojector-Bridging-Header.h */,
 				F4EBDEADE7680E1D1466830F /* ProjectionSession.swift */,
-				F4EBD494498F922F07EA68BF /* ProjectionMessage.swift */,
 				F4EBD26D71490B77A9B122E0 /* EventInjector.swift */,
 			);
 			path = sessionprojector;
@@ -190,7 +187,6 @@
 				F4EBD76B113987454A7E147B /* ScreenRecorder.swift in Sources */,
 				F4EBDF22913EDAFF95D17357 /* ProjectionServer.swift in Sources */,
 				F4EBD455F06C38A5ABA1EA20 /* ProjectionSession.swift in Sources */,
-				F4EBDAAB9256FE9A06E67E70 /* ProjectionMessage.swift in Sources */,
 				F4EBDBE0AAD914D9EFF51690 /* EventInjector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

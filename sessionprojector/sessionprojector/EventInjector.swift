@@ -56,7 +56,7 @@ class EventInjector {
         self.eventSource = eventSource
     }
 
-    func post(keyEvent event: KeyboardEvent) {
+    func post(keyEvent event: ULIPCKeyboardEvent) {
         let isNOOP = event.type == 0
         let isKeyDown = event.type == 2
 
@@ -82,7 +82,7 @@ class EventInjector {
         cgEvent.post(tap: .cgSessionEventTap)
     }
 
-    func post(mouseMoveEvent event: MouseMoveEvent) {
+    func post(mouseMoveEvent event: ULIPCMouseMoveEvent) {
         var mouseType: CGEventType = .mouseMoved
         var mouseButton: CGMouseButton = .center
         let position = CGPoint(x: Int(event.x), y: Int(event.y))
@@ -108,7 +108,7 @@ class EventInjector {
         lastMousePosition = position
     }
 
-    func post(mouseButtonEvent event: MouseButtonEvent) {
+    func post(mouseButtonEvent event: ULIPCMouseButtonEvent) {
         var mouseType: CGEventType = .null
 
         switch (event.button) {
