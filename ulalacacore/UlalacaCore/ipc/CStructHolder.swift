@@ -20,18 +20,18 @@ class CStructHolder<T> {
         buffer.deallocate()
     }
 
-    func getCopy() -> T? {
+    func getCopy() -> T {
         return buffer.load(as: T.self)
     }
 }
 
 public extension MMUnixSocketBase {
-    func readCStruct<T>(_: T.Type) throws -> T? {
+    func readCStruct<T>(_: T.Type) throws -> T {
         var holder = CStructHolder<T>()
         let bytesRead = try readEx(holder.buffer, size: holder.size)
 
         if (bytesRead != holder.size) {
-            return nil
+            throw MMUnixSocketError.unknown
         }
 
         return holder.getCopy()
