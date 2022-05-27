@@ -30,6 +30,9 @@ class EventInjector {
 
     private(set) public var keyDownState = Set<Int>()
 
+    private(set) public var mouseClickedButton: Int64 = 0
+    private(set) public var mouseClickedAt: Double = 0
+
     private(set) public var mouseDownState: UInt16 = 0
     private(set) public var lastMousePosition: CGPoint? = nil
 
@@ -48,7 +51,8 @@ class EventInjector {
                 userInfo: nil
         ), let eventSource = CGEventSource(
                 stateID: .combinedSessionState
-        ) else {
+        )
+        else {
             throw EventInjectorError.initializationError
         }
 
@@ -71,10 +75,11 @@ class EventInjector {
         }
 
         guard let cgEvent = CGEvent(
-            keyboardEventSource: eventSource,
-            virtualKey: CGKeyCode(event.keyCode),
-            keyDown: isKeyDown
-        ) else {
+                keyboardEventSource: eventSource,
+                virtualKey: CGKeyCode(event.keyCode),
+                keyDown: isKeyDown
+        )
+        else {
             return
         }
 
@@ -84,7 +89,7 @@ class EventInjector {
 
     func post(mouseMoveEvent event: ULIPCMouseMoveEvent) {
         var mouseType: CGEventType = .mouseMoved
-        var mouseButton: CGMouseButton = .center
+        var mouseButton: CGMouseButton = .left
         let position = CGPoint(x: Int(event.x), y: Int(event.y))
 
         if (mouseDownState & EventInjector.MOUSE_DOWN_STATE_LEFT > 0) {
@@ -94,11 +99,12 @@ class EventInjector {
         }
 
         guard let cgEvent = CGEvent(
-            mouseEventSource: eventSource,
-            mouseType: mouseType,
-            mouseCursorPosition: position,
-            mouseButton: mouseButton
-        ) else {
+                mouseEventSource: eventSource,
+                mouseType: mouseType,
+                mouseCursorPosition: position,
+                mouseButton: mouseButton
+        )
+        else {
             return
         }
 
@@ -115,13 +121,13 @@ class EventInjector {
         case 0:
             let mask = EventInjector.MOUSE_DOWN_STATE_LEFT
 
-            mouseType = (event.type == 1 ? .leftMouseUp: .leftMouseDown)
+            mouseType = (event.type == 1 ? .leftMouseUp : .leftMouseDown)
             mouseDownState |= (event.type == 1 ? ~mask : mask)
             break
         case 1:
             let mask = EventInjector.MOUSE_DOWN_STATE_RIGHT
 
-            mouseType = (event.type == 1 ? .rightMouseUp: .rightMouseDown)
+            mouseType = (event.type == 1 ? .rightMouseUp : .rightMouseDown)
             mouseDownState |= (event.type == 1 ? ~mask : mask)
             break
 
@@ -130,12 +136,23 @@ class EventInjector {
         }
 
         guard let cgEvent = CGEvent(
-            mouseEventSource: eventSource,
-            mouseType: mouseType,
-            mouseCursorPosition: lastMousePosition ?? CGEvent(source: nil)!.location,
-            mouseButton: .center
-        ) else {
+                mouseEventSource: eventSource,
+                mouseType: mouseType,
+                mouseCursorPosition: lastMousePosition ?? CGEvent(source: nil)!.location,
+                mouseButton: .center
+        )
+        else {
             return
+        }
+
+        let now = Date().timeIntervalSince1970
+        if (event.type == 1) {
+            if ((now - mouseClickedAt) < 0.5) {
+                cgEvent.setIntegerValueField(.mouseEventClickState, value: 2)
+            }
+
+            mouseClickedButton = Int64(event.button)
+            mouseClickedAt = now
         }
 
         cgEvent.sanitizeModifierFlags(with: keyDownState)
