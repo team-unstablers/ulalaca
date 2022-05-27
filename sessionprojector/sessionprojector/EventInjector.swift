@@ -183,25 +183,29 @@ fileprivate extension CGEvent {
     func sanitizeModifierFlags(with keyDownState: Set<Int>) {
         // HACK: 이유는 모르겠으나 fn 키가 계속 눌림
         flags.remove(.maskSecondaryFn)
+        flags.remove(.maskShift)
+        flags.remove(.maskAlternate)
+        flags.remove(.maskControl)
+        flags.remove(.maskCommand)
 
-        if (!(keyDownState.contains(kVK_Shift) ||
+        if ((keyDownState.contains(kVK_Shift) ||
               keyDownState.contains(kVK_RightShift))) {
-            flags.remove(.maskShift)
+            flags.insert(.maskShift)
         }
 
-        if (!(keyDownState.contains(kVK_Option) ||
+        if ((keyDownState.contains(kVK_Option) ||
               keyDownState.contains(kVK_RightOption))) {
-            flags.remove(.maskAlternate)
+            flags.insert(.maskAlternate)
         }
 
-        if (!(keyDownState.contains(kVK_Control) ||
+        if ((keyDownState.contains(kVK_Control) ||
               keyDownState.contains(kVK_RightControl))) {
-            flags.remove(.maskControl)
+            flags.insert(.maskControl)
         }
 
-        if (!(keyDownState.contains(kVK_Command) ||
+        if ((keyDownState.contains(kVK_Command) ||
               keyDownState.contains(kVK_RightCommand))) {
-            flags.remove(.maskCommand)
+            flags.insert(.maskCommand)
         }
     }
 }
