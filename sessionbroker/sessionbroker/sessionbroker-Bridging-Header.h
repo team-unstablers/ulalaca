@@ -3,3 +3,5 @@
 //
 
 #import "private_headers/CGSSession.h"
+
+#import "UserAuthenticator.h"

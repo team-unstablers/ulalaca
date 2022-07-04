@@ -11,9 +11,10 @@ import Cocoa
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    let screenRecorder = ScreenRecorder()
+    let screenRecorder = createScreenRecorder()
     let eventInjector = EventInjector()
     let projectionServer = ProjectionServer()
+    let sesmanClient = ProjectorManagerClient()
 
     lazy var trayStatusIndicator = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     lazy var trayMenu: NSMenu = {
@@ -29,11 +30,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
+
         projectionServer.delegate = self
+        sesmanClient.delegate = self
 
-        initializeTrayItem()
-        updateTrayStatusIndicator()
-
+        if (getuid() != 0) {
+            // FIXME!!
+            initializeTrayItem()
+            updateTrayStatusIndicator()
+        }
         startProjectionServer()
     }
 
@@ -54,6 +59,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 try await screenRecorder.prepare()
                 try await screenRecorder.start()
 
+                sesmanClient.start()
                 projectionServer.start()
             } catch {
                 print(error.localizedDescription)
@@ -73,6 +79,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc
     func quitApplication() {
+        sesmanClient.announceSelf(
+                ANNOUNCEMENT_TYPE_SESSION_WILL_BE_DESTROYED,
+                endpoint: projectionServer.getSocketPath(),
+                isConsoleSession: true
+        )
         destroyProjectionServer()
 
         NSApp.terminate(self)
@@ -101,5 +112,21 @@ extension AppDelegate: ProjectionServerDelegate {
         session.eventInjector = nil
 
         updateTrayStatusIndicator()
+    }
+}
+
+extension AppDelegate: IPCClientDelegate {
+    func connected() {
+        sesmanClient.announceSelf(
+                ANNOUNCEMENT_TYPE_SESSION_CREATED,
+                endpoint: projectionServer.getSocketPath(),
+                isConsoleSession: true
+        )
+    }
+
+    func received(header: ULIPCHeader) {
+    }
+
+    func disconnected() {
     }
 }

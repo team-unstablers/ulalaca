@@ -10,10 +10,13 @@
 		8532B089283E2709001B5D90 /* pl.unstabler.ulalaca.sessionbroker.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4EBD0F0C7F9AE77EFAD7CA6 /* pl.unstabler.ulalaca.sessionbroker.plist */; };
 		8572115E283B7DC000C36D5F /* UlalacaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8572115D283B7DC000C36D5F /* UlalacaCore.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		8572115F283B7DC000C36D5F /* UlalacaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8572115D283B7DC000C36D5F /* UlalacaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8587D994286A42250007E4CB /* libpam.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8587D993286A421F0007E4CB /* libpam.tbd */; };
 		85987D2D282FAA2A00B03735 /* sessionbrokerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85987D2C282FAA2A00B03735 /* sessionbrokerTests.swift */; };
-		85E99E832832862200743D34 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85987D45282FAAD600B03735 /* SessionManager.swift */; };
-		85E99E842832862500743D34 /* UserAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDC1642C597087D2A20A6 /* UserAuthenticator.swift */; };
+		85E99E832832862200743D34 /* ProjectorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85987D45282FAAD600B03735 /* ProjectorManager.swift */; };
+		F4EBD42B288BDAB7434756AE /* UserAuthenticator.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD66FCF2FBD8E88C4F9DC /* UserAuthenticator.mm */; };
+		F4EBD500F7625A87955DC258 /* SessionManagerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD90F0E550D5C4DD97D41 /* SessionManagerServer.swift */; };
 		F4EBD6F992BEB752C8284EA8 /* SessionBrokerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */; };
+		F4EBD7534607A4BA8BD2D5F5 /* IPCServerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDABC889BB5D88135C62B /* IPCServerBase.swift */; };
 		F4EBDE3592B1F8DDA691F765 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDD5B8380C7D75FAE8EA3 /* main.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,11 +46,12 @@
 
 /* Begin PBXFileReference section */
 		8572115D283B7DC000C36D5F /* UlalacaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UlalacaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8587D993286A421F0007E4CB /* libpam.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libpam.tbd; path = usr/lib/libpam.tbd; sourceTree = SDKROOT; };
 		85987D1E282FAA2A00B03735 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		85987D23282FAA2A00B03735 /* sessionbroker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = sessionbroker.entitlements; sourceTree = "<group>"; };
 		85987D28282FAA2A00B03735 /* sessionbrokerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sessionbrokerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		85987D2C282FAA2A00B03735 /* sessionbrokerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sessionbrokerTests.swift; sourceTree = "<group>"; };
-		85987D45282FAAD600B03735 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		85987D45282FAAD600B03735 /* ProjectorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectorManager.swift; sourceTree = "<group>"; };
 		85987D48282FAC4E00B03735 /* sessionbroker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "sessionbroker-Bridging-Header.h"; sourceTree = "<group>"; };
 		85987D49282FAC4E00B03735 /* Dummy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dummy.h; sourceTree = "<group>"; };
 		85987D4A282FAC4E00B03735 /* Dummy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Dummy.m; sourceTree = "<group>"; };
@@ -55,8 +59,11 @@
 		85E99E7B283285FA00743D34 /* sessionbroker */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sessionbroker; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EBD0F0C7F9AE77EFAD7CA6 /* pl.unstabler.ulalaca.sessionbroker.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = pl.unstabler.ulalaca.sessionbroker.plist; sourceTree = "<group>"; };
 		F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionBrokerServer.swift; sourceTree = "<group>"; };
+		F4EBD66FCF2FBD8E88C4F9DC /* UserAuthenticator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UserAuthenticator.mm; sourceTree = "<group>"; };
+		F4EBD6F4CA2293D3C8CDEC7E /* UserAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAuthenticator.h; sourceTree = "<group>"; };
 		F4EBD7A7483F435056F0F836 /* CGSSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSSession.h; sourceTree = "<group>"; };
-		F4EBDC1642C597087D2A20A6 /* UserAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAuthenticator.swift; sourceTree = "<group>"; };
+		F4EBD90F0E550D5C4DD97D41 /* SessionManagerServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManagerServer.swift; sourceTree = "<group>"; };
+		F4EBDABC889BB5D88135C62B /* IPCServerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IPCServerBase.swift; sourceTree = "<group>"; };
 		F4EBDD5B8380C7D75FAE8EA3 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,6 +80,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8572115E283B7DC000C36D5F /* UlalacaCore.framework in Frameworks */,
+				8587D994286A42250007E4CB /* libpam.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,10 +114,13 @@
 				85987D47282FAC2700B03735 /* private_headers */,
 				85987D1E282FAA2A00B03735 /* Assets.xcassets */,
 				85987D23282FAA2A00B03735 /* sessionbroker.entitlements */,
-				85987D45282FAAD600B03735 /* SessionManager.swift */,
-				F4EBDC1642C597087D2A20A6 /* UserAuthenticator.swift */,
+				85987D45282FAAD600B03735 /* ProjectorManager.swift */,
 				F4EBDD5B8380C7D75FAE8EA3 /* main.swift */,
 				F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */,
+				F4EBD66FCF2FBD8E88C4F9DC /* UserAuthenticator.mm */,
+				F4EBD6F4CA2293D3C8CDEC7E /* UserAuthenticator.h */,
+				F4EBDABC889BB5D88135C62B /* IPCServerBase.swift */,
+				F4EBD90F0E550D5C4DD97D41 /* SessionManagerServer.swift */,
 			);
 			path = sessionbroker;
 			sourceTree = "<group>";
@@ -135,6 +146,7 @@
 		85E99EBC283287A000743D34 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8587D993286A421F0007E4CB /* libpam.tbd */,
 				8572115D283B7DC000C36D5F /* UlalacaCore.framework */,
 				85D4F9BB28352AC800BF3AEB /* socketlib.framework */,
 			);
@@ -248,10 +260,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85E99E842832862500743D34 /* UserAuthenticator.swift in Sources */,
-				85E99E832832862200743D34 /* SessionManager.swift in Sources */,
+				85E99E832832862200743D34 /* ProjectorManager.swift in Sources */,
 				F4EBDE3592B1F8DDA691F765 /* main.swift in Sources */,
 				F4EBD6F992BEB752C8284EA8 /* SessionBrokerServer.swift in Sources */,
+				F4EBD42B288BDAB7434756AE /* UserAuthenticator.mm in Sources */,
+				F4EBD7534607A4BA8BD2D5F5 /* IPCServerBase.swift in Sources */,
+				F4EBD500F7625A87955DC258 /* SessionManagerServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

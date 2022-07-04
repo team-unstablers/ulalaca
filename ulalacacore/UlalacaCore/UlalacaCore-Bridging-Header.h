@@ -12,5 +12,6 @@
 
 #import "ipc/messages/projector.h"
 #import "ipc/messages/broker.h"
+#import "ipc/messages/private.h"
 
 #endif /* UlalacaCore_Bridging_Header_h */

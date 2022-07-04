@@ -9,116 +9,87 @@ import CoreGraphics
 
 import UlalacaCore
 
-class SessionBrokerServer {
-    private lazy var serverSocket: MMUnixSocket = MMUnixSocket(getSocketPath())
-
+class SessionBrokerServer: IPCServerBase {
+    private let logger = createLogger("SessionBrokerServer")
     private let userAuthenticator = UserAuthenticator()
-    private let sessionManager = SessionManager()
-
 
     init() {
-        signal(SIGPIPE, SIG_IGN)
+        super.init("/var/run/ulalaca_broker.sock")
+        self.delegate = self
+    }
+}
+
+extension SessionBrokerServer: IPCServerDelegate {
+    func connectionEstablished(with client: IPCServerConnection) {
+
     }
 
-    func getSocketPath() -> String {
-        return "/var/run/ulalaca_broker.sock"
-    }
-
-    func start() {
-        serverSocket.bind()
-        serverSocket.listen()
-
-        while (true) {
-            guard let clientSocket = serverSocket.accept() else {
-                continue
-            }
-
-            Task {
-                await clientLoop(clientSocket)
-            }
-        }
-    }
-
-    func clientLoop(_ clientSocket: MMUnixSocketConnection) async {
-        var messageId: UInt64 = 0
-
-        func getMessageId() -> UInt64 {
-            messageId += 1;
-
-            return messageId
-        }
-
-        while (true) {
-            guard let header = try? clientSocket.readCStruct(ULIPCHeader.self) else {
+    func received(header: ULIPCHeader, from client: IPCServerConnection) {
+        switch (header.messageType) {
+        case TYPE_SESSION_REQUEST:
+            guard let request = try? client.read(ULIPCSessionRequest.self) else {
                 break
             }
+            handleSessionRequest(request, header: header, from: client)
+            return
 
-            if (header.messageType == TYPE_SESSION_REQUEST) {
-                guard let message = try? clientSocket.readCStruct(ULIPCSessionRequest.self) else {
-                    break
-                }
-                let username = withUnsafePointer(to: message.username) { String(fromUnsafeCStr: $0, length: 64) }
-                let authenticated = userAuthenticator.authenticate(
-                        username,
-                        with: withUnsafePointer(to: message.password) { String(fromUnsafeCStr: $0, length: 256) }
-                )
-
-                if (!authenticated) {
-                    break
-                }
-
-                guard let sessionPath = try? sessionManager.getProjectionSessionPath(forUser: username) else {
-                    break
-                }
-                let cSessionPath = sessionPath.cString(using: String.Encoding.utf8)!
-
-                var response = ULIPCSessionRequestResolved()
-                response.sessionId = UInt64(0)
-                response.isLoginSession = 0
-
-                // :'(
-                withUnsafeMutablePointer(to: &response.path) { dstPtr in
-                    var dst = dstPtr.withMemoryRebound(to: CChar.self, capacity: 1024, { $0 })
-                    cSessionPath.withUnsafeBufferPointer { srcPtr in
-                        strncpy(dst, srcPtr.baseAddress, 1024)
-                    }
-                }
-
-                clientSocket.writeMessage(
-                        response,
-                        type: TYPE_SESSION_REQUEST_RESOLVED,
-                        id: getMessageId()
-                )
-                clientSocket.close()
-            }
+        default:
+            break
         }
 
-        clientSocket.writeMessage(
+        client.close()
+    }
+
+    func connectionClosed(with client: IPCServerConnection) {
+
+    }
+
+    func handleSessionRequest(_ request: ULIPCSessionRequest, header: ULIPCHeader, from client: IPCServerConnection) {
+        let reject = {
+            client.writeMessage(
                 ULIPCSessionRequestRejected(reason: REJECT_REASON_AUTHENTICATION_FAILED),
                 type: TYPE_SESSION_REQUEST_REJECTED,
-                id: getMessageId()
+                replyTo: header.id
+            )
+            client.close()
+        }
+
+        let username = withUnsafePointer(to: request.username) {
+            String(fromUnsafeCStr: $0, length: 64)
+        }
+        let password = withUnsafePointer(to: request.password) {
+            String(fromUnsafeCStr: $0, length: 256)
+        }
+
+        let authenticated = UserAuthenticator.authenticateUser(username, withPassword: password)
+        if (!authenticated) {
+            reject()
+            return
+        }
+
+        guard let projectorInstance = ProjectorManager.instance.instances.first(where: {
+            $0.username == username
+        }) ?? ProjectorManager.instance.instances.first(where: {
+            $0.isLoginSession
+        }) else {
+            reject()
+            return
+        }
+
+        var response = ULIPCSessionRequestResolved()
+        response.sessionId = UInt64(0)
+        response.isLoginSession = 0
+
+        projectorInstance.endpoint.toUnsafeCStrArray(
+                withUnsafeMutablePointer(to: &response.path) { $0 },
+                capacity: 1024
         )
-        clientSocket.close()
+
+        client.writeMessage(
+                response,
+                type: TYPE_SESSION_REQUEST_RESOLVED
+        )
+        client.close()
     }
 }
 
-fileprivate extension MMUnixSocketConnection {
-    func writeMessage<T>(_ message: T, type: UInt16, id: UInt64 = 0) {
-        let messageLength = MemoryLayout.size(ofValue: message)
-        let header = ULIPCHeader(
-                messageType: type,
-                id: id, // FIXME
-                replyTo: UInt64(0), // FIXME
-
-                timestamp: UInt64(Date.now.timeIntervalSince1970 * 1000),
-
-                length: UInt64(messageLength)
-        )
-
-        let headerPtr = withUnsafePointer(to: header) { $0 }
-        let messagePtr = withUnsafePointer(to: message) { $0 }
-
-        self.write(headerPtr, size: MemoryLayout.size(ofValue: header))
-        self.write(messagePtr, size: messageLength)
-    }
-}
