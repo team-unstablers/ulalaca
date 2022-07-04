@@ -13,12 +13,14 @@
 		F4EBD01D7EB7CE3A807FD1AB /* _global.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EBD87A8E70009D1C5F17A5 /* _global.h */; };
 		F4EBD0D0C5B0FEA2E844B0A2 /* OSLog.ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD42B3752503002F716DB /* OSLog.ext.swift */; };
 		F4EBD1AA5C6430F1C30FDB7E /* projector.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EBD508BC31F9314D114A6B /* projector.h */; };
+		F4EBD1ACD5D1B2E4337F6E37 /* String+toUnsafeCStrArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD42892A7AD474BAD943E /* String+toUnsafeCStrArray.swift */; };
 		F4EBD20684E43BCD5D804753 /* SystemCallException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD7EA8F92C81575954E6D /* SystemCallException.cpp */; };
 		F4EBD2A11CB7081E95543A63 /* MMUnixSocketError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD5C5DD6611D78189C4E5 /* MMUnixSocketError.swift */; };
 		F4EBD3B75035CB7E8EBF9CD0 /* MMUnixSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EBD642E6067598A36F6D12 /* MMUnixSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4EBD3DE6ACDB7E8B79CA79D /* UnixSocket.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F4EBD68AD28D0C1CC94FFA3C /* UnixSocket.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4EBD50556ECCE5710A9C068 /* broker.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EBD4020971C61F3008D0F6 /* broker.h */; };
 		F4EBD702B1C32CF0E90779E7 /* UnixSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD8C4CF9372F06173B485 /* UnixSocket.cpp */; };
+		F4EBDA7C14AAFDD0E76001B1 /* private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EBD5446FDF5FED32F54779 /* private.h */; };
 		F4EBDB58D0176952C7737094 /* SystemCallException.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F4EBDC0A818ACFB70135D98C /* SystemCallException.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4EBDCF38EA52D75663892AF /* CStructHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDD5119DB84ADD85D533B /* CStructHolder.swift */; };
 		F4EBDEB94152EB9DF3946358 /* String+fromUnsafeCStr.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD013FA202C660C850066 /* String+fromUnsafeCStr.swift */; };
@@ -44,8 +46,10 @@
 		F4EBD013FA202C660C850066 /* String+fromUnsafeCStr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+fromUnsafeCStr.swift"; sourceTree = "<group>"; };
 		F4EBD12BA7074383BE25858E /* MMUnixSocket.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MMUnixSocket.mm; sourceTree = "<group>"; };
 		F4EBD4020971C61F3008D0F6 /* broker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = broker.h; sourceTree = "<group>"; };
+		F4EBD42892A7AD474BAD943E /* String+toUnsafeCStrArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+toUnsafeCStrArray.swift"; sourceTree = "<group>"; };
 		F4EBD42B3752503002F716DB /* OSLog.ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSLog.ext.swift; sourceTree = "<group>"; };
 		F4EBD508BC31F9314D114A6B /* projector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = projector.h; sourceTree = "<group>"; };
+		F4EBD5446FDF5FED32F54779 /* private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = private.h; sourceTree = "<group>"; };
 		F4EBD5C5DD6611D78189C4E5 /* MMUnixSocketError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MMUnixSocketError.swift; sourceTree = "<group>"; };
 		F4EBD642E6067598A36F6D12 /* MMUnixSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMUnixSocket.h; sourceTree = "<group>"; };
 		F4EBD68AD28D0C1CC94FFA3C /* UnixSocket.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UnixSocket.hpp; sourceTree = "<group>"; };
@@ -118,6 +122,7 @@
 				F4EBD4020971C61F3008D0F6 /* broker.h */,
 				F4EBD87A8E70009D1C5F17A5 /* _global.h */,
 				F4EBD508BC31F9314D114A6B /* projector.h */,
+				F4EBD5446FDF5FED32F54779 /* private.h */,
 			);
 			path = messages;
 			sourceTree = "<group>";
@@ -127,6 +132,7 @@
 			children = (
 				F4EBD42B3752503002F716DB /* OSLog.ext.swift */,
 				F4EBD013FA202C660C850066 /* String+fromUnsafeCStr.swift */,
+				F4EBD42892A7AD474BAD943E /* String+toUnsafeCStrArray.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -162,6 +168,7 @@
 				F4EBD50556ECCE5710A9C068 /* broker.h in Headers */,
 				F4EBD01D7EB7CE3A807FD1AB /* _global.h in Headers */,
 				F4EBD1AA5C6430F1C30FDB7E /* projector.h in Headers */,
+				F4EBDA7C14AAFDD0E76001B1 /* private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +279,7 @@
 				F4EBD0D0C5B0FEA2E844B0A2 /* OSLog.ext.swift in Sources */,
 				F4EBDCF38EA52D75663892AF /* CStructHolder.swift in Sources */,
 				F4EBDEB94152EB9DF3946358 /* String+fromUnsafeCStr.swift in Sources */,
+				F4EBD1ACD5D1B2E4337F6E37 /* String+toUnsafeCStrArray.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

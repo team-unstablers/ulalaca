@@ -7,7 +7,7 @@ import os
 import Foundation
 
 public func createLogger(_ tag: String) -> OSLog {
-    return OSLog(subsystem: Bundle.main.bundleIdentifier!, category: tag)
+    return OSLog(subsystem: "Ulalaca", category: tag)
 }
 
 public extension OSLog {

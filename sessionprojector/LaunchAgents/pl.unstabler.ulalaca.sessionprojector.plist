@@ -10,7 +10,12 @@
 	<true />
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Applications/sessionprojector.app/Contents/MacOS/sessionprojector</string>
+		<string>/Library/PrivilegedHelperTools/sessionprojector.app/Contents/MacOS/sessionprojector</string>
+	</array>
+	<key>LimitLoadToSessionType</key>
+	<array>
+		<string>Aqua</string>
+		<string>LoginWindow</string>
 	</array>
 </dict>
 </plist>
