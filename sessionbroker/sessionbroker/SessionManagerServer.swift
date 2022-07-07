@@ -53,7 +53,7 @@ extension SessionManagerServer: IPCServerDelegate {
 
         switch (announcement.type) {
         case ANNOUNCEMENT_TYPE_SESSION_CREATED:
-            print("received announcement from pid \(announcement.pid); user \(username): SESSION_CREATED")
+            logger.info("received announcement from pid \(announcement.pid); user \(username): SESSION_CREATED")
             sessionManager.append(session: ProjectorSession(
                 pid: UInt64(announcement.pid),
                 username: username,
@@ -64,7 +64,7 @@ extension SessionManagerServer: IPCServerDelegate {
             break
 
         case ANNOUNCEMENT_TYPE_SESSION_WILL_BE_DESTROYED:
-            print("received announcement from pid \(announcement.pid): SESSION_WILL_BE_DESTROYED")
+            logger.info("received announcement from pid \(announcement.pid): SESSION_WILL_BE_DESTROYED")
             sessionManager.remove(where: UInt64(announcement.pid))
             break
 

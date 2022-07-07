@@ -43,6 +43,7 @@ extension SessionBrokerServer: IPCServerDelegate {
     func received(header: ULIPCHeader, from client: IPCServerConnection) {
         switch (header.messageType) {
         case TYPE_SESSION_REQUEST:
+            logger.debug("received SESSION_REQUEST")
             guard let request = try? client.read(ULIPCSessionRequest.self) else {
                 break
             }
@@ -57,7 +58,6 @@ extension SessionBrokerServer: IPCServerDelegate {
     }
 
     func connectionClosed(with client: IPCServerConnection) {
-
     }
 
     func handleSessionRequest(_ request: ULIPCSessionRequest, header: ULIPCHeader, from client: IPCServerConnection) {
@@ -77,11 +77,14 @@ extension SessionBrokerServer: IPCServerDelegate {
             String(fromUnsafeCStr: $0, length: 256)
         }
 
+        logger.info("[\(username)]: authentication request from user")
         let authenticated = UserAuthenticator.authenticateUser(username, withPassword: password)
         if (!authenticated) {
+            logger.info("[\(username)]: authentication failed")
             reject(REJECT_REASON_AUTHENTICATION_FAILED)
             return
         }
+        logger.info("[\(username)]: authenticated")
 
 
         guard let session = ProjectorManager.instance.sessions.first(where: {
@@ -89,6 +92,7 @@ extension SessionBrokerServer: IPCServerDelegate {
         }) ?? ProjectorManager.instance.sessions.first(where: {
             $0.isLoginSession
         }) else {
+            logger.info("[\(username)]: there is no available session")
             reject(REJECT_REASON_SESSION_NOT_AVAILABLE)
             return
         }
