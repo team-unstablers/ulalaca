@@ -7,9 +7,20 @@
 
 import Foundation
 
+import UlalacaCore
+
 func main() {
-    let server = SessionBrokerServer()
-    server.start()
+    let logger = createLogger("sessionbroker-main")
+    let sesman = SessionManagerServer()
+    let broker = SessionBrokerServer()
+
+    DispatchQueue.global().async {
+        logger.info("Starting server: sesman")
+        sesman.start()
+    }
+
+    logger.info("Starting server: broker")
+    broker.start()
 }
 
 main()

@@ -17,5 +17,4 @@
 	<key>StandardErrorPath</key>
 	<string>/var/log/sessionbroker.stderr.log</string>
 </dict>
-</dict>
 </plist>

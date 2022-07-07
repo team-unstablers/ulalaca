@@ -26,7 +26,6 @@ class EventInjector {
     public let serialQueue = DispatchQueue(label: "EventInjector", qos: .userInteractive)
 
     private var eventSource: CGEventSource!
-    private var eventTap: CFMachPort!
 
     private(set) public var keyDownState = Set<Int>()
 
@@ -40,23 +39,24 @@ class EventInjector {
     }
 
     func prepare() throws {
-        guard let eventTap = CGEvent.tapCreate(
+        guard
+                /* let eventTap = CGEvent.tapCreate(
                 tap: .cgSessionEventTap,
                 place: .headInsertEventTap,
                 options: .defaultTap,
-                eventsOfInterest: UInt64(CGEventType.keyDown.rawValue),
+                eventsOfInterest: UInt64(CGEventType.null.rawValue),
                 callback: { (proxy, type, event, refcon) in
                     return Unmanaged.passUnretained(event)
                 },
                 userInfo: nil
-        ), let eventSource = CGEventSource(
+        ), */ let eventSource = CGEventSource(
                 stateID: .combinedSessionState
         )
         else {
             throw EventInjectorError.initializationError
         }
 
-        self.eventTap = eventTap
+        // self.eventTap = eventTap
         self.eventSource = eventSource
     }
 
