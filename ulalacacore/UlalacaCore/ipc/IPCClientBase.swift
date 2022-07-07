@@ -61,6 +61,7 @@ open class IPCClientBase {
 
     public func start() {
         Task {
+            sleep(5) // FIXME: wait until server starts
             socket.connect()
             delegate?.connected()
             await clientLoop()
