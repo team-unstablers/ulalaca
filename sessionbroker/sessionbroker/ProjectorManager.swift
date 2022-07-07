@@ -9,7 +9,7 @@ import Foundation
 import CoreFoundation
 import CoreGraphics
 
-struct ProjectorInstance: Hashable {
+struct ProjectorSession: Hashable {
     var pid: UInt64
     var username: String
     var endpoint: String
@@ -17,7 +17,7 @@ struct ProjectorInstance: Hashable {
     var isConsoleSession: Bool
     var isLoginSession: Bool
 
-    static func ==(lhs: ProjectorInstance, rhs: ProjectorInstance) -> Bool {
+    static func ==(lhs: ProjectorSession, rhs: ProjectorSession) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
 
@@ -32,18 +32,18 @@ struct ProjectorInstance: Hashable {
 
 class ProjectorManager {
     public static let instance = ProjectorManager()
-    private(set) public var instances: Array<ProjectorInstance> = [];
+    private(set) public var sessions: Array<ProjectorSession> = [];
 
     private init() {
     }
 
-    func append(session: ProjectorInstance) {
+    func append(session: ProjectorSession) {
         self.remove(where: session.pid)
-        instances.append(session)
+        sessions.append(session)
     }
 
     func remove(where pid: UInt64) {
-        instances.removeAll { session in session.pid == pid }
+        sessions.removeAll { session in session.pid == pid }
     }
 
 }

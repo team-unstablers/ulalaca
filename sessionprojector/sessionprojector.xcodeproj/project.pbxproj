@@ -10,7 +10,7 @@
 		85721156283B607000C36D5F /* UlalacaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85721155283B607000C36D5F /* UlalacaCore.framework */; };
 		85721157283B607000C36D5F /* UlalacaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 85721155283B607000C36D5F /* UlalacaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4EBD136805519C3F8D8314A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */; };
-		F4EBD35869E7EEC01C4CE48D /* ProjectorManagerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDFDEDFC5A96EE4B3F91C /* ProjectorManagerClient.swift */; };
+		F4EBD35869E7EEC01C4CE48D /* SessionManagerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDFDEDFC5A96EE4B3F91C /* SessionManagerClient.swift */; };
 		F4EBD455F06C38A5ABA1EA20 /* ProjectionSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDEADE7680E1D1466830F /* ProjectionSession.swift */; };
 		F4EBD517D25C43D7397EA0FD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4EBD2D2B450575F0A669D2E /* MainMenu.xib */; };
 		F4EBD732593CF09DECD7B40A /* AVFScreenRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD55AD46E2D55483DA879 /* AVFScreenRecorder.swift */; };
@@ -51,7 +51,7 @@
 		F4EBDB6CE8B3BF020BD4FE81 /* sessionprojector.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = sessionprojector.entitlements; sourceTree = "<group>"; };
 		F4EBDEADE7680E1D1466830F /* ProjectionSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectionSession.swift; sourceTree = "<group>"; };
 		F4EBDEC6CB9E4322333D6C24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		F4EBDFDEDFC5A96EE4B3F91C /* ProjectorManagerClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectorManagerClient.swift; sourceTree = "<group>"; };
+		F4EBDFDEDFC5A96EE4B3F91C /* SessionManagerClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManagerClient.swift; sourceTree = "<group>"; };
 		F4EBDFE9D9C626281B0C28CA /* ScreenRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenRecorder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -88,7 +88,7 @@
 				8599DA13281D109C00D3BDA8 /* sessionprojector-Bridging-Header.h */,
 				F4EBDEADE7680E1D1466830F /* ProjectionSession.swift */,
 				F4EBD26D71490B77A9B122E0 /* EventInjector.swift */,
-				F4EBDFDEDFC5A96EE4B3F91C /* ProjectorManagerClient.swift */,
+				F4EBDFDEDFC5A96EE4B3F91C /* SessionManagerClient.swift */,
 				F4EBD0BFDAED6400792ABDFA /* SCScreenRecorder.swift */,
 				F4EBD55AD46E2D55483DA879 /* AVFScreenRecorder.swift */,
 			);
@@ -197,7 +197,7 @@
 				F4EBDF22913EDAFF95D17357 /* ProjectionServer.swift in Sources */,
 				F4EBD455F06C38A5ABA1EA20 /* ProjectionSession.swift in Sources */,
 				F4EBDBE0AAD914D9EFF51690 /* EventInjector.swift in Sources */,
-				F4EBD35869E7EEC01C4CE48D /* ProjectorManagerClient.swift in Sources */,
+				F4EBD35869E7EEC01C4CE48D /* SessionManagerClient.swift in Sources */,
 				F4EBDCD57BF1530790AC739E /* SCScreenRecorder.swift in Sources */,
 				F4EBD732593CF09DECD7B40A /* AVFScreenRecorder.swift in Sources */,
 			);

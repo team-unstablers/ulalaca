@@ -16,7 +16,6 @@
 		F4EBD42B288BDAB7434756AE /* UserAuthenticator.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD66FCF2FBD8E88C4F9DC /* UserAuthenticator.mm */; };
 		F4EBD500F7625A87955DC258 /* SessionManagerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD90F0E550D5C4DD97D41 /* SessionManagerServer.swift */; };
 		F4EBD6F992BEB752C8284EA8 /* SessionBrokerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */; };
-		F4EBD7534607A4BA8BD2D5F5 /* IPCServerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDABC889BB5D88135C62B /* IPCServerBase.swift */; };
 		F4EBDE3592B1F8DDA691F765 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDD5B8380C7D75FAE8EA3 /* main.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,7 +62,6 @@
 		F4EBD6F4CA2293D3C8CDEC7E /* UserAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAuthenticator.h; sourceTree = "<group>"; };
 		F4EBD7A7483F435056F0F836 /* CGSSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSSession.h; sourceTree = "<group>"; };
 		F4EBD90F0E550D5C4DD97D41 /* SessionManagerServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManagerServer.swift; sourceTree = "<group>"; };
-		F4EBDABC889BB5D88135C62B /* IPCServerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IPCServerBase.swift; sourceTree = "<group>"; };
 		F4EBDD5B8380C7D75FAE8EA3 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -119,7 +117,6 @@
 				F4EBD5595C621B5EAABC4196 /* SessionBrokerServer.swift */,
 				F4EBD66FCF2FBD8E88C4F9DC /* UserAuthenticator.mm */,
 				F4EBD6F4CA2293D3C8CDEC7E /* UserAuthenticator.h */,
-				F4EBDABC889BB5D88135C62B /* IPCServerBase.swift */,
 				F4EBD90F0E550D5C4DD97D41 /* SessionManagerServer.swift */,
 			);
 			path = sessionbroker;
@@ -264,7 +261,6 @@
 				F4EBDE3592B1F8DDA691F765 /* main.swift in Sources */,
 				F4EBD6F992BEB752C8284EA8 /* SessionBrokerServer.swift in Sources */,
 				F4EBD42B288BDAB7434756AE /* UserAuthenticator.mm in Sources */,
-				F4EBD7534607A4BA8BD2D5F5 /* IPCServerBase.swift in Sources */,
 				F4EBD500F7625A87955DC258 /* SessionManagerServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

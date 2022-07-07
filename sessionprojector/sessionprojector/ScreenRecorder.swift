@@ -8,6 +8,8 @@ import CoreGraphics
 import VideoToolbox
 import ScreenCaptureKit
 
+import UlalacaCore
+
 enum ScreenRecorderError: LocalizedError {
     case unknown
 
@@ -49,8 +51,7 @@ protocol ScreenRecorder: NSObject {
 
 
 func createScreenRecorder() -> ScreenRecorder {
-    if (getuid() == 0) {
-        // root (loginwindow)
+    if (isLoginSession()) {
         return AVFScreenRecorder()
     } else {
         return SCScreenRecorder()

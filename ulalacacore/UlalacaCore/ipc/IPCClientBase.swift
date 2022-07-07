@@ -1,19 +1,16 @@
 //
-// Created by Gyuhwan Park on 2022/06/29.
+// Created by Gyuhwan Park on 2022/07/07.
 //
 
 import Foundation
 
-import UlalacaCore
-
-
-protocol IPCClientDelegate {
+public protocol IPCClientDelegate {
     func connected()
     func received(header: ULIPCHeader)
     func disconnected()
 }
 
-class IPCClientBase {
+open class IPCClientBase {
     public let socketPath: String;
     private lazy var socket: MMUnixSocket = MMUnixSocket(socketPath)
 
@@ -21,17 +18,17 @@ class IPCClientBase {
 
     private(set) public var id: UInt64 = 0
 
-    init(_ socketPath: String) {
+    public init(_ socketPath: String) {
         signal(SIGPIPE, SIG_IGN)
 
         self.socketPath = socketPath;
     }
 
-    func read<T>(_ type: T.Type) throws -> T {
+    public func read<T>(_ type: T.Type) throws -> T {
         return try self.socket.readCStruct(type)
     }
 
-    func writeMessage<T>(_ message: T, type: UInt16, replyTo: UInt64 = 0) {
+    public func writeMessage<T>(_ message: T, type: UInt16, replyTo: UInt64 = 0) {
         let messageLength = MemoryLayout.size(ofValue: message)
         let header = ULIPCHeader(
                 messageType: type,
@@ -62,40 +59,12 @@ class IPCClientBase {
         }
     }
 
-    func start() {
+    public func start() {
         Task {
             socket.connect()
             delegate?.connected()
             await clientLoop()
             socket.close()
         }
-    }
-}
-
-class ProjectorManagerClient: IPCClientBase {
-    init() {
-        super.init("/var/run/ulalaca_sesman.sock")
-    }
-
-    func announceSelf(_ type: UInt8, endpoint: String, isConsoleSession: Bool = false, isLoginSession: Bool = false) {
-        var message = ULIPCPrivateAnnouncement()
-        message.type = type
-        message.pid = getpid()
-
-        NSUserName().toUnsafeCStrArray(
-                withUnsafeMutablePointer(to: &message.username) { $0 },
-                capacity: 64
-        )
-
-        endpoint.toUnsafeCStrArray(
-                withUnsafeMutablePointer(to: &message.endpoint) { $0 },
-                capacity: 1024
-        )
-
-        message.flags =
-                (isConsoleSession ? ANNOUNCEMENT_FLAG_IS_CONSOLE_SESSION : 0) |
-                (isLoginSession   ? ANNOUNCEMENT_FLAG_IS_LOGIN_SESSION : 0)
-
-        writeMessage(message, type: TYPE_ANNOUNCEMENT)
     }
 }

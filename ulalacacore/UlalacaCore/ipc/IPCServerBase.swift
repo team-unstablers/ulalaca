@@ -4,25 +4,25 @@
 
 import Foundation
 
-protocol IPCServerDelegate {
+public protocol IPCServerDelegate {
     func connectionEstablished(with client: IPCServerConnection);
     func received(header: ULIPCHeader, from client: IPCServerConnection);
     func connectionClosed(with client: IPCServerConnection);
 }
 
-class IPCServerBase {
+open class IPCServerBase {
     public let socketPath: String;
     private lazy var serverSocket: MMUnixSocket = MMUnixSocket(socketPath)
 
     public var delegate: IPCServerDelegate? = nil
 
-    init(_ socketPath: String) {
+    public init(_ socketPath: String) {
         signal(SIGPIPE, SIG_IGN)
 
         self.socketPath = socketPath;
     }
 
-    func start() {
+    public func start() {
         serverSocket.bind()
         chmod(socketPath.cString(using: .utf8), S_IRWXU | S_IRWXG | S_IRWXO);
 
@@ -56,7 +56,7 @@ class IPCServerBase {
     }
 }
 
-class IPCServerConnection {
+public class IPCServerConnection {
     private(set) public var connection: MMUnixSocketConnection
     private(set) public var id: UInt64 = 0
 
@@ -64,11 +64,11 @@ class IPCServerConnection {
         self.connection = connection
     }
 
-    func read<T>(_ type: T.Type) throws -> T {
+    public func read<T>(_ type: T.Type) throws -> T {
         return try self.connection.readCStruct(type)
     }
 
-    func writeMessage<T>(_ message: T, type: UInt16, replyTo: UInt64 = 0) {
+    public func writeMessage<T>(_ message: T, type: UInt16, replyTo: UInt64 = 0) {
         let messageLength = MemoryLayout.size(ofValue: message)
         let header = ULIPCHeader(
                 messageType: type,
@@ -89,7 +89,7 @@ class IPCServerConnection {
         id = id + 1
     }
 
-    func close() {
+    public func close() {
         self.connection.close()
     }
 }

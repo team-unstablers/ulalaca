@@ -54,7 +54,7 @@ extension SessionManagerServer: IPCServerDelegate {
         switch (announcement.type) {
         case ANNOUNCEMENT_TYPE_SESSION_CREATED:
             print("received announcement from pid \(announcement.pid); user \(username): SESSION_CREATED")
-            sessionManager.append(session: ProjectorInstance(
+            sessionManager.append(session: ProjectorSession(
                 pid: UInt64(announcement.pid),
                 username: username,
                 endpoint: endpoint,

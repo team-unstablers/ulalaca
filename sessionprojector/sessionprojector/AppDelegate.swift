@@ -8,13 +8,15 @@
 
 import Cocoa
 
+import UlalacaCore
+
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     let screenRecorder = createScreenRecorder()
     let eventInjector = EventInjector()
     let projectionServer = ProjectionServer()
-    let sesmanClient = ProjectorManagerClient()
+    let sesmanClient = SessionManagerClient()
 
     lazy var trayStatusIndicator = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     lazy var trayMenu: NSMenu = {
@@ -34,7 +36,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         projectionServer.delegate = self
         sesmanClient.delegate = self
 
-        if (getuid() != 0) {
+        if (!isLoginSession()) {
             // FIXME!!
             initializeTrayItem()
             updateTrayStatusIndicator()
@@ -120,7 +122,8 @@ extension AppDelegate: IPCClientDelegate {
         sesmanClient.announceSelf(
                 ANNOUNCEMENT_TYPE_SESSION_CREATED,
                 endpoint: projectionServer.getSocketPath(),
-                isConsoleSession: true
+                isConsoleSession: true, // FIXME
+                isLoginSession: isLoginSession()
         )
     }
 

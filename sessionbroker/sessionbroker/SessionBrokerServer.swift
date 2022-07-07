@@ -17,6 +17,22 @@ class SessionBrokerServer: IPCServerBase {
         super.init("/var/run/ulalaca_broker.sock")
         self.delegate = self
     }
+
+    func provideSession(which session: ProjectorSession, to client: IPCServerConnection) {
+        var response = ULIPCSessionRequestResolved()
+        response.sessionId = session.pid
+        response.isLoginSession = session.isLoginSession ? 1 : 0 // ???
+
+        session.endpoint.toUnsafeCStrArray(
+                withUnsafeMutablePointer(to: &response.path) { $0 },
+                capacity: 1024
+        )
+
+        client.writeMessage(
+                response,
+                type: TYPE_SESSION_REQUEST_RESOLVED
+        )
+    }
 }
 
 extension SessionBrokerServer: IPCServerDelegate {
@@ -45,7 +61,7 @@ extension SessionBrokerServer: IPCServerDelegate {
     }
 
     func handleSessionRequest(_ request: ULIPCSessionRequest, header: ULIPCHeader, from client: IPCServerConnection) {
-        let reject = {
+        let reject = { (reason: UInt8) in
             client.writeMessage(
                 ULIPCSessionRequestRejected(reason: REJECT_REASON_AUTHENTICATION_FAILED),
                 type: TYPE_SESSION_REQUEST_REJECTED,
@@ -63,32 +79,21 @@ extension SessionBrokerServer: IPCServerDelegate {
 
         let authenticated = UserAuthenticator.authenticateUser(username, withPassword: password)
         if (!authenticated) {
-            reject()
+            reject(REJECT_REASON_AUTHENTICATION_FAILED)
             return
         }
 
-        guard let projectorInstance = ProjectorManager.instance.instances.first(where: {
+
+        guard let session = ProjectorManager.instance.sessions.first(where: {
             $0.username == username
-        }) ?? ProjectorManager.instance.instances.first(where: {
+        }) ?? ProjectorManager.instance.sessions.first(where: {
             $0.isLoginSession
         }) else {
-            reject()
+            reject(REJECT_REASON_SESSION_NOT_AVAILABLE)
             return
         }
 
-        var response = ULIPCSessionRequestResolved()
-        response.sessionId = UInt64(0)
-        response.isLoginSession = 0
-
-        projectorInstance.endpoint.toUnsafeCStrArray(
-                withUnsafeMutablePointer(to: &response.path) { $0 },
-                capacity: 1024
-        )
-
-        client.writeMessage(
-                response,
-                type: TYPE_SESSION_REQUEST_RESOLVED
-        )
+        provideSession(which: session, to: client)
         client.close()
     }
 }
