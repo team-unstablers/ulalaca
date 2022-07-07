@@ -33,6 +33,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
 
+        // FIXME
+        let processInfo = ProcessInfo.processInfo
+        if (processInfo.arguments.first { $0 == "--launch" } != nil) {
+            sleep(3)
+            try! Process.run(URL(fileURLWithPath: "/usr/bin/osascript"), arguments: [
+                "-e",
+                "do shell script \"open -n -W /Library/PrivilegedHelperTools/sessionprojector.app\""
+            ]) { _ in
+                NSApp.terminate(self)
+            }
+            return;
+        }
+
         projectionServer.delegate = self
         sesmanClient.delegate = self
 
