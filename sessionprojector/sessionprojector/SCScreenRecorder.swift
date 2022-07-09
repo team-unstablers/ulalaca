@@ -86,6 +86,9 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
             throw ScreenRecorderError.initializationError
         }
 
+        configuration.width = primaryDisplay.width
+        configuration.height = primaryDisplay.height
+
         let filter = SCContentFilter(display: primaryDisplay, excludingWindows: [])
 
         stream = SCStream(filter: filter, configuration: configuration, delegate: self)
