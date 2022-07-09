@@ -92,7 +92,7 @@ extension SessionBrokerServer: IPCServerDelegate {
         }) ?? ProjectorManager.instance.sessions.first(where: {
             $0.isLoginSession
         }) else {
-            logger.info("[\(username)]: there is no available session")
+            logger.info("[\(username)]: there is no session available")
             reject(REJECT_REASON_SESSION_NOT_AVAILABLE)
             return
         }
