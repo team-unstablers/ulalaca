@@ -11,6 +11,7 @@
 	<key>ProgramArguments</key>
 	<array>
 		<string>/Library/PrivilegedHelperTools/sessionprojector.app/Contents/MacOS/sessionprojector</string>
+		<string>--launch</string>
 	</array>
 	<key>LimitLoadToSessionType</key>
 	<array>
