@@ -310,3 +310,5 @@ Dependencies/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,objective-c,swift,appcode,xcode,c++
+
+!pam.d/
