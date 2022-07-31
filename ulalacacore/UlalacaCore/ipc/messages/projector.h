@@ -51,12 +51,12 @@ static const uint8_t MOUSE_EVENT_BUTTON_MIDDLE = 2;
 struct ULIPCScreenUpdateNotify {
     uint8_t type;
     struct ULIPCRect rect;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCScreenUpdateCommit {
     struct ULIPCRect screenRect;
     uint64_t bitmapLength;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 
 /* message definition: client -> server */
@@ -70,27 +70,29 @@ struct ULIPCKeyboardEvent {
     uint32_t keyCode;
 
     uint16_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCMouseMoveEvent {
     uint16_t x;
     uint16_t y;
 
     uint16_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCMouseButtonEvent {
     uint8_t type;
     uint8_t button;
 
     uint16_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCMouseWheelEvent {
     int32_t deltaX;
     int32_t deltaY;
 
     uint16_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
+
+
 
 #endif
