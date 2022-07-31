@@ -8,6 +8,8 @@ import CoreGraphics
 import VideoToolbox
 import ScreenCaptureKit
 
+import UlalacaCore
+
 fileprivate struct FrameInfo {
     init?(from sampleBuffer: CMSampleBuffer) {
         let attachmentsArray = CMSampleBufferGetSampleAttachmentsArray(
@@ -44,17 +46,51 @@ fileprivate struct FrameInfo {
 }
 
 class SCScreenRecorder: NSObject, ScreenRecorder {
-    private var streamQueue = DispatchQueue(
-            label: "UlalacaStreamRecorder",
-            qos: .userInteractive
-    )
+    private static let staticLogger = createLogger("SCScreenRecorder::*")
+    private let logger = createLogger("SCScreenRecorder")
+
+    private var ciContext: CIContext
 
     private var stream: SCStream?
     private var subscriptions: [ScreenUpdateSubscriber] = []
     private var prevDisplayTime: UInt64 = 0
 
+
+    private var streamQueue = DispatchQueue(
+            label: "UlalacaStreamRecorder",
+            qos: .userInteractive
+    )
+
+    private static func createCoreImageContext(useMetal: Bool = true) -> CIContext {
+        staticLogger.debug("creating CIContext")
+
+        if let ciContext = NSGraphicsContext.current?.ciContext {
+            staticLogger.debug("acquired CIContext from NSGraphicsContext.current")
+            return ciContext
+        }
+
+        if (useMetal) {
+            if let metalDevice = MTLCreateSystemDefaultDevice() {
+                staticLogger.debug("created CIContext using Metal API")
+                return CIContext(mtlDevice: metalDevice)
+            }
+        }
+
+        if let cgContext = NSGraphicsContext.current?.cgContext {
+            staticLogger.debug("created CIContext using cgContext")
+            return CIContext(cgContext: cgContext)
+        } else {
+            staticLogger.error("creating CIContext using software renderer, this will impact performance (is hardware acceleration available?)")
+            return CIContext(options: [
+                .useSoftwareRenderer: true
+            ])
+        }
+    }
+
     override init() {
         super.init()
+
+        self.ciContext = SCScreenRecorder.createCoreImageContext(useMetal: true)
     }
 
     func subscribeUpdate(_ subscriber: ScreenUpdateSubscriber) {
@@ -132,11 +168,6 @@ extension SCScreenRecorder: SCStreamOutput {
             return
         }
 
-        var image: CGImage?
-        VTCreateCGImageFromCVPixelBuffer(sampleBuffer.imageBuffer!, options: nil, imageOut: &image)
-        CVPixelBufferUnlockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
-
-
         let now = CMTime(value: Int64(mach_absolute_time()), timescale: 1000000000)
         let frameTimestamp = sampleBuffer.presentationTimeStamp
 
@@ -147,7 +178,49 @@ extension SCScreenRecorder: SCStreamOutput {
                 subscriptions.forEach { $0.screenUpdated(where: rect) }
             }
         }
-        subscriptions.forEach { $0.screenReady(image: image!, rect: frameInfo.contentRect!) }
+        subscriptions.forEach { subscriber in
+            notifyScreenReady(which: sampleBuffer, rect: frameInfo.contentRect!, to: subscriber)
+        }
+    }
+
+    func notifyScreenReady(which sampleBuffer: CMSampleBuffer, rect: CGRect, to subscriber: ScreenUpdateSubscriber) {
+        var image: CGImage?
+
+        if let viewportInfo = subscriber.mainDisplay {
+            let pixelBuffer = sampleBuffer.resize(size: viewportInfo.toCGSize(), context: ciContext)
+            VTCreateCGImageFromCVPixelBuffer(pixelBuffer, options: nil, imageOut: &image)
+            subscriber.screenReady(image: image, rect: CGRect(0, 0, Int(viewportInfo.width), Int(viewportInfo.height)))
+        } else {
+            VTCreateCGImageFromCVPixelBuffer(sampleBuffer.imageBuffer!, options: nil, imageOut: &image)
+            subscriber.screenReady(image: image, rect: rect)
+        }
+
     }
 }
 
+fileprivate extension CMSampleBuffer {
+    func resize(size desiredSize: CGSize, context: CIContext) -> CVPixelBuffer {
+        let imageBuffer = self.imageBuffer!
+
+        let outPixelBuffer: CVPixelBuffer? = nil
+        let result = CVPixelBufferCreate(
+            nil,
+            Int(desiredSize.width), Int(desiredSize.height),
+            CVPixelBufferGetPixelFormatType(imageBuffer),
+            nil,
+            &outPixelBuffer
+        )
+
+        let size = CVImageBufferGetEncodedSize(imageBuffer)
+        let ciImage = CIImage(cvImageBuffer: imageBuffer)
+
+        let sx = CGFloat(desiredSize.width) / CGFloat(size.width)
+        let sy = CGFloat(desiredSize.height) / CGFloat(size.height)
+
+        let scale = CGAffineTransform(scaleX: sx, y: sy)
+        let scaledImage = ciImage.transformed(by: scale)
+        context.render(scaledImage, to: outPixelBuffer)
+
+        return outPixelBuffer!
+    }
+}
