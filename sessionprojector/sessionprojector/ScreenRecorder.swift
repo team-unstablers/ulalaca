@@ -30,8 +30,21 @@ enum ScreenRecorderError: LocalizedError {
     }
 }
 
+struct ViewportInfo {
+    var width: UInt16
+    var height: UInt16
+
+    func toCGSize() -> CGSize {
+        CGSize(width: Int(width), height: Int(height))
+    }
+}
+
 protocol ScreenUpdateSubscriber {
     var identifier: Int {
+        get
+    }
+
+    var mainDisplay: ViewportInfo? {
         get
     }
 

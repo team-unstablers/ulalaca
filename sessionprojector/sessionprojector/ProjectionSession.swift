@@ -13,19 +13,27 @@ enum ProjectionSessionError: Error {
     case socketReadError
 }
 
+
+
 class ProjectionSession {
+    private let logger: ULLogger
+
     public let socket: MMUnixSocketConnection
+    public var eventInjector: EventInjector? = nil
 
     public let mainDisplayId = CGMainDisplayID()
     public let serialQueue = DispatchQueue(label: "ProjectionSession")
     public let updateLock = DispatchSemaphore(value: 1)
 
     private(set) public var messageId: UInt64 = 1;
+    private(set) public var suppressOutput: Bool = true
 
-    public var eventInjector: EventInjector? = nil
+    private(set) public var mainDisplay: ViewportInfo?
 
     init(_ socket: MMUnixSocketConnection) {
         self.socket = socket
+
+        self.logger = createLogger("ProjectionSession (fd \(self.socket.fd()))")
     }
 
     func startSession(errorHandler: @escaping (Error) -> Void) {
@@ -56,13 +64,36 @@ class ProjectionSession {
                 eventInjector?.post(mouseWheelEvent: try socket.readCStruct(ULIPCMouseWheelEvent.self))
                 break
 
+            case TYPE_PROJECTION_START:
+                try socket.readCStruct(ULIPCProjectionStart.self)
+                suppressOutput = false
+                break
+            case TYPE_PROJECTION_STOP:
+                try socket.readCStruct(ULIPCProjectionStop.self)
+                suppressOutput = true
+                break
+
+            case TYPE_PROJECTION_SET_VIEWPORT:
+                self.setViewport(with: try socket.readCStruct(ULIPCProjectionSetViewport.self))
+                break
+
             default:
                 let buffer = UnsafeMutableRawPointer.allocate(byteCount: Int(header.length), alignment: 0)
                 try socket.readEx(buffer, size: Int(header.length))
             }
         }
     }
-    
+
+    private func setViewport(with message: ULIPCProjectionSetViewport) {
+        if (message.monitorId != 0) {
+            logger.debug("multi display layout is not supported yet")
+            return
+        }
+
+        mainDisplay = ViewportInfo(width: message.width, height: message.height)
+    }
+
+
     private func writeMessage<T>(_ message: T, type: UInt16) {
         let messageLength = MemoryLayout.size(ofValue: message)
         let header = ULIPCHeader(
@@ -75,7 +106,7 @@ class ProjectionSession {
 
         socket.write(withUnsafePointer(to: header) { $0 }, size: MemoryLayout.size(ofValue: header))
         socket.write(withUnsafePointer(to: message) { $0 }, size: messageLength)
-        
+
         messageId += 1
     }
 
