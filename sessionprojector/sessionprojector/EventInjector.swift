@@ -39,24 +39,13 @@ class EventInjector {
     }
 
     func prepare() throws {
-        guard
-                /* let eventTap = CGEvent.tapCreate(
-                tap: .cgSessionEventTap,
-                place: .headInsertEventTap,
-                options: .defaultTap,
-                eventsOfInterest: UInt64(CGEventType.null.rawValue),
-                callback: { (proxy, type, event, refcon) in
-                    return Unmanaged.passUnretained(event)
-                },
-                userInfo: nil
-        ), */ let eventSource = CGEventSource(
+        guard let eventSource = CGEventSource(
                 stateID: .combinedSessionState
         )
         else {
             throw EventInjectorError.initializationError
         }
 
-        // self.eventTap = eventTap
         self.eventSource = eventSource
     }
 
@@ -87,10 +76,10 @@ class EventInjector {
         cgEvent.post(tap: .cgSessionEventTap)
     }
 
-    func post(mouseMoveEvent event: ULIPCMouseMoveEvent) {
+    func post(mouseMoveEvent event: ULIPCMouseMoveEvent, scaleX: Double = 1.0, scaleY: Double = 1.0) {
         var mouseType: CGEventType = .mouseMoved
         var mouseButton: CGMouseButton = .left
-        let position = CGPoint(x: Int(event.x), y: Int(event.y))
+        let position = CGPoint(x: Int(Double(event.x) * scaleX), y: Int(Double(event.y) * scaleY))
 
         if (mouseDownState & EventInjector.MOUSE_DOWN_STATE_LEFT > 0) {
             mouseType = .leftMouseDragged
