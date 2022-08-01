@@ -55,6 +55,11 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
     private var subscriptions: [ScreenUpdateSubscriber] = []
     private var prevDisplayTime: UInt64 = 0
 
+    private var currentScreenResolution = CGSize(width: 0, height: 0)
+
+    // HACK
+    private var this: SCScreenRecorder!
+
 
     private var streamQueue = DispatchQueue(
             label: "UlalacaStreamRecorder",
@@ -88,9 +93,23 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
     }
 
     override init() {
+        self.ciContext = SCScreenRecorder.createCoreImageContext(useMetal: true)
         super.init()
 
-        self.ciContext = SCScreenRecorder.createCoreImageContext(useMetal: true)
+        self.this = self
+        self.listenToDisplayConfigurationChange()
+    }
+
+    private func listenToDisplayConfigurationChange() {
+        CGDisplayRegisterReconfigurationCallback({ display, flags, userInfo in
+            let this = userInfo!.bindMemory(to: SCScreenRecorder.self, capacity: 1).pointee
+
+            Task {
+                try? await this.stop()
+                try! await this.prepare()
+                try! await this.start()
+            }
+        }, &this)
     }
 
     func subscribeUpdate(_ subscriber: ScreenUpdateSubscriber) {
@@ -100,6 +119,7 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
         }
 
         subscriptions.append(subscriber)
+        subscriber.screenResolutionChanged(to: self.currentScreenResolution)
     }
 
     func unsubscribeUpdate(_ subscriber: ScreenUpdateSubscriber) {
@@ -116,6 +136,7 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
         configuration.pixelFormat = kCVPixelFormatType_32BGRA
         configuration.queueDepth = 1
         configuration.showsCursor = true
+
 
         let displays = try await SCShareableContent.current.displays
         guard let primaryDisplay = displays.first else {
@@ -143,8 +164,8 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
         }
     }
 
-    func stop() throws {
-
+    func stop() async throws {
+        try await stream!.stopCapture()
     }
 }
 
@@ -168,31 +189,54 @@ extension SCScreenRecorder: SCStreamOutput {
             return
         }
 
+        if (frameInfo.contentRect!.size != self.currentScreenResolution) {
+            logger.debug("resolution changed to \(frameInfo.contentRect!.size)")
+            self.currentScreenResolution = frameInfo.contentRect!.size
+
+            subscriptions.forEach { subscriber in
+                subscriber.screenResolutionChanged(to: frameInfo.contentRect!.size)
+            }
+        }
+
         let now = CMTime(value: Int64(mach_absolute_time()), timescale: 1000000000)
         let frameTimestamp = sampleBuffer.presentationTimeStamp
 
         let timedelta = abs(now.seconds - frameTimestamp.seconds)
 
         if let dirtyRects = frameInfo.dirtyRects {
-            dirtyRects.forEach { rect in
-                subscriptions.forEach { $0.screenUpdated(where: rect) }
+            subscriptions.forEach { subscriber in
+                if let mainDisplay = subscriber.mainViewport {
+                    subscriber.screenUpdated(where: frameInfo.contentRect!)
+                } else {
+                    dirtyRects.forEach { rect in
+                        subscriber.screenUpdated(where: rect)
+                    }
+                }
+
             }
-        }
-        subscriptions.forEach { subscriber in
-            notifyScreenReady(which: sampleBuffer, rect: frameInfo.contentRect!, to: subscriber)
+
+            subscriptions.forEach { subscriber in
+                if (!subscriber.suppressOutput) {
+                    notifyScreenReady(which: sampleBuffer, rect: frameInfo.contentRect!, to: subscriber)
+                }
+            }
         }
     }
 
     func notifyScreenReady(which sampleBuffer: CMSampleBuffer, rect: CGRect, to subscriber: ScreenUpdateSubscriber) {
         var image: CGImage?
 
-        if let viewportInfo = subscriber.mainDisplay {
+        if let viewportInfo = subscriber.mainViewport {
             let pixelBuffer = sampleBuffer.resize(size: viewportInfo.toCGSize(), context: ciContext)
+            CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
             VTCreateCGImageFromCVPixelBuffer(pixelBuffer, options: nil, imageOut: &image)
-            subscriber.screenReady(image: image, rect: CGRect(0, 0, Int(viewportInfo.width), Int(viewportInfo.height)))
+            CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly)
+            subscriber.screenReady(image: image!, rect: CGRect(x: 0, y: 0, width: Int(viewportInfo.width), height: Int(viewportInfo.height)))
         } else {
+            CVPixelBufferLockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
             VTCreateCGImageFromCVPixelBuffer(sampleBuffer.imageBuffer!, options: nil, imageOut: &image)
-            subscriber.screenReady(image: image, rect: rect)
+            CVPixelBufferUnlockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
+            subscriber.screenReady(image: image!, rect: rect)
         }
 
     }
@@ -202,7 +246,7 @@ fileprivate extension CMSampleBuffer {
     func resize(size desiredSize: CGSize, context: CIContext) -> CVPixelBuffer {
         let imageBuffer = self.imageBuffer!
 
-        let outPixelBuffer: CVPixelBuffer? = nil
+        var outPixelBuffer: CVPixelBuffer? = nil
         let result = CVPixelBufferCreate(
             nil,
             Int(desiredSize.width), Int(desiredSize.height),
@@ -219,7 +263,7 @@ fileprivate extension CMSampleBuffer {
 
         let scale = CGAffineTransform(scaleX: sx, y: sy)
         let scaledImage = ciImage.transformed(by: scale)
-        context.render(scaledImage, to: outPixelBuffer)
+        context.render(scaledImage, to: outPixelBuffer!)
 
         return outPixelBuffer!
     }

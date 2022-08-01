@@ -28,12 +28,13 @@ class ProjectionSession {
     private(set) public var messageId: UInt64 = 1;
     private(set) public var suppressOutput: Bool = true
 
-    private(set) public var mainDisplay: ViewportInfo?
+    private(set) public var screenResolution: CGSize = CGSize(width: 0, height: 0)
+    private(set) public var mainViewport: ViewportInfo?
 
     init(_ socket: MMUnixSocketConnection) {
         self.socket = socket
 
-        self.logger = createLogger("ProjectionSession (fd \(self.socket.fd()))")
+        self.logger = createLogger("ProjectionSession (fd \(self.socket.descriptor()))")
     }
 
     func startSession(errorHandler: @escaping (Error) -> Void) {
@@ -55,7 +56,11 @@ class ProjectionSession {
                 eventInjector?.post(keyEvent: try socket.readCStruct(ULIPCKeyboardEvent.self))
                 break
             case TYPE_EVENT_MOUSE_MOVE:
-                eventInjector?.post(mouseMoveEvent: try socket.readCStruct(ULIPCMouseMoveEvent.self))
+                eventInjector?.post(
+                    mouseMoveEvent: try socket.readCStruct(ULIPCMouseMoveEvent.self),
+                    scaleX: Double(screenResolution.width) / Double(mainViewport!.width),
+                    scaleY: Double(screenResolution.height) / Double(mainViewport!.height)
+                )
                 break
             case TYPE_EVENT_MOUSE_BUTTON:
                 eventInjector?.post(mouseButtonEvent: try socket.readCStruct(ULIPCMouseButtonEvent.self))
@@ -90,7 +95,7 @@ class ProjectionSession {
             return
         }
 
-        mainDisplay = ViewportInfo(width: message.width, height: message.height)
+        mainViewport = ViewportInfo(width: message.width, height: message.height)
     }
 
 
@@ -119,15 +124,13 @@ extension ProjectionSession: ScreenUpdateSubscriber {
 
     func screenUpdated(where rect: CGRect) {
         self.serialQueue.sync {
+            let sx = mainViewport?.scaleX(Int(screenResolution.width)) ?? 1.0
+            let sy = mainViewport?.scaleY(Int(screenResolution.height)) ?? 1.0
+
             self.writeMessage(
-                ULIPCScreenUpdateNotify(
+                    ULIPCScreenUpdateNotify(
                     type: SCREEN_UPDATE_NOTIFY_TYPE_PARTIAL,
-                    rect: ULIPCRect(
-                            x: Int16(rect.origin.x),
-                            y: Int16(rect.origin.y),
-                            width: Int16(rect.size.width),
-                            height: Int16(rect.size.height)
-                    )
+                    rect: rect.toULIPCRect().scale(x: sx, y: sy)
                 ),
                 type: TYPE_SCREEN_UPDATE_NOTIFY
             )
@@ -141,13 +144,11 @@ extension ProjectionSession: ScreenUpdateSubscriber {
             let pointer = CFDataGetBytePtr(rawData)!
             let length = CFDataGetLength(rawData)
 
+            let sx = mainViewport?.scaleX(Int(screenResolution.width)) ?? 1.0
+            let sy = mainViewport?.scaleY(Int(screenResolution.height)) ?? 1.0
+
             let message = ULIPCScreenUpdateCommit(
-                screenRect: ULIPCRect(
-                        x: Int16(rect.origin.x),
-                        y: Int16(rect.origin.y),
-                        width: Int16(rect.size.width),
-                        height: Int16(rect.size.height)
-                ),
+                screenRect: rect.toULIPCRect().scale(x: sx, y: sy),
                 bitmapLength: UInt64(length)
             )
         
@@ -156,8 +157,8 @@ extension ProjectionSession: ScreenUpdateSubscriber {
         }
     }
 
-    func screenResolutionChanged(to resolution: (Int, Int)) {
-
+    func screenResolutionChanged(to resolution: CGSize) {
+        self.screenResolution = resolution
     }
 
 }
