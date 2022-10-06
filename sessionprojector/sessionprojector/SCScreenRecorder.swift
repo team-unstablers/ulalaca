@@ -63,7 +63,7 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
 
     private var streamQueue = DispatchQueue(
             label: "UlalacaStreamRecorder",
-            qos: .userInteractive
+            qos: .background
     )
 
     private static func createCoreImageContext(useMetal: Bool = true) -> CIContext {
@@ -215,14 +215,9 @@ extension SCScreenRecorder: SCStreamOutput {
 
         if let dirtyRects = frameInfo.dirtyRects {
             subscriptions.forEach { subscriber in
-                if let mainDisplay = subscriber.mainViewport {
-                    subscriber.screenUpdated(where: frameInfo.contentRect!)
-                } else {
-                    dirtyRects.forEach { rect in
-                        subscriber.screenUpdated(where: rect)
-                    }
+                dirtyRects.forEach { rect in
+                    subscriber.screenUpdated(where: rect)
                 }
-
             }
 
             subscriptions.forEach { subscriber in

@@ -7,10 +7,10 @@ import Foundation
 extension ULIPCRect {
     func scale(x sx: Double, y sy: Double) -> ULIPCRect {
         return ULIPCRect(
-            x: Int16(Double(x) * sx),
-            y: Int16(Double(y) * sy),
-            width: Int16(Double(width) * sx),
-            height: Int16(Double(height) * sy)
+            x: Int16(floor(Double(x) * sx)),
+            y: Int16(floor(Double(y) * sy)),
+            width: Int16(ceil(Double(width) * sx)),
+            height: Int16(ceil(Double(height) * sy))
         )
     }
 }
