@@ -30,14 +30,46 @@ enum ScreenRecorderError: LocalizedError {
     }
 }
 
+struct ViewportInfo {
+    var width: UInt16
+    var height: UInt16
+
+    func scaleX(_ value: IntegerLiteralType) -> Double {
+        if (value <= 0) {
+            return 0.0
+        }
+
+        return Double(width) / Double(value);
+    }
+    func scaleY(_ value: IntegerLiteralType) -> Double {
+        if (value <= 0) {
+            return 0.0
+        }
+
+        return Double(height) / Double(value);
+    }
+
+    func toCGSize() -> CGSize {
+        CGSize(width: Int(width), height: Int(height))
+    }
+}
+
 protocol ScreenUpdateSubscriber {
     var identifier: Int {
         get
     }
 
+    var suppressOutput: Bool {
+        get
+    }
+
+    var mainViewport: ViewportInfo? {
+        get
+    }
+
     func screenUpdated(where rect: CGRect)
     func screenReady(image: CGImage, rect: CGRect)
-    func screenResolutionChanged(to resolution: (Int, Int))
+    func screenResolutionChanged(to resolution: CGSize)
 }
 
 protocol ScreenRecorder: NSObject {

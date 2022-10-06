@@ -10,6 +10,8 @@
 		85721156283B607000C36D5F /* UlalacaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85721155283B607000C36D5F /* UlalacaCore.framework */; };
 		85721157283B607000C36D5F /* UlalacaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 85721155283B607000C36D5F /* UlalacaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4EBD136805519C3F8D8314A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */; };
+		F4EBD18EFC3BFC5565288F9C /* CGRect+toULIPCRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD846347B06D7E7B73FC1 /* CGRect+toULIPCRect.swift */; };
+		F4EBD3107D60426E249C21FD /* ULIPCRect+scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDCBA0826CA18FB1E77CF /* ULIPCRect+scale.swift */; };
 		F4EBD35869E7EEC01C4CE48D /* SessionManagerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDFDEDFC5A96EE4B3F91C /* SessionManagerClient.swift */; };
 		F4EBD455F06C38A5ABA1EA20 /* ProjectionSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDEADE7680E1D1466830F /* ProjectionSession.swift */; };
 		F4EBD517D25C43D7397EA0FD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4EBD2D2B450575F0A669D2E /* MainMenu.xib */; };
@@ -47,8 +49,10 @@
 		F4EBD55AD46E2D55483DA879 /* AVFScreenRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVFScreenRecorder.swift; sourceTree = "<group>"; };
 		F4EBD5938B6F75A2117975F5 /* pl.unstabler.ulalaca.sessionprojector.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = pl.unstabler.ulalaca.sessionprojector.plist; sourceTree = "<group>"; };
 		F4EBD72F7A1676E55BB21493 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F4EBD846347B06D7E7B73FC1 /* CGRect+toULIPCRect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+toULIPCRect.swift"; sourceTree = "<group>"; };
 		F4EBDB589E76D41675D27BF0 /* ProjectionServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectionServer.swift; sourceTree = "<group>"; };
 		F4EBDB6CE8B3BF020BD4FE81 /* sessionprojector.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = sessionprojector.entitlements; sourceTree = "<group>"; };
+		F4EBDCBA0826CA18FB1E77CF /* ULIPCRect+scale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ULIPCRect+scale.swift"; sourceTree = "<group>"; };
 		F4EBDEADE7680E1D1466830F /* ProjectionSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectionSession.swift; sourceTree = "<group>"; };
 		F4EBDEC6CB9E4322333D6C24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		F4EBDFDEDFC5A96EE4B3F91C /* SessionManagerClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManagerClient.swift; sourceTree = "<group>"; };
@@ -91,6 +95,8 @@
 				F4EBDFDEDFC5A96EE4B3F91C /* SessionManagerClient.swift */,
 				F4EBD0BFDAED6400792ABDFA /* SCScreenRecorder.swift */,
 				F4EBD55AD46E2D55483DA879 /* AVFScreenRecorder.swift */,
+				F4EBDCBA0826CA18FB1E77CF /* ULIPCRect+scale.swift */,
+				F4EBD846347B06D7E7B73FC1 /* CGRect+toULIPCRect.swift */,
 			);
 			path = sessionprojector;
 			sourceTree = "<group>";
@@ -201,6 +207,8 @@
 				F4EBD35869E7EEC01C4CE48D /* SessionManagerClient.swift in Sources */,
 				F4EBDCD57BF1530790AC739E /* SCScreenRecorder.swift in Sources */,
 				F4EBD732593CF09DECD7B40A /* AVFScreenRecorder.swift in Sources */,
+				F4EBD3107D60426E249C21FD /* ULIPCRect+scale.swift in Sources */,
+				F4EBD18EFC3BFC5565288F9C /* CGRect+toULIPCRect.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

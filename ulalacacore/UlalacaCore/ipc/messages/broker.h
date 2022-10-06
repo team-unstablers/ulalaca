@@ -26,16 +26,16 @@ struct ULIPCSessionRequestResolved {
     uint8_t isLoginSession;
 
     char path[1024];
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCSessionRequestRejected {
     uint8_t reason;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 /* message definition: client -> server */
 struct ULIPCSessionRequest {
     char username[64];
     char password[256];
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 #endif

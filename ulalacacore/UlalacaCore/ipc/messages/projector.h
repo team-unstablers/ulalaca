@@ -17,6 +17,12 @@ static const uint16_t TYPE_EVENT_MOUSE_MOVE   = 0x0321;
 static const uint16_t TYPE_EVENT_MOUSE_BUTTON = 0x0322;
 static const uint16_t TYPE_EVENT_MOUSE_WHEEL  = 0x0323;
 
+static const uint16_t TYPE_PROJECTION_START        = 0x0401;
+static const uint16_t TYPE_PROJECTION_STOP         = 0x0402;
+
+static const uint16_t TYPE_PROJECTION_SET_VIEWPORT = 0x0421;
+
+
 /* constants: Screen update notification */
 static const uint8_t SCREEN_UPDATE_NOTIFY_TYPE_ENTIRE_SCREEN = 0;
 static const uint8_t SCREEN_UPDATE_NOTIFY_TYPE_PARTIAL = 1;
@@ -51,12 +57,12 @@ static const uint8_t MOUSE_EVENT_BUTTON_MIDDLE = 2;
 struct ULIPCScreenUpdateNotify {
     uint8_t type;
     struct ULIPCRect rect;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCScreenUpdateCommit {
     struct ULIPCRect screenRect;
     uint64_t bitmapLength;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 
 /* message definition: client -> server */
@@ -70,27 +76,43 @@ struct ULIPCKeyboardEvent {
     uint32_t keyCode;
 
     uint16_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCMouseMoveEvent {
     uint16_t x;
     uint16_t y;
 
     uint16_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCMouseButtonEvent {
     uint8_t type;
     uint8_t button;
 
     uint16_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCMouseWheelEvent {
     int32_t deltaX;
     int32_t deltaY;
 
     uint16_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
+
+struct ULIPCProjectionStart {
+    uint16_t flags;
+} MARK_AS_PACKED_STRUCT;
+
+struct ULIPCProjectionStop {
+    uint16_t flags;
+} MARK_AS_PACKED_STRUCT;
+
+struct ULIPCProjectionSetViewport {
+    uint8_t monitorId;
+    uint16_t width;
+    uint16_t height;
+
+    uint16_t flags;
+} MARK_AS_PACKED_STRUCT;
 
 #endif

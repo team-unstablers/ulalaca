@@ -33,16 +33,16 @@ static const uint8_t ANNOUNCEMENT_FLAG_IS_BUSY = 3;
 
 struct ULIPCPrivateACK {
     uint8_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCPrivateNAK {
     uint8_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCPrivateControl {
     uint8_t type;
     uint8_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 struct ULIPCPrivateAnnouncement {
     uint8_t type;
@@ -50,6 +50,6 @@ struct ULIPCPrivateAnnouncement {
     char username[64];
     char endpoint[1024];
     uint8_t flags;
-} FIXME_MARK_AS_PACKED_STRUCT;
+} MARK_AS_PACKED_STRUCT;
 
 #endif
