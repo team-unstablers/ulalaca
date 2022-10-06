@@ -139,6 +139,11 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
 
 
         let displays = try await SCShareableContent.current.displays
+        let sessionProjectorApp = try await SCShareableContent.current.applications.filter { app in
+            // FIXME: hard-coded bundle id
+            app.bundleIdentifier == "pl.unstabler.ulalaca.sessionprojector"
+        }.first!
+
         guard let primaryDisplay = displays.first else {
             throw ScreenRecorderError.initializationError
         }
@@ -146,7 +151,12 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
         configuration.width = primaryDisplay.width
         configuration.height = primaryDisplay.height
 
-        let filter = SCContentFilter(display: primaryDisplay, excludingWindows: [])
+        // since macOS 12.3↑, passing empty array to excludingWindows breaks SCStream
+        let filter = SCContentFilter(
+                display: primaryDisplay,
+                excludingApplications: [sessionProjectorApp],
+                exceptingWindows: []
+        )
 
         stream = SCStream(filter: filter, configuration: configuration, delegate: self)
         guard let stream = stream else {
