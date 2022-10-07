@@ -143,7 +143,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             try await screenRecorder.prepare()
             try await screenRecorder.start()
 
-            sesmanClient.start()
+            try sesmanClient.start()
             projectionServer.start()
         } catch {
             print(error.localizedDescription)
