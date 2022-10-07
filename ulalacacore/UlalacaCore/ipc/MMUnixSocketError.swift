@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum MMUnixSocketError: Error {
+public enum MMUnixSocketError: Error {
     case unknown
     case socketClosed
 }

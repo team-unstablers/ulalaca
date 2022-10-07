@@ -6,7 +6,17 @@
 #include <memory>
 #include "UnixSocket.hpp"
 
+#import <Foundation/NSString.h>
 #import "MMUnixSocket.h"
+
+inline void __MMUnixSocket_FATAL(SystemCallException &e) {
+    NSString *what = [NSString stringWithCString: e.what()
+                                 encoding: NSUTF8StringEncoding];
+
+    [NSException raise:@"MMUnixSocketException"
+                 format:@"caught SystemCallException: %@",
+                 what];
+}
 
 @implementation MMUnixSocketConnection {
     std::unique_ptr<UnixSocketConnection> _impl;
@@ -72,24 +82,48 @@
 }
 
 - (void)bind {
-    self->_impl->bind();
+    try {
+        self->_impl->bind();
+    } catch (SystemCallException &e) {
+        __MMUnixSocket_FATAL(e);
+    }
 }
 
 - (void)listen {
-    self->_impl->listen();
+    try {
+        self->_impl->listen();
+    } catch (SystemCallException &e) {
+        __MMUnixSocket_FATAL(e);
+    }
 }
 
 - (MMUnixSocketConnection *)accept {
-    auto connection = self->_impl->accept();
-    return [[MMUnixSocketConnection alloc] initWithCppInstance: connection];
+    try {
+        auto connection = self->_impl->accept();
+        return [[MMUnixSocketConnection alloc] initWithCppInstance:connection];
+    } catch (SystemCallException &e) {
+        __MMUnixSocket_FATAL(e);
+    }
+
+    return nil;
 }
 
 - (void)connect {
-    return self->_impl->connect();
+    try {
+        self->_impl->connect();
+    } catch (SystemCallException &e) {
+        __MMUnixSocket_FATAL(e);
+    }
 }
 
 + (int)createSocket {
-    return UnixSocket::createSocket();
+    try {
+        return UnixSocket::createSocket();
+    } catch (SystemCallException &e) {
+        __MMUnixSocket_FATAL(e);
+    }
+
+    return -1;
 }
 
 @end

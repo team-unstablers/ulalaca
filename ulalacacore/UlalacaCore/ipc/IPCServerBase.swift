@@ -12,14 +12,22 @@ public protocol IPCServerDelegate {
 
 open class IPCServerBase {
     public let socketPath: String;
-    private lazy var serverSocket: MMUnixSocket = MMUnixSocket(socketPath)
+    private var serverSocket: MMUnixSocket
+    private var serverRunning: Bool = false
 
     public var delegate: IPCServerDelegate? = nil
 
-    public init(_ socketPath: String) {
+
+    public convenience init(_ socketPath: String) {
+        self.init(with: MMUnixSocket(socketPath), path: socketPath)
+    }
+
+    public init(with socket: MMUnixSocket, path: String) {
+        // TODO: std::run_once
         signal(SIGPIPE, SIG_IGN)
 
-        self.socketPath = socketPath;
+        self.serverSocket = socket
+        self.socketPath = path
     }
 
     public func start() {
@@ -27,8 +35,9 @@ open class IPCServerBase {
         chmod(socketPath.cString(using: .utf8), S_IRWXU | S_IRWXG | S_IRWXO);
 
         serverSocket.listen()
+        serverRunning = true
 
-        while (true) {
+        while (serverRunning) {
             guard let clientSocket = serverSocket.accept() else {
                 continue
             }
@@ -43,6 +52,11 @@ open class IPCServerBase {
                 clientSocket.close()
             }
         }
+    }
+
+    public func stop() {
+        serverRunning = false
+        serverSocket.close()
     }
 
     private func clientLoop(_ client: IPCServerConnection) async {
@@ -83,6 +97,8 @@ public class IPCServerConnection {
         let headerPtr = withUnsafePointer(to: header) { $0 }
         let messagePtr = withUnsafePointer(to: message) { $0 }
 
+        // TODO: written = conneciton.write;
+        //       if (written != size) throw Exception("X(")
         connection.write(headerPtr, size: MemoryLayout.size(ofValue: header))
         connection.write(messagePtr, size: messageLength)
 

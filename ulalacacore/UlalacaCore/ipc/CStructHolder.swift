@@ -5,8 +5,8 @@
 import Foundation
 
 class CStructHolder<T> {
-    let size: Int
-    fileprivate(set) public var buffer: UnsafeMutableRawPointer
+    public let size: Int
+    public var buffer: UnsafeMutableRawPointer
 
     init() {
         let size = MemoryLayout<T>.size
@@ -27,7 +27,7 @@ class CStructHolder<T> {
 
 public extension MMUnixSocketBase {
     func readCStruct<T>(_: T.Type) throws -> T {
-        var holder = CStructHolder<T>()
+        let holder = CStructHolder<T>()
         let bytesRead = try readEx(holder.buffer, size: holder.size)
 
         if (bytesRead != holder.size) {
