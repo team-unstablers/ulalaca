@@ -136,6 +136,7 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
         configuration.pixelFormat = kCVPixelFormatType_32BGRA
         configuration.queueDepth = 1
         configuration.showsCursor = true
+        configuration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(60))
 
 
         let displays = try await SCShareableContent.current.displays
