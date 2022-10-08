@@ -148,7 +148,7 @@ extension ProjectionSession: ScreenUpdateSubscriber {
             let sy = mainViewport?.scaleY(Int(screenResolution.height)) ?? 1.0
 
             let message = ULIPCScreenUpdateCommit(
-                screenRect: rect.toULIPCRect().scale(x: sx, y: sy),
+                screenRect: ULIPCRect(x: 0, y: 0, width: Int16(mainViewport!.width), height: Int16(mainViewport!.height)),
                 bitmapLength: UInt64(length)
             )
         
