@@ -4,6 +4,9 @@ xrdp-powered remote session broker / projector for macOS
 
 ![Screenshot_20220527_171145](https://user-images.githubusercontent.com/964412/170659838-3843d5e9-3372-47f8-940b-4ce183ca5ec9.png)
 
+![image](https://user-images.githubusercontent.com/964412/194804281-0feb38fc-e64e-4327-92cf-d53e43215f5b.png)
+
+
 # NOTE
 
 - **STILL IN HEAVY DEVELOPMENT, NOT SUITABLE FOR PRODUCTION USE YET**
