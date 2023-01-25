@@ -54,6 +54,8 @@ struct SessionProjectorApp: App {
             
         }
     }
+    
+    
 }
 
 class PreferenceWindowDelegate: NSObject, NSWindowDelegate {
@@ -64,6 +66,8 @@ class PreferenceWindowDelegate: NSObject, NSWindowDelegate {
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
+    let logger = createLogger("AppDelegate")
+    
     let screenRecorder = createScreenRecorder()
     let eventInjector = EventInjector()
     let projectionServer = ProjectionServer()
@@ -76,47 +80,56 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             preferenceWindow.delegate = self.preferenceWindowDelegate
             preferenceWindow.setContentSize(NSSize(width: 640, height: 480))
         }
-    }
-    
-
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-        self.initializeApp()
+        
         NSApp.hide(self)
         
-        if (!isLoginSession()) {
-            // TODO
+        if (isAnotherInstanceRunning()) {
+            logger.error("Another instance is running")
+            NSApp.terminate(self)
         }
-
-        // FIXME
-        /*
-        let processInfo = ProcessInfo.processInfo
-        if (processInfo.arguments.first { $0 == "--launch" } != nil) {
-            sleep(3)
-            try! Process.run(URL(fileURLWithPath: "/usr/bin/osascript"), arguments: [
-                "-e",
-                "do shell script \"open -n -W /Library/PrivilegedHelperTools/sessionprojector.app\""
-            ]) { _ in
-                NSApp.terminate(self)
+        
+        if (isLoginSession()) {
+            let processInfo = ProcessInfo.processInfo
+            if (processInfo.arguments.first { $0 == "--launch" } != nil) {
+                sleep(3)
+                try! Process.run(URL(fileURLWithPath: "/usr/bin/osascript"), arguments: [
+                    "-e",
+                    "do shell script \"open -n -W /Library/PrivilegedHelperTools/sessionprojector.app\""
+                ]) { _ in
+                    NSApp.terminate(self)
+                }
+                return;
             }
-            return;
         }
 
         projectionServer.delegate = self
         sesmanClient.delegate = self
-
-        if (!isLoginSession()) {
-            // FIXME!!
-            initializeTrayItem()
-            updateTrayStatusIndicator()
-        }
-        startProjectionServer()
-         */
+    }
+    
+    func isAnotherInstanceRunning() -> Bool {
+        let applications = NSWorkspace.shared.runningApplications
+        let bundleId = Bundle.main.bundleIdentifier
+        let pid = ProcessInfo.processInfo.processIdentifier
         
+        // FIXME: app.uid != self.uid
+        return !(applications.filter { app in
+            app.bundleIdentifier == bundleId && app.processIdentifier != pid
+        }.isEmpty)
+    }
+    
+    
+    
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // Insert code here to initialize your application
+        self.initializeApp()
+        
+        Task {
+            await startProjectionServer()
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+        stopProjectionServer()
     }
 
 
@@ -124,40 +137,38 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
-    func startProjectionServer() {
-        Task {
-            do {
-                try eventInjector.prepare()
-                try await screenRecorder.prepare()
-                try await screenRecorder.start()
+    func startProjectionServer() async {
+        do {
+            try eventInjector.prepare()
+            try await screenRecorder.prepare()
+            try await screenRecorder.start()
 
-                sesmanClient.start()
-                projectionServer.start()
-            } catch {
-                print(error.localizedDescription)
+            sesmanClient.start()
+            projectionServer.start()
+        } catch {
+            print(error.localizedDescription)
 
-                let errorDialog = await NSAlert(error: error)
-                await errorDialog.runModal()
+            let errorDialog = await NSAlert(error: error)
+            await errorDialog.runModal()
 
-                quitApplication()
-            }
-
+            quitApplication()
         }
     }
-
-    func destroyProjectionServer() {
-
-    }
-
-    @objc
-    func quitApplication() {
+    
+    func stopProjectionServer() {
         sesmanClient.announceSelf(
                 ANNOUNCEMENT_TYPE_SESSION_WILL_BE_DESTROYED,
                 endpoint: projectionServer.getSocketPath(),
                 isConsoleSession: true
         )
-        destroyProjectionServer()
+        
+        // sesmanClient.stop()
+        
+        projectionServer.stop()
+    }
 
+    @objc
+    func quitApplication() {
         NSApp.terminate(self)
     }
     

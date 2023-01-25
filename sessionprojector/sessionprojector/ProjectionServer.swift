@@ -15,7 +15,12 @@ protocol ProjectionServerDelegate {
 }
 
 class ProjectionServer {
+    private let logger = createLogger("ProjectionServer")
+    
+    
     private lazy var serverSocket: MMUnixSocket = MMUnixSocket(getSocketPath())
+    private(set) public var isServerRunning = true
+    
     private(set) public var sessions: Array<ProjectionSession> = []
 
     public var delegate: ProjectionServerDelegate?
@@ -34,7 +39,7 @@ class ProjectionServer {
         serverSocket.bind()
         serverSocket.listen()
 
-        while (true) {
+        while (isServerRunning) {
             guard let clientSocket = serverSocket.accept() else {
                 continue
             }
@@ -51,5 +56,19 @@ class ProjectionServer {
                 self.delegate?.projectionServer(sessionClosed: session, id: 0)
             })
         }
+    }
+    
+    func disconnectAll() {
+        sessions.forEach { session in
+            logger.info("closing session #\(session.socket.descriptor())")
+            session.stopSession()
+        }
+    }
+    
+    func stop() {
+        isServerRunning = false
+        
+        disconnectAll()
+        serverSocket.close()
     }
 }
