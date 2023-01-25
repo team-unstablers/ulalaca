@@ -31,6 +31,8 @@
 		F4EBDEBA4A8A0F788B5AD09A /* MMUnixSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD12BA7074383BE25858E /* MMUnixSocket.mm */; };
 		F4EBDECB284B9D1F1F75EFCB /* MMUnixSocket+readEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDBA661B70DFDEA4256BF /* MMUnixSocket+readEx.swift */; };
 		F6950F9828F0147C00374B4F /* IPCServerBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6950F9728F0147C00374B4F /* IPCServerBaseTest.swift */; };
+		F69F5FDD2981197E00B92A14 /* ULObjCTryCatch.h in Headers */ = {isa = PBXBuildFile; fileRef = F69F5FDC2981197E00B92A14 /* ULObjCTryCatch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F69F5FDF298119E500B92A14 /* ObjCTryCatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F5FDE298119E500B92A14 /* ObjCTryCatch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,8 @@
 		F4EBDC0A818ACFB70135D98C /* SystemCallException.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SystemCallException.hpp; sourceTree = "<group>"; };
 		F4EBDD5119DB84ADD85D533B /* CStructHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CStructHolder.swift; sourceTree = "<group>"; };
 		F6950F9728F0147C00374B4F /* IPCServerBaseTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPCServerBaseTest.swift; sourceTree = "<group>"; };
+		F69F5FDC2981197E00B92A14 /* ULObjCTryCatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ULObjCTryCatch.h; sourceTree = "<group>"; };
+		F69F5FDE298119E500B92A14 /* ObjCTryCatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCTryCatch.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +149,8 @@
 				F4EBD013FA202C660C850066 /* String+fromUnsafeCStr.swift */,
 				F4EBD42892A7AD474BAD943E /* String+toUnsafeCStrArray.swift */,
 				F4EBD8D3F052EDE624128A8D /* SessionUtils.swift */,
+				F69F5FDC2981197E00B92A14 /* ULObjCTryCatch.h */,
+				F69F5FDE298119E500B92A14 /* ObjCTryCatch.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -190,6 +196,7 @@
 				F4EBD3DE6ACDB7E8B79CA79D /* UnixSocket.hpp in Headers */,
 				F4EBD50556ECCE5710A9C068 /* broker.h in Headers */,
 				F4EBD01D7EB7CE3A807FD1AB /* _global.h in Headers */,
+				F69F5FDD2981197E00B92A14 /* ULObjCTryCatch.h in Headers */,
 				F4EBD1AA5C6430F1C30FDB7E /* projector.h in Headers */,
 				F4EBDA7C14AAFDD0E76001B1 /* private.h in Headers */,
 			);
@@ -300,6 +307,7 @@
 				F4EBD2A11CB7081E95543A63 /* MMUnixSocketError.swift in Sources */,
 				F4EBDEBA4A8A0F788B5AD09A /* MMUnixSocket.mm in Sources */,
 				F4EBD702B1C32CF0E90779E7 /* UnixSocket.cpp in Sources */,
+				F69F5FDF298119E500B92A14 /* ObjCTryCatch.swift in Sources */,
 				F4EBD0D0C5B0FEA2E844B0A2 /* ULLogger.swift in Sources */,
 				F4EBDCF38EA52D75663892AF /* CStructHolder.swift in Sources */,
 				F4EBDEB94152EB9DF3946358 /* String+fromUnsafeCStr.swift in Sources */,

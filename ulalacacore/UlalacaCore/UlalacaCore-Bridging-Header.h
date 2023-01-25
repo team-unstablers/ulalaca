@@ -14,4 +14,6 @@
 #import "ipc/messages/broker.h"
 #import "ipc/messages/private.h"
 
+#import "utils/ULObjCTryCatch.h"
+
 #endif /* UlalacaCore_Bridging_Header_h */
