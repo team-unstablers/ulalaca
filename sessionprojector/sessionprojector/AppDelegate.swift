@@ -15,8 +15,8 @@ import UlalacaCore
 
 @main
 struct SessionProjectorApp: App {
-    @State
-    var appState = AppState()
+    @StateObject
+    var appState = AppState.instance
     
     @NSApplicationDelegateAdaptor(AppDelegate.self)
     private var appDelegate
@@ -54,8 +54,6 @@ struct SessionProjectorApp: App {
             
         }
     }
-    
-    
 }
 
 class PreferenceWindowDelegate: NSObject, NSWindowDelegate {
@@ -178,11 +176,16 @@ extension AppDelegate: ProjectionServerDelegate {
     func projectionServer(sessionInitiated session: ProjectionSession, id: UInt64) {
         screenRecorder.subscribeUpdate(session)
         session.eventInjector = eventInjector
+        
+        AppState.instance.connections += 1
+        
     }
 
     func projectionServer(sessionClosed session: ProjectionSession, id: UInt64) {
         screenRecorder.unsubscribeUpdate(session)
         session.eventInjector = nil
+        
+        AppState.instance.connections -= 1
     }
 }
 

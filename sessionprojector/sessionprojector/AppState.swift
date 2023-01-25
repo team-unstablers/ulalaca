@@ -25,7 +25,6 @@ enum ScreenRecorderType: String, Identifiable, CaseIterable, Codable {
     
     case avfScreenRecorder = "avfScreenRecorder"
     case scScreenRecorder  = "scScreenRecorder"
-    
 }
 
 protocol BasePreferences: ObservableObject, Codable {
@@ -137,6 +136,8 @@ class UserPreferences: NSObject, BasePreferences {
 }
 
 class AppState: NSObject, ObservableObject {
+    static let instance = AppState()
+    
     @Published
     var globalPreferences: GlobalPreferences
     
