@@ -7,33 +7,89 @@
 //
 
 import Cocoa
+import SwiftUI
 
 import UlalacaCore
 
-@main
-class AppDelegate: NSObject, NSApplicationDelegate {
 
+
+@main
+struct SessionProjectorApp: App {
+    @State
+    var appState = AppState()
+    
+    @NSApplicationDelegateAdaptor(AppDelegate.self)
+    private var appDelegate
+    
+    
+    var body: some Scene {
+        WindowGroup("麗 -Ulalaca-: Session Projector") {
+            PreferencesWindowView()
+                .environmentObject(appState)
+        }
+        
+        MenuBarExtra("SessionProjector Menu", image: "TrayIcon") {
+            Button("\(appState.connections) connection(s)") {
+                
+            }
+            .disabled(true)
+            
+            Divider()
+            
+            Button("Preferences") {
+                appState.showPreferencesWindow()
+            }
+            .keyboardShortcut(",")
+            
+            Divider()
+            
+            Button("About 麗 -Ulalaca-: Session Projector") {
+                
+            }
+            
+            Button("Quit") {
+                NSApp.terminate(self)
+            }
+            .keyboardShortcut("q")
+            
+        }
+    }
+}
+
+class PreferenceWindowDelegate: NSObject, NSWindowDelegate {
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        NSApp.hide(self)
+        return false
+    }
+}
+
+class AppDelegate: NSObject, NSApplicationDelegate {
     let screenRecorder = createScreenRecorder()
     let eventInjector = EventInjector()
     let projectionServer = ProjectionServer()
     let sesmanClient = SessionManagerClient()
-
-    lazy var trayStatusIndicator = NSMenuItem(title: "", action: nil, keyEquivalent: "")
-    lazy var trayMenu: NSMenu = {
-        let menu = NSMenu()
-
-        menu.addItem(trayStatusIndicator)
-        menu.addItem(withTitle: "Quit", action: #selector(quitApplication), keyEquivalent: "q")
-
-        return menu
-    }()
-
-    let trayItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+    
+    private let preferenceWindowDelegate = PreferenceWindowDelegate()
+    
+    private func initializeApp() {
+        if let preferenceWindow = NSApp.windows.first {
+            preferenceWindow.delegate = self.preferenceWindowDelegate
+            preferenceWindow.setContentSize(NSSize(width: 640, height: 480))
+        }
+    }
+    
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
+        self.initializeApp()
+        NSApp.hide(self)
+        
+        if (!isLoginSession()) {
+            // TODO
+        }
 
         // FIXME
+        /*
         let processInfo = ProcessInfo.processInfo
         if (processInfo.arguments.first { $0 == "--launch" } != nil) {
             sleep(3)
@@ -55,8 +111,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             updateTrayStatusIndicator()
         }
         startProjectionServer()
+         */
+        
     }
-
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
@@ -103,30 +160,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         NSApp.terminate(self)
     }
-
-    func initializeTrayItem() {
-        trayItem.menu = trayMenu
-        trayItem.button?.image = NSImage(named: "TrayIcon")
-    }
-
-    func updateTrayStatusIndicator() {
-        trayStatusIndicator.title = "\(projectionServer.sessions.count) connection(s)"
-    }
+    
 }
 
 extension AppDelegate: ProjectionServerDelegate {
     func projectionServer(sessionInitiated session: ProjectionSession, id: UInt64) {
         screenRecorder.subscribeUpdate(session)
         session.eventInjector = eventInjector
-
-        updateTrayStatusIndicator()
     }
 
     func projectionServer(sessionClosed session: ProjectionSession, id: UInt64) {
         screenRecorder.unsubscribeUpdate(session)
         session.eventInjector = nil
-
-        updateTrayStatusIndicator()
     }
 }
 
