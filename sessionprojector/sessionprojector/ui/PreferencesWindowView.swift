@@ -25,8 +25,8 @@ struct PreferencesWindowView: View {
                         VStack(alignment: .leading) {
                             
                             VStack(alignment: .leading) {
-                                Text("Primary Screen Recorder")
-                                Picker("", selection: $appState.primaryScreenRecorder) {
+                                Text("Preferred Screen Recorder")
+                                Picker("", selection: $appState.userPreferences.primaryScreenRecorder) {
                                     ForEach(ScreenRecorderType.allCases) { type in
                                         Text(type.description).tag(type)
                                     }
@@ -42,13 +42,13 @@ struct PreferencesWindowView: View {
                     GroupBox(label: Text("SCScreenRecorder Preferences")) {
                         VStack(alignment: .leading) {
                             VStack {
-                                Toggle("Automatic Framerate", isOn: $appState.autoFramerate)
+                                Toggle("Automatic Framerate", isOn: $appState.userPreferences.autoFramerate)
                             }
                             VStack {
-                                Text("Framerate: \(Int(appState.frameRate)) fps")
-                                    .disabled(appState.autoFramerate)
+                                Text("Framerate: \(Int(appState.userPreferences.framerate)) fps")
+                                    .disabled(appState.userPreferences.autoFramerate)
                                 Slider(
-                                    value: $appState.frameRate,
+                                    value: $appState.userPreferences.framerate,
                                     in: 15...60,
                                     step: 5
                                 ) {
@@ -58,7 +58,7 @@ struct PreferencesWindowView: View {
                                 } maximumValueLabel: {
                                     Text("60")
                                 }
-                                .disabled(appState.autoFramerate)
+                                .disabled(appState.userPreferences.autoFramerate)
                             }
                         }
                     }
@@ -93,10 +93,10 @@ struct PreferencesWindowView: View {
             .frame(maxWidth: .infinity)
             HStack {
                 Button("Save") {
-                    
+                    appState.savePreferences()
                 }
                 Button("Close") {
-                    
+                    appState.hidePreferencesWindow()
                 }
             }
         }.padding(16)
