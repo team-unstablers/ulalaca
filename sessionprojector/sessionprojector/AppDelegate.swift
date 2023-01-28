@@ -65,12 +65,14 @@ class PreferenceWindowDelegate: NSObject, NSWindowDelegate {
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     let logger = createLogger("AppDelegate")
-    
+
     let screenRecorder = createScreenRecorder()
     let eventInjector = EventInjector()
     let projectionServer = ProjectionServer()
     let sesmanClient = SessionManagerClient()
-    
+
+    var pidLock: PIDLock? = nil
+
     private let preferenceWindowDelegate = PreferenceWindowDelegate()
     
     private func initializeApp() {
@@ -80,13 +82,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         NSApp.hide(self)
-        
-        if (isAnotherInstanceRunning()) {
-            logger.error("Another instance is running")
-            NSApp.terminate(self)
-        }
-        
+
         if (isLoginSession()) {
+            // FIXME
             let processInfo = ProcessInfo.processInfo
             if (processInfo.arguments.first { $0 == "--launch" } != nil) {
                 sleep(3)
@@ -98,24 +96,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
                 return;
             }
+        } else {
+            do {
+                pidLock = try PIDLock.acquire(Bundle.main.bundleIdentifier!)
+                logger.info("acquired process lock")
+            } catch {
+                logger.error("failed to acquire process lock: is another instance running?")
+                NSApp.terminate(self)
+            }
         }
 
         projectionServer.delegate = self
         sesmanClient.delegate = self
     }
-    
-    func isAnotherInstanceRunning() -> Bool {
-        let applications = NSWorkspace.shared.runningApplications
-        let bundleId = Bundle.main.bundleIdentifier
-        let pid = ProcessInfo.processInfo.processIdentifier
-        
-        // FIXME: app.uid != self.uid
-        return !(applications.filter { app in
-            app.bundleIdentifier == bundleId && app.processIdentifier != pid
-        }.isEmpty)
-    }
-    
-    
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -127,6 +120,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
+        pidLock = nil
         stopProjectionServer()
     }
 
