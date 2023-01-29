@@ -6,6 +6,10 @@ import Foundation
 
 import UlalacaCore
 
+enum SessionManagerError: LocalizedError {
+    
+}
+
 class SessionManagerClient: IPCClientBase {
     init() {
         super.init("/var/run/ulalaca_sesman.sock")
@@ -31,5 +35,13 @@ class SessionManagerClient: IPCClientBase {
                 (isLoginSession   ? ANNOUNCEMENT_FLAG_IS_LOGIN_SESSION : 0)
 
         writeMessage(message, type: TYPE_ANNOUNCEMENT)
+    }
+    
+    override func start() throws {
+        do {
+            try super.start()
+        } catch let error as NestedNSExceptionError {
+            // ...
+        }
     }
 }

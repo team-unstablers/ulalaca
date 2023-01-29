@@ -24,11 +24,11 @@ open class IPCClientBase {
         self.socketPath = socketPath;
     }
 
-    public func read<T>(_ type: T.Type) throws -> T {
+    open func read<T>(_ type: T.Type) throws -> T {
         return try self.socket.readCStruct(type)
     }
 
-    public func writeMessage<T>(_ message: T, type: UInt16, replyTo: UInt64 = 0) {
+    open func writeMessage<T>(_ message: T, type: UInt16, replyTo: UInt64 = 0) {
         let messageLength = MemoryLayout.size(ofValue: message)
         let header = ULIPCHeader(
                 messageType: type,
@@ -59,13 +59,17 @@ open class IPCClientBase {
         }
     }
 
-    public func start() {
-        Task {
-            sleep(5) // FIXME: wait until server starts
+    open func start() throws {
+        sleep(5) // FIXME: wait until server starts
+        
+        try ObjC.evaluate {
             socket.connect()
             delegate?.connected()
+        }
+        Task {
             await clientLoop()
             socket.close()
         }
+
     }
 }

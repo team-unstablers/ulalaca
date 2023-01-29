@@ -17,6 +17,7 @@ enum ProjectionSessionError: Error {
 
 class ProjectionSession {
     private let logger: ULLogger
+    
 
     public let socket: MMUnixSocketConnection
     public var eventInjector: EventInjector? = nil
@@ -24,6 +25,8 @@ class ProjectionSession {
     public let mainDisplayId = CGMainDisplayID()
     public let serialQueue = DispatchQueue(label: "ProjectionSession")
     public let updateLock = DispatchSemaphore(value: 1)
+    
+    private (set) public var isSessionRunning: Bool = true
 
     private(set) public var messageId: UInt64 = 1;
     private(set) public var suppressOutput: Bool = true
@@ -46,9 +49,14 @@ class ProjectionSession {
             }
         }
     }
+    
+    func stopSession() {
+        self.isSessionRunning = false
+        self.socket.close()
+    }
 
     private func sessionLoop() async throws {
-        while (true) {
+        while (isSessionRunning) {
             let header = try socket.readCStruct(ULIPCHeader.self)
 
             switch (header.messageType) {
