@@ -21,7 +21,6 @@ struct SessionProjectorApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self)
     private var appDelegate
     
-    
     var body: some Scene {
         WindowGroup("麗 -Ulalaca-: Session Projector") {
             PreferencesWindowView()
@@ -44,7 +43,7 @@ struct SessionProjectorApp: App {
             Divider()
             
             Button("About 麗 -Ulalaca-: Session Projector") {
-                
+                appState.showAboutAppWindow()
             }
             
             Button("Quit") {
@@ -54,6 +53,8 @@ struct SessionProjectorApp: App {
             
         }
     }
+    
+    
 }
 
 class PreferenceWindowDelegate: NSObject, NSWindowDelegate {
@@ -79,9 +80,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let preferenceWindow = NSApp.windows.first {
             preferenceWindow.delegate = self.preferenceWindowDelegate
             preferenceWindow.setContentSize(NSSize(width: 640, height: 480))
+            preferenceWindow.setIsVisible(false)
         }
-        
-        NSApp.hide(self)
 
         if (isLoginSession()) {
             // FIXME

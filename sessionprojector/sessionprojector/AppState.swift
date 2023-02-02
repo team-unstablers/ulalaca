@@ -154,6 +154,8 @@ class AppState: NSObject, ObservableObject {
         }
     }
     
+    var aboutAppWindow: AboutAppWindow? = nil
+    
     
     override init() {
         let fileManager = FileManager.default
@@ -173,12 +175,24 @@ class AppState: NSObject, ObservableObject {
     }
     
     func showPreferencesWindow() {
-        NSApp.unhide(self)
+        preferencesWindow.setIsVisible(true)
         preferencesWindow.makeKeyAndOrderFront(self)
         NSApp.activate(ignoringOtherApps: true)
     }
     
     func hidePreferencesWindow() {
-        NSApp.hide(self)
+        preferencesWindow.setIsVisible(false)
+    }
+    
+    func showAboutAppWindow() {
+        guard let aboutAppWindow = aboutAppWindow else {
+            aboutAppWindow = AboutAppWindow()
+            showAboutAppWindow()
+            return
+        }
+        
+        aboutAppWindow.show()
+        aboutAppWindow.makeKeyAndOrderFront(self)
+        NSApp.activate(ignoringOtherApps: true)
     }
 }

@@ -42,10 +42,10 @@ struct PreferencesWindowView: View {
                     GroupBox(label: Text("SCScreenRecorder Preferences")) {
                         VStack(alignment: .leading) {
                             VStack {
-                                Toggle("Automatic Framerate", isOn: $appState.userPreferences.autoFramerate)
+                                Toggle("Set Update Interval Automatically", isOn: $appState.userPreferences.autoFramerate)
                             }
                             VStack {
-                                Text("Framerate: \(Int(appState.userPreferences.framerate)) fps")
+                                Text("Update Interval: 1 / \(Int(appState.userPreferences.framerate))")
                                     .disabled(appState.userPreferences.autoFramerate)
                                 Slider(
                                     value: $appState.userPreferences.framerate,
@@ -69,6 +69,7 @@ struct PreferencesWindowView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
+            /*
             HStack {
                 GroupBox(label: Text("Diagnostics")) {
                     VStack(alignment: .leading) {
@@ -82,6 +83,7 @@ struct PreferencesWindowView: View {
                 .frame(maxWidth: .infinity)
             }
             .frame(maxWidth: .infinity)
+             */
             HStack {
                 GroupBox(label: Text("Current Sessions")) {
                     List {

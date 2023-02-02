@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1BA41E977C738BC865DFA0B1 /* PowerAssertionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA41B1B7ED4F046AA91E399 /* PowerAssertionManager.swift */; };
 		85721156283B607000C36D5F /* UlalacaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85721155283B607000C36D5F /* UlalacaCore.framework */; };
 		85721157283B607000C36D5F /* UlalacaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 85721155283B607000C36D5F /* UlalacaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4EBD136805519C3F8D8314A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */; };
@@ -22,6 +23,9 @@
 		F4EBDBE0AAD914D9EFF51690 /* EventInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD26D71490B77A9B122E0 /* EventInjector.swift */; };
 		F4EBDCD57BF1530790AC739E /* SCScreenRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD0BFDAED6400792ABDFA /* SCScreenRecorder.swift */; };
 		F4EBDF22913EDAFF95D17357 /* ProjectionServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDB589E76D41675D27BF0 /* ProjectionServer.swift */; };
+		F64418B0298554450046032B /* PIDLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64418AF298554450046032B /* PIDLock.swift */; };
+		F692C1ED298BD565004C584F /* AboutAppWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F692C1EC298BD565004C584F /* AboutAppWindowView.swift */; };
+		F692C1F8298BE6D5004C584F /* AboutAppWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F692C1F7298BE6D5004C584F /* AboutAppWindow.swift */; };
 		F69F5FD72980F3F600B92A14 /* PreferencesWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F5FD62980F3F600B92A14 /* PreferencesWindowView.swift */; };
 		F69F5FD9298102D200B92A14 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F5FD8298102D200B92A14 /* AppState.swift */; };
 		F69F5FE129812B0000B92A14 /* Encodable+toJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F5FE029812B0000B92A14 /* Encodable+toJSON.swift */; };
@@ -42,6 +46,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1BA41B1B7ED4F046AA91E399 /* PowerAssertionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerAssertionManager.swift; sourceTree = "<group>"; };
 		85721155283B607000C36D5F /* UlalacaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UlalacaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85935F5F281FBB1D0078D16A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8599DA13281D109C00D3BDA8 /* sessionprojector-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = "sessionprojector-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -60,6 +65,9 @@
 		F4EBDEC6CB9E4322333D6C24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		F4EBDFDEDFC5A96EE4B3F91C /* SessionManagerClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManagerClient.swift; sourceTree = "<group>"; };
 		F4EBDFE9D9C626281B0C28CA /* ScreenRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenRecorder.swift; sourceTree = "<group>"; };
+		F64418AF298554450046032B /* PIDLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PIDLock.swift; sourceTree = "<group>"; };
+		F692C1EC298BD565004C584F /* AboutAppWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAppWindowView.swift; sourceTree = "<group>"; };
+		F692C1F7298BE6D5004C584F /* AboutAppWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAppWindow.swift; sourceTree = "<group>"; };
 		F69F5FD62980F3F600B92A14 /* PreferencesWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowView.swift; sourceTree = "<group>"; };
 		F69F5FD8298102D200B92A14 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		F69F5FE029812B0000B92A14 /* Encodable+toJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+toJSON.swift"; sourceTree = "<group>"; };
@@ -106,6 +114,8 @@
 				F4EBDCBA0826CA18FB1E77CF /* ULIPCRect+scale.swift */,
 				F4EBD846347B06D7E7B73FC1 /* CGRect+toULIPCRect.swift */,
 				F69F5FE029812B0000B92A14 /* Encodable+toJSON.swift */,
+				F64418AF298554450046032B /* PIDLock.swift */,
+				1BA41B1B7ED4F046AA91E399 /* PowerAssertionManager.swift */,
 			);
 			path = sessionprojector;
 			sourceTree = "<group>";
@@ -140,6 +150,8 @@
 			isa = PBXGroup;
 			children = (
 				F69F5FD62980F3F600B92A14 /* PreferencesWindowView.swift */,
+				F692C1EC298BD565004C584F /* AboutAppWindowView.swift */,
+				F692C1F7298BE6D5004C584F /* AboutAppWindow.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -221,15 +233,19 @@
 				F69F5FD72980F3F600B92A14 /* PreferencesWindowView.swift in Sources */,
 				F4EBD76B113987454A7E147B /* ScreenRecorder.swift in Sources */,
 				F69F5FD9298102D200B92A14 /* AppState.swift in Sources */,
+				F64418B0298554450046032B /* PIDLock.swift in Sources */,
 				F4EBDF22913EDAFF95D17357 /* ProjectionServer.swift in Sources */,
 				F4EBD455F06C38A5ABA1EA20 /* ProjectionSession.swift in Sources */,
 				F4EBDBE0AAD914D9EFF51690 /* EventInjector.swift in Sources */,
+				F692C1F8298BE6D5004C584F /* AboutAppWindow.swift in Sources */,
+				F692C1ED298BD565004C584F /* AboutAppWindowView.swift in Sources */,
 				F4EBD35869E7EEC01C4CE48D /* SessionManagerClient.swift in Sources */,
 				F4EBDCD57BF1530790AC739E /* SCScreenRecorder.swift in Sources */,
 				F4EBD732593CF09DECD7B40A /* AVFScreenRecorder.swift in Sources */,
 				F4EBD3107D60426E249C21FD /* ULIPCRect+scale.swift in Sources */,
 				F4EBD18EFC3BFC5565288F9C /* CGRect+toULIPCRect.swift in Sources */,
 				F69F5FE129812B0000B92A14 /* Encodable+toJSON.swift in Sources */,
+				1BA41E977C738BC865DFA0B1 /* PowerAssertionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
