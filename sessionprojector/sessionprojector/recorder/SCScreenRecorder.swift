@@ -57,6 +57,7 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
 
     private var currentScreenResolution = CGSize(width: 0, height: 0)
 
+    private var nilWindow: NilWindow? = nil
     // HACK
     private var this: SCScreenRecorder!
 
@@ -131,6 +132,8 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
     }
 
     func prepare() async throws {
+        self.nilWindow = await NilWindow()
+        
         let configuration = SCStreamConfiguration()
 
         configuration.pixelFormat = kCVPixelFormatType_32BGRA
@@ -138,12 +141,13 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
         configuration.showsCursor = true
         configuration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(60))
 
-
         let displays = try await SCShareableContent.current.displays
-        let sessionProjectorApp = try await SCShareableContent.current.applications.filter { app in
-            // FIXME: hard-coded bundle id
-            app.bundleIdentifier == "pl.unstabler.ulalaca.sessionprojector"
-        }.first!
+        let nilWindowID = await nilWindow!.windowNumber
+        guard let nilWindowHandle = try await SCShareableContent.current.windows.filter { window in
+            return window.windowID == nilWindowID
+        }.first else {
+            throw ScreenRecorderError.initializationError
+        }
 
         guard let primaryDisplay = displays.first else {
             throw ScreenRecorderError.initializationError
@@ -155,8 +159,8 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
         // since macOS 12.3↑, passing empty array to excludingWindows breaks SCStream
         let filter = SCContentFilter(
                 display: primaryDisplay,
-                excludingApplications: [sessionProjectorApp],
-                exceptingWindows: []
+                excludingApplications: [],
+                exceptingWindows: [nilWindowHandle]
         )
 
         stream = SCStream(filter: filter, configuration: configuration, delegate: self)

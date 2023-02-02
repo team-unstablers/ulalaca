@@ -26,6 +26,7 @@
 		F64418B0298554450046032B /* PIDLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64418AF298554450046032B /* PIDLock.swift */; };
 		F692C1ED298BD565004C584F /* AboutAppWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F692C1EC298BD565004C584F /* AboutAppWindowView.swift */; };
 		F692C1F8298BE6D5004C584F /* AboutAppWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F692C1F7298BE6D5004C584F /* AboutAppWindow.swift */; };
+		F692C1FB298BF3C6004C584F /* NilWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F692C1FA298BF3C6004C584F /* NilWindow.swift */; };
 		F69F5FD72980F3F600B92A14 /* PreferencesWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F5FD62980F3F600B92A14 /* PreferencesWindowView.swift */; };
 		F69F5FD9298102D200B92A14 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F5FD8298102D200B92A14 /* AppState.swift */; };
 		F69F5FE129812B0000B92A14 /* Encodable+toJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F5FE029812B0000B92A14 /* Encodable+toJSON.swift */; };
@@ -68,6 +69,7 @@
 		F64418AF298554450046032B /* PIDLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PIDLock.swift; sourceTree = "<group>"; };
 		F692C1EC298BD565004C584F /* AboutAppWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAppWindowView.swift; sourceTree = "<group>"; };
 		F692C1F7298BE6D5004C584F /* AboutAppWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAppWindow.swift; sourceTree = "<group>"; };
+		F692C1FA298BF3C6004C584F /* NilWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NilWindow.swift; sourceTree = "<group>"; };
 		F69F5FD62980F3F600B92A14 /* PreferencesWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowView.swift; sourceTree = "<group>"; };
 		F69F5FD8298102D200B92A14 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		F69F5FE029812B0000B92A14 /* Encodable+toJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+toJSON.swift"; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 		F4EBD04EE5384ECCE555441A /* sessionprojector */ = {
 			isa = PBXGroup;
 			children = (
+				F692C1F9298BF395004C584F /* recorder */,
 				F69F5FD22980F17400B92A14 /* ui */,
 				85935F5F281FBB1D0078D16A /* Info.plist */,
 				F4EBD72F7A1676E55BB21493 /* Assets.xcassets */,
@@ -103,14 +106,11 @@
 				F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */,
 				F69F5FD8298102D200B92A14 /* AppState.swift */,
 				F4EBD2D2B450575F0A669D2E /* MainMenu.xib */,
-				F4EBDFE9D9C626281B0C28CA /* ScreenRecorder.swift */,
 				F4EBDB589E76D41675D27BF0 /* ProjectionServer.swift */,
 				8599DA13281D109C00D3BDA8 /* sessionprojector-Bridging-Header.h */,
 				F4EBDEADE7680E1D1466830F /* ProjectionSession.swift */,
 				F4EBD26D71490B77A9B122E0 /* EventInjector.swift */,
 				F4EBDFDEDFC5A96EE4B3F91C /* SessionManagerClient.swift */,
-				F4EBD0BFDAED6400792ABDFA /* SCScreenRecorder.swift */,
-				F4EBD55AD46E2D55483DA879 /* AVFScreenRecorder.swift */,
 				F4EBDCBA0826CA18FB1E77CF /* ULIPCRect+scale.swift */,
 				F4EBD846347B06D7E7B73FC1 /* CGRect+toULIPCRect.swift */,
 				F69F5FE029812B0000B92A14 /* Encodable+toJSON.swift */,
@@ -146,12 +146,23 @@
 			);
 			sourceTree = "<group>";
 		};
+		F692C1F9298BF395004C584F /* recorder */ = {
+			isa = PBXGroup;
+			children = (
+				F4EBDFE9D9C626281B0C28CA /* ScreenRecorder.swift */,
+				F4EBD0BFDAED6400792ABDFA /* SCScreenRecorder.swift */,
+				F4EBD55AD46E2D55483DA879 /* AVFScreenRecorder.swift */,
+			);
+			path = recorder;
+			sourceTree = "<group>";
+		};
 		F69F5FD22980F17400B92A14 /* ui */ = {
 			isa = PBXGroup;
 			children = (
 				F69F5FD62980F3F600B92A14 /* PreferencesWindowView.swift */,
 				F692C1EC298BD565004C584F /* AboutAppWindowView.swift */,
 				F692C1F7298BE6D5004C584F /* AboutAppWindow.swift */,
+				F692C1FA298BF3C6004C584F /* NilWindow.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -242,6 +253,7 @@
 				F4EBD35869E7EEC01C4CE48D /* SessionManagerClient.swift in Sources */,
 				F4EBDCD57BF1530790AC739E /* SCScreenRecorder.swift in Sources */,
 				F4EBD732593CF09DECD7B40A /* AVFScreenRecorder.swift in Sources */,
+				F692C1FB298BF3C6004C584F /* NilWindow.swift in Sources */,
 				F4EBD3107D60426E249C21FD /* ULIPCRect+scale.swift in Sources */,
 				F4EBD18EFC3BFC5565288F9C /* CGRect+toULIPCRect.swift in Sources */,
 				F69F5FE129812B0000B92A14 /* Encodable+toJSON.swift in Sources */,
