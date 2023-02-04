@@ -10,6 +10,7 @@ enum PowerAssertionType {
     case preventUserIdleSystemSleep
     case preventUserIdleDisplaySleep
     case preventSystemSleep
+    case declareUserIsActive
     // case noIdleSleep
     // case noDisplaySleep
 
@@ -23,7 +24,10 @@ enum PowerAssertionType {
 
         case .preventSystemSleep:
             return "-s"
+        case .declareUserIsActive:
+            return "-u"
         }
+
     }
 }
 
@@ -35,13 +39,13 @@ enum PowerAssertionType {
 class PowerAssertion {
     private let logger = createLogger("PowerAssertion")
 
-    public let type: PowerAssertionType
+    public let types: Set<PowerAssertionType>
     public let timeout: Int?
 
     private var caffeinateProcess: Process? = nil
 
-    init(for type: PowerAssertionType, timeout: Int? = nil) {
-        self.type = type
+    init(for types: Set<PowerAssertionType>, timeout: Int? = nil) {
+        self.types = types
         self.timeout = timeout
     }
 
@@ -52,7 +56,9 @@ class PowerAssertion {
     private func createFlags() -> Array<String> {
         var flags: Array<String> = []
 
-        flags.append(type.asCaffeinateFlag())
+        types.forEach { type in
+            flags.append(type.asCaffeinateFlag())
+        }
 
         if let timeout = timeout {
             flags.append("-t")
