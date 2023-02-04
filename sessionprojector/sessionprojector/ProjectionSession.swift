@@ -21,10 +21,12 @@ class ProjectionSession {
     public let socket: MMUnixSocketConnection
     public var eventInjector: EventInjector? = nil
 
+    private var powerAssertion: PowerAssertion? = nil
+
     public let mainDisplayId = CGMainDisplayID()
     public let serialQueue = DispatchQueue(label: "ProjectionSession")
 
-    private (set) public var isSessionRunning: Bool = true
+    private(set) public var isSessionRunning: Bool = true
 
     private(set) public var messageId: UInt64 = 1;
     private(set) public var suppressOutput: Bool = true
@@ -36,11 +38,16 @@ class ProjectionSession {
         self.socket = socket
 
         self.logger = createLogger("ProjectionSession (fd \(self.socket.descriptor()))")
+        self.powerAssertion = PowerAssertion(
+            for: [.declareUserIsActive, .preventUserIdleDisplaySleep, .preventUserIdleSystemSleep]
+        )
     }
 
     func startSession(errorHandler: @escaping (Error) -> Void) {
         Task {
             do {
+                try self.powerAssertion?.create()
+
                 try await sessionLoop()
             } catch {
                 errorHandler(error)
@@ -150,11 +157,15 @@ extension ProjectionSession: ScreenUpdateSubscriber {
             let pointer = CFDataGetBytePtr(rawData)!
             let length = CFDataGetLength(rawData)
 
-            let sx = mainViewport?.scaleX(Int(screenResolution.width)) ?? 1.0
-            let sy = mainViewport?.scaleY(Int(screenResolution.height)) ?? 1.0
+            guard let mainViewport = self.mainViewport else {
+                return
+            }
+
+            let sx = mainViewport.scaleX(Int(screenResolution.width)) ?? 1.0
+            let sy = mainViewport.scaleY(Int(screenResolution.height)) ?? 1.0
 
             let message = ULIPCScreenUpdateCommit(
-                screenRect: ULIPCRect(x: 0, y: 0, width: Int16(mainViewport!.width), height: Int16(mainViewport!.height)),
+                screenRect: ULIPCRect(x: 0, y: 0, width: Int16(mainViewport.width), height: Int16(mainViewport.height)),
                 bitmapLength: UInt64(length)
             )
         
