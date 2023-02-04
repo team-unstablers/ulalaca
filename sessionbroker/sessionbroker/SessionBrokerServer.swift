@@ -14,7 +14,9 @@ class SessionBrokerServer: IPCServerBase {
     private let userAuthenticator = UserAuthenticator()
 
     init() {
-        super.init("/var/run/ulalaca_broker.sock")
+        let socketPath = "/var/run/ulalaca_broker.sock"
+
+        super.init(with: MMUnixSocket(socketPath), path: socketPath)
         self.delegate = self
     }
 

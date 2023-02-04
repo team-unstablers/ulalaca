@@ -15,7 +15,9 @@ class SessionManagerServer: IPCServerBase {
     private let sessionManager = ProjectorManager.instance
 
     init() {
-        super.init("/var/run/ulalaca_sesman.sock")
+        let socketPath = "/var/run/ulalaca_sesman.sock"
+
+        super.init(with: MMUnixSocket(socketPath), path: socketPath)
         self.delegate = self
     }
 }
