@@ -17,15 +17,13 @@ enum ProjectionSessionError: Error {
 
 class ProjectionSession {
     private let logger: ULLogger
-    
 
     public let socket: MMUnixSocketConnection
     public var eventInjector: EventInjector? = nil
 
     public let mainDisplayId = CGMainDisplayID()
     public let serialQueue = DispatchQueue(label: "ProjectionSession")
-    public let updateLock = DispatchSemaphore(value: 1)
-    
+
     private (set) public var isSessionRunning: Bool = true
 
     private(set) public var messageId: UInt64 = 1;
