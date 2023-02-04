@@ -146,6 +146,9 @@ class AppState: NSObject, ObservableObject {
 
     @Published
     var connections: Int = 0
+
+    @Published
+    var isScreenLocked: Bool = false
     
     
     var preferencesWindow: NSWindow {

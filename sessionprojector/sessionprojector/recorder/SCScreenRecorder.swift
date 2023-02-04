@@ -49,6 +49,9 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
     private static let staticLogger = createLogger("SCScreenRecorder::*")
     private let logger = createLogger("SCScreenRecorder")
 
+    public var delegate: ScreenRecorderDelegate? = nil
+    public let delegateQueue = DispatchQueue(label: "SCScreenRecorderDelegateQueue")
+
     private var ciContext: CIContext
 
     private var stream: SCStream?
@@ -61,40 +64,13 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
     // HACK
     private var this: SCScreenRecorder!
 
-
     private var streamQueue = DispatchQueue(
             label: "UlalacaStreamRecorder",
             qos: .background
     )
 
-    private static func createCoreImageContext(useMetal: Bool = true) -> CIContext {
-        staticLogger.debug("creating CIContext")
-
-        if let ciContext = NSGraphicsContext.current?.ciContext {
-            staticLogger.debug("acquired CIContext from NSGraphicsContext.current")
-            return ciContext
-        }
-
-        if (useMetal) {
-            if let metalDevice = MTLCreateSystemDefaultDevice() {
-                staticLogger.debug("created CIContext using Metal API")
-                return CIContext(mtlDevice: metalDevice)
-            }
-        }
-
-        if let cgContext = NSGraphicsContext.current?.cgContext {
-            staticLogger.debug("created CIContext using cgContext")
-            return CIContext(cgContext: cgContext)
-        } else {
-            staticLogger.error("creating CIContext using software renderer, this will impact performance (is hardware acceleration available?)")
-            return CIContext(options: [
-                .useSoftwareRenderer: true
-            ])
-        }
-    }
-
     override init() {
-        self.ciContext = SCScreenRecorder.createCoreImageContext(useMetal: true)
+        self.ciContext = createCoreImageContext(useMetal: true)
         super.init()
 
         self.this = self
@@ -131,26 +107,44 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
         subscriptions.remove(at: index)
     }
 
+    func moveSubscribers(to other: ScreenRecorder) {
+        let subscriptions = Array<ScreenUpdateSubscriber>(self.subscriptions)
+
+        subscriptions.forEach { subscriber in
+            self.unsubscribeUpdate(subscriber)
+            other.subscribeUpdate(subscriber)
+        }
+    }
+
     func prepare() async throws {
         self.nilWindow = await NilWindow()
         
         let configuration = SCStreamConfiguration()
+        let autoFramerate = AppState.instance
+                .userPreferences
+                .autoFramerate
+        let frameRate = AppState.instance
+                .userPreferences
+                .framerate
 
         configuration.pixelFormat = kCVPixelFormatType_32BGRA
         configuration.queueDepth = 1
         configuration.showsCursor = true
-        configuration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(60))
+
+        if (!autoFramerate) {
+            configuration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(Int(frameRate)))
+        }
 
         let displays = try await SCShareableContent.current.displays
         let nilWindowID = await nilWindow!.windowNumber
         guard let nilWindowHandle = try await SCShareableContent.current.windows.filter { window in
             return window.windowID == nilWindowID
         }.first else {
-            throw ScreenRecorderError.initializationError
+            throw ScreenRecorderError.initializationError(reason: "could not found nilWindow handle")
         }
 
         guard let primaryDisplay = displays.first else {
-            throw ScreenRecorderError.initializationError
+            throw ScreenRecorderError.initializationError(reason: "primary display is not available")
         }
 
         configuration.width = primaryDisplay.width
@@ -165,7 +159,7 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
 
         stream = SCStream(filter: filter, configuration: configuration, delegate: self)
         guard let stream = stream else {
-            throw ScreenRecorderError.initializationError
+            throw ScreenRecorderError.initializationError(reason: "could not open stream")
         }
 
         try stream.addStreamOutput(self, type: .screen, sampleHandlerQueue: streamQueue)
@@ -186,7 +180,11 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
 
 extension SCScreenRecorder: SCStreamDelegate {
     public func stream(_ stream: SCStream, didStopWithError error: Error) {
-        print(error.localizedDescription)
+        logger.error("didStopWithError: \(error.localizedDescription)")
+
+        delegateQueue.async {
+            self.delegate?.screenRecorder(didStopWithError: error)
+        }
     }
 }
 
@@ -248,33 +246,6 @@ extension SCScreenRecorder: SCStreamOutput {
             CVPixelBufferUnlockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
             subscriber.screenReady(image: image!, rect: rect)
         }
-
     }
 }
 
-fileprivate extension CMSampleBuffer {
-    func resize(size desiredSize: CGSize, context: CIContext) -> CVPixelBuffer {
-        let imageBuffer = self.imageBuffer!
-
-        var outPixelBuffer: CVPixelBuffer? = nil
-        let result = CVPixelBufferCreate(
-            nil,
-            Int(desiredSize.width), Int(desiredSize.height),
-            CVPixelBufferGetPixelFormatType(imageBuffer),
-            nil,
-            &outPixelBuffer
-        )
-
-        let size = CVImageBufferGetEncodedSize(imageBuffer)
-        let ciImage = CIImage(cvImageBuffer: imageBuffer)
-
-        let sx = CGFloat(desiredSize.width) / CGFloat(size.width)
-        let sy = CGFloat(desiredSize.height) / CGFloat(size.height)
-
-        let scale = CGAffineTransform(scaleX: sx, y: sy)
-        let scaledImage = ciImage.transformed(by: scale)
-        context.render(scaledImage, to: outPixelBuffer!)
-
-        return outPixelBuffer!
-    }
-}

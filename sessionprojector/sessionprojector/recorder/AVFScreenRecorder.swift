@@ -5,6 +5,7 @@
 import Foundation
 
 import CoreGraphics
+import CoreImage
 import VideoToolbox
 import AVFoundation
 
@@ -13,6 +14,10 @@ class AVFScreenRecorder: NSObject, ScreenRecorder {
             label: "UlalacaAVFStreamRecorder",
             qos: .userInteractive
     )
+
+    public var delegate: ScreenRecorderDelegate? = nil
+
+    private var ciContext: CIContext
 
     private var captureSession = AVCaptureSession()
 
@@ -23,6 +28,7 @@ class AVFScreenRecorder: NSObject, ScreenRecorder {
     private var prevDisplayTime: UInt64 = 0
 
     override init() {
+        self.ciContext = createCoreImageContext(useMetal: true)
         super.init()
     }
 
@@ -41,6 +47,15 @@ class AVFScreenRecorder: NSObject, ScreenRecorder {
         }) else { return }
 
         subscriptions.remove(at: index)
+    }
+
+    func moveSubscribers(to other: ScreenRecorder) {
+        let subscriptions = Array<ScreenUpdateSubscriber>(self.subscriptions)
+
+        subscriptions.forEach { subscriber in
+            self.unsubscribeUpdate(subscriber)
+            other.subscribeUpdate(subscriber)
+        }
     }
 
     func prepare() async throws {
@@ -102,10 +117,35 @@ extension AVFScreenRecorder: AVCaptureVideoDataOutputSampleBufferDelegate {
 
         let contentRect = CGRect(x: 0, y: 0, width: image!.width, height: image!.height)
         subscriptions.forEach { $0.screenUpdated(where: contentRect) }
-        subscriptions.forEach { $0.screenReady(image: image!, rect: contentRect) }
+        subscriptions.forEach { subscriber in
+            if (!subscriber.suppressOutput) {
+                notifyScreenReady(which: sampleBuffer, rect: contentRect, to: subscriber)
+            }
+        }
     }
 
     public func captureOutput(_ output: AVCaptureOutput, didDrop sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
     }
+
+    /**
+     FIXME: duplicated code
+     */
+    func notifyScreenReady(which sampleBuffer: CMSampleBuffer, rect: CGRect, to subscriber: ScreenUpdateSubscriber) {
+        var image: CGImage?
+
+        if let viewportInfo = subscriber.mainViewport {
+            let pixelBuffer = sampleBuffer.resize(size: viewportInfo.toCGSize(), context: ciContext)
+            CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
+            VTCreateCGImageFromCVPixelBuffer(pixelBuffer, options: nil, imageOut: &image)
+            CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly)
+            subscriber.screenReady(image: image!, rect: CGRect(x: 0, y: 0, width: Int(viewportInfo.width), height: Int(viewportInfo.height)))
+        } else {
+            CVPixelBufferLockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
+            VTCreateCGImageFromCVPixelBuffer(sampleBuffer.imageBuffer!, options: nil, imageOut: &image)
+            CVPixelBufferUnlockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
+            subscriber.screenReady(image: image!, rect: rect)
+        }
+    }
+
 }
 

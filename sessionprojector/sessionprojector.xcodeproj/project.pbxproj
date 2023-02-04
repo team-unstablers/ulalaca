@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1BA41E977C738BC865DFA0B1 /* PowerAssertionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA41B1B7ED4F046AA91E399 /* PowerAssertionManager.swift */; };
+		1BA4164B01ECBFA46DAA7D41 /* createCoreImageContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA41F871456A0A8B6365728 /* createCoreImageContext.swift */; };
+		1BA4170D7F7B03360290F234 /* CMSampleBuffer+resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA41E8FB5AF341481797B68 /* CMSampleBuffer+resize.swift */; };
+		1BA417EB6724EAD6DCAECF4D /* ScreenLockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA41DE4C1D66522E666A922 /* ScreenLockObserver.swift */; };
+		1BA41E977C738BC865DFA0B1 /* PowerAssertion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA41B1B7ED4F046AA91E399 /* PowerAssertion.swift */; };
 		85721156283B607000C36D5F /* UlalacaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85721155283B607000C36D5F /* UlalacaCore.framework */; };
 		85721157283B607000C36D5F /* UlalacaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 85721155283B607000C36D5F /* UlalacaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4EBD136805519C3F8D8314A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD3D9F922ED6C0BBA9607 /* AppDelegate.swift */; };
@@ -47,7 +50,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1BA41B1B7ED4F046AA91E399 /* PowerAssertionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerAssertionManager.swift; sourceTree = "<group>"; };
+		1BA41B1B7ED4F046AA91E399 /* PowerAssertion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerAssertion.swift; sourceTree = "<group>"; };
+		1BA41DE4C1D66522E666A922 /* ScreenLockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenLockObserver.swift; sourceTree = "<group>"; };
+		1BA41E8FB5AF341481797B68 /* CMSampleBuffer+resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CMSampleBuffer+resize.swift"; sourceTree = "<group>"; };
+		1BA41F871456A0A8B6365728 /* createCoreImageContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = createCoreImageContext.swift; sourceTree = "<group>"; };
 		85721155283B607000C36D5F /* UlalacaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UlalacaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85935F5F281FBB1D0078D16A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8599DA13281D109C00D3BDA8 /* sessionprojector-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = "sessionprojector-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -87,6 +93,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1BA416252F6CD6425DC1DC00 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				1BA41DE4C1D66522E666A922 /* ScreenLockObserver.swift */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
 		85E99EB22832878F00743D34 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,7 +129,8 @@
 				F4EBD846347B06D7E7B73FC1 /* CGRect+toULIPCRect.swift */,
 				F69F5FE029812B0000B92A14 /* Encodable+toJSON.swift */,
 				F64418AF298554450046032B /* PIDLock.swift */,
-				1BA41B1B7ED4F046AA91E399 /* PowerAssertionManager.swift */,
+				1BA41B1B7ED4F046AA91E399 /* PowerAssertion.swift */,
+				1BA416252F6CD6425DC1DC00 /* utils */,
 			);
 			path = sessionprojector;
 			sourceTree = "<group>";
@@ -152,6 +167,8 @@
 				F4EBDFE9D9C626281B0C28CA /* ScreenRecorder.swift */,
 				F4EBD0BFDAED6400792ABDFA /* SCScreenRecorder.swift */,
 				F4EBD55AD46E2D55483DA879 /* AVFScreenRecorder.swift */,
+				1BA41E8FB5AF341481797B68 /* CMSampleBuffer+resize.swift */,
+				1BA41F871456A0A8B6365728 /* createCoreImageContext.swift */,
 			);
 			path = recorder;
 			sourceTree = "<group>";
@@ -257,7 +274,10 @@
 				F4EBD3107D60426E249C21FD /* ULIPCRect+scale.swift in Sources */,
 				F4EBD18EFC3BFC5565288F9C /* CGRect+toULIPCRect.swift in Sources */,
 				F69F5FE129812B0000B92A14 /* Encodable+toJSON.swift in Sources */,
-				1BA41E977C738BC865DFA0B1 /* PowerAssertionManager.swift in Sources */,
+				1BA41E977C738BC865DFA0B1 /* PowerAssertion.swift in Sources */,
+				1BA417EB6724EAD6DCAECF4D /* ScreenLockObserver.swift in Sources */,
+				1BA4170D7F7B03360290F234 /* CMSampleBuffer+resize.swift in Sources */,
+				1BA4164B01ECBFA46DAA7D41 /* createCoreImageContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,7 +13,7 @@ import UlalacaCore
 enum ScreenRecorderError: LocalizedError {
     case unknown
 
-    case initializationError
+    case initializationError(reason: String)
     case streamStartFailure
 
     var errorDescription: String? {
@@ -21,8 +21,8 @@ enum ScreenRecorderError: LocalizedError {
         case .unknown:
             return "unknown error"
 
-        case .initializationError:
-            return "could not initialize ScreenCaptureKit stream"
+        case .initializationError(let reason):
+            return "could not initialize ScreenCaptureKit stream: \(reason)"
 
         case .streamStartFailure:
             return "failed to start ScreenCaptureKit stream (insufficient permission?)"
@@ -72,20 +72,45 @@ protocol ScreenUpdateSubscriber {
     func screenResolutionChanged(to resolution: CGSize)
 }
 
+protocol ScreenRecorderDelegate {
+    func screenRecorder(didStopWithError error: Error)
+}
+
 protocol ScreenRecorder: NSObject {
+    var delegate: ScreenRecorderDelegate? { get set }
+
     func subscribeUpdate(_ subscriber: ScreenUpdateSubscriber)
     func unsubscribeUpdate(_ subscriber: ScreenUpdateSubscriber)
+
+    func moveSubscribers(to other: ScreenRecorder)
 
     func prepare() async throws
     func start() async throws
     func stop() async throws
 }
 
+/**
+ selects/returns appropriate screen recorder type
 
-func createScreenRecorder() -> ScreenRecorder {
-    if (isLoginSession()) {
+ - Parameters:
+   - recorderType: preferred recorder type (but no guarantee)
+   - isScreenLocked: isScreenLocked
+   - isLoginSession: is uid == 0 (loginwindow)
+ - Returns:
+ */
+func createScreenRecorder(
+    preferred recorderType: ScreenRecorderType,
+    isScreenLocked: Bool,
+    isLoginSession: Bool
+) -> ScreenRecorder {
+    if (isLoginSession || isScreenLocked) {
         return AVFScreenRecorder()
-    } else {
+    }
+
+    switch (recorderType) {
+    case .avfScreenRecorder:
+        return AVFScreenRecorder()
+    case .scScreenRecorder:
         return SCScreenRecorder()
     }
 }

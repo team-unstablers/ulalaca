@@ -12,7 +12,6 @@ import SwiftUI
 import UlalacaCore
 
 
-
 @main
 struct SessionProjectorApp: App {
     @StateObject
@@ -67,12 +66,20 @@ class PreferenceWindowDelegate: NSObject, NSWindowDelegate {
 class AppDelegate: NSObject, NSApplicationDelegate {
     let logger = createLogger("AppDelegate")
 
-    let screenRecorder = createScreenRecorder()
+    var screenRecorder: ScreenRecorder? = nil
     let eventInjector = EventInjector()
     let projectionServer = ProjectionServer()
     let sesmanClient = SessionManagerClient()
 
+    let screenLockObserver = ScreenLockObserver()
+
     var pidLock: PIDLock? = nil
+
+    var appState: AppState {
+        get {
+            return AppState.instance
+        }
+    }
 
     private let preferenceWindowDelegate = PreferenceWindowDelegate()
     
@@ -108,13 +115,76 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         projectionServer.delegate = self
         sesmanClient.delegate = self
+        screenLockObserver.delegate = self
     }
-    
+
+    /**
+     initializes screen recorder
+     */
+    private func initializeScreenRecorder() async {
+        let preferredType = appState
+                .userPreferences
+                .primaryScreenRecorder
+
+        let screenRecorder = createScreenRecorder(
+            preferred: preferredType,
+            isScreenLocked: appState.isScreenLocked,
+            isLoginSession: isLoginSession()
+        )
+
+        screenRecorder.delegate = self
+
+        if let prevScreenRecorder = self.screenRecorder {
+            prevScreenRecorder.moveSubscribers(to: screenRecorder)
+            await destroyScreenRecorder()
+        }
+
+        self.screenRecorder = screenRecorder
+    }
+
+    /**
+     destroy screen recorder
+     */
+    private func destroyScreenRecorder() async {
+        if (self.screenRecorder == nil) {
+            logger.error("destroyScreenRecorder(): screenRecorder is null")
+            return
+        }
+
+        try? await stopScreenRecorder()
+        self.screenRecorder = nil
+    }
+
+    private func startScreenRecorder() async throws {
+        guard let screenRecorder = self.screenRecorder else {
+            logger.error("startScreenRecorder(): screenRecorder is null")
+            return
+        }
+
+        try await screenRecorder.prepare()
+        try await screenRecorder.start()
+    }
+
+    private func stopScreenRecorder() async throws {
+        guard let screenRecorder = self.screenRecorder else {
+            logger.error("startScreenRecorder(): screenRecorder is null")
+            return
+        }
+
+        try await screenRecorder.stop()
+    }
+
+    private func resetScreenRecorder() {
+
+    }
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-        self.initializeApp()
+        initializeApp()
         
         Task {
+            await initializeScreenRecorder()
+
             await startProjectionServer()
         }
     }
@@ -132,9 +202,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func startProjectionServer() async {
         do {
             try eventInjector.prepare()
-            try await screenRecorder.prepare()
-            try await screenRecorder.start()
 
+            try await startScreenRecorder()
             try sesmanClient.start()
             projectionServer.start()
         } catch {
@@ -163,12 +232,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func quitApplication() {
         NSApp.terminate(self)
     }
-    
 }
 
 extension AppDelegate: ProjectionServerDelegate {
     func projectionServer(sessionInitiated session: ProjectionSession, id: UInt64) {
-        screenRecorder.subscribeUpdate(session)
+        screenRecorder?.subscribeUpdate(session)
         session.eventInjector = eventInjector
         
         AppState.instance.connections += 1
@@ -176,7 +244,7 @@ extension AppDelegate: ProjectionServerDelegate {
     }
 
     func projectionServer(sessionClosed session: ProjectionSession, id: UInt64) {
-        screenRecorder.unsubscribeUpdate(session)
+        screenRecorder?.unsubscribeUpdate(session)
         session.eventInjector = nil
         
         AppState.instance.connections -= 1
@@ -197,5 +265,35 @@ extension AppDelegate: IPCClientDelegate {
     }
 
     func disconnected() {
+    }
+}
+
+extension AppDelegate: ScreenRecorderDelegate {
+    func screenRecorder(didStopWithError error: Error) {
+        // TODO: restart screen recorder
+    }
+}
+
+extension AppDelegate: ScreenLockObserverDelegate {
+    func screenIsLocked() {
+        logger.debug("screen locked")
+        appState.isScreenLocked = true
+
+        // FIXME: mutex
+        Task {
+            await initializeScreenRecorder()
+            try? await startScreenRecorder()
+        }
+    }
+
+    func screenIsUnlocked() {
+        logger.debug("screen unlocked")
+        appState.isScreenLocked = false
+
+        // FIXME: mutex
+        Task {
+            await initializeScreenRecorder()
+            try? await startScreenRecorder()
+        }
     }
 }
