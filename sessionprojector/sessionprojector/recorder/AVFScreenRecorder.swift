@@ -9,7 +9,11 @@ import CoreImage
 import VideoToolbox
 import AVFoundation
 
+import UlalacaCore
+
 class AVFScreenRecorder: NSObject, ScreenRecorder {
+    private let logger = createLogger("AVFScreenRecorder")
+
     private var streamQueue = DispatchQueue(
             label: "UlalacaAVFStreamRecorder",
             qos: .userInteractive
@@ -26,6 +30,8 @@ class AVFScreenRecorder: NSObject, ScreenRecorder {
 
     private var subscriptions: [ScreenUpdateSubscriber] = []
     private var prevDisplayTime: UInt64 = 0
+
+    private var currentScreenResolution = CGSize(width: 0, height: 0)
 
     override init() {
         self.ciContext = createCoreImageContext(useMetal: true)
@@ -108,14 +114,25 @@ extension AVFScreenRecorder: AVCaptureVideoDataOutputSampleBufferDelegate {
         VTCreateCGImageFromCVPixelBuffer(sampleBuffer.imageBuffer!, options: nil, imageOut: &image)
         CVPixelBufferUnlockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
 
+        guard let image = image else { return }
 
         let now = CMTime(value: Int64(mach_absolute_time()), timescale: 1000000000)
         let frameTimestamp = sampleBuffer.presentationTimeStamp
 
         let timedelta = abs(now.seconds - frameTimestamp.seconds)
 
+        let frameSize = CGSize(width: image.width, height: image.height)
+        if (frameSize != self.currentScreenResolution) {
+            logger.debug("resolution changed to \(frameSize)")
+            self.currentScreenResolution = frameSize
 
-        let contentRect = CGRect(x: 0, y: 0, width: image!.width, height: image!.height)
+            subscriptions.forEach { subscriber in
+                subscriber.screenResolutionChanged(to: frameSize)
+            }
+        }
+
+
+        let contentRect = CGRect(x: 0, y: 0, width: image.width, height: image.height)
         subscriptions.forEach { $0.screenUpdated(where: contentRect) }
         subscriptions.forEach { subscriber in
             if (!subscriber.suppressOutput) {
