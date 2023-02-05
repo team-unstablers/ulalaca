@@ -45,6 +45,7 @@ class AVFScreenRecorder: NSObject, ScreenRecorder {
         }
 
         subscriptions.append(subscriber)
+        subscriber.screenResolutionChanged(to: self.currentScreenResolution)
     }
 
     func unsubscribeUpdate(_ subscriber: ScreenUpdateSubscriber) {
