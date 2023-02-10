@@ -22,7 +22,6 @@
 		F4EBD732593CF09DECD7B40A /* AVFScreenRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD55AD46E2D55483DA879 /* AVFScreenRecorder.swift */; };
 		F4EBD76B113987454A7E147B /* ScreenRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDFE9D9C626281B0C28CA /* ScreenRecorder.swift */; };
 		F4EBD956FE871FFA877A4E29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4EBD72F7A1676E55BB21493 /* Assets.xcassets */; };
-		F4EBDB56734BFEB96256AD50 /* pl.unstabler.ulalaca.sessionprojector.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4EBD5938B6F75A2117975F5 /* pl.unstabler.ulalaca.sessionprojector.plist */; };
 		F4EBDBE0AAD914D9EFF51690 /* EventInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD26D71490B77A9B122E0 /* EventInjector.swift */; };
 		F4EBDCD57BF1530790AC739E /* SCScreenRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBD0BFDAED6400792ABDFA /* SCScreenRecorder.swift */; };
 		F4EBDF22913EDAFF95D17357 /* ProjectionServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EBDB589E76D41675D27BF0 /* ProjectionServer.swift */; };
@@ -269,7 +268,7 @@
 				TargetAttributes = {
 					F4EBDE2C5FCD00665BEE5C74 = {
 						DevelopmentTeam = XHA76UVA95;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					F696BA292996013C00D9DFED = {
 						CreatedOnToolsVersion = 14.2;
@@ -305,7 +304,6 @@
 			files = (
 				F4EBD956FE871FFA877A4E29 /* Assets.xcassets in Resources */,
 				F4EBD517D25C43D7397EA0FD /* MainMenu.xib in Resources */,
-				F4EBDB56734BFEB96256AD50 /* pl.unstabler.ulalaca.sessionprojector.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,8 +581,9 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INSTALL_PATH = /Library/PrivilegedHelperTools;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.sessionprojector.launcher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -611,8 +610,9 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INSTALL_PATH = /Library/PrivilegedHelperTools;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.sessionprojector.launcher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
