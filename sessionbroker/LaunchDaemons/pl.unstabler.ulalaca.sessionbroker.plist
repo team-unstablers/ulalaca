@@ -10,7 +10,7 @@
 	<true />
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/local/opt/ulalaca-sessionbroker/bin/sessionbroker</string>
+		<string>/opt/ulalaca-sessionbroker/bin/sessionbroker</string>
 	</array>
 	<key>StandardOutPath</key>
 	<string>/var/log/sessionbroker.stdout.log</string>
