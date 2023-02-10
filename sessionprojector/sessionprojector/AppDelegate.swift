@@ -90,20 +90,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             preferenceWindow.setIsVisible(false)
         }
 
-        if (isLoginSession()) {
-            // FIXME
-            let processInfo = ProcessInfo.processInfo
-            if (processInfo.arguments.first { $0 == "--launch" } != nil) {
-                sleep(3)
-                try! Process.run(URL(fileURLWithPath: "/usr/bin/osascript"), arguments: [
-                    "-e",
-                    "do shell script \"open -n -W /Library/PrivilegedHelperTools/sessionprojector.app\""
-                ]) { _ in
-                    NSApp.terminate(self)
-                }
-                return;
-            }
-        } else {
+        if (!isLoginSession()) {
             do {
                 pidLock = try PIDLock.acquire(Bundle.main.bundleIdentifier!)
                 logger.info("acquired process lock")

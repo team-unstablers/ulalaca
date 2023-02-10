@@ -15,10 +15,12 @@ struct PreferencesWindowView: View {
         VStack {
             HStack(alignment: .top) {
                 VStack(alignment: .leading) {
-                    GroupBox(label: Text("Global")) {
+                    GroupBox(label: Text("Global (not implemented yet)")) {
                         VStack(alignment: .leading) {
                             Toggle("Launch sessionprojector on loginwindow", isOn: $appState.globalPreferences.launchOnLoginwindow)
+                                .disabled(true)
                             Toggle("Launch sessionprojector on user login", isOn: $appState.globalPreferences.launchOnUserLogin)
+                                .disabled(true)
                         }.frame(maxWidth: .infinity)
                     }
                     GroupBox(label: Text("Per-user")) {
@@ -31,6 +33,8 @@ struct PreferencesWindowView: View {
                                         Text(type.description).tag(type)
                                     }
                                 }
+                                Text("- AVFScreenRecorder will be used when screen is locked")
+                                    .font(.system(size: 9.0))
                             }
                         }.frame(maxWidth: .infinity)
                     }

@@ -76,11 +76,29 @@ class AVFScreenRecorder: NSObject, ScreenRecorder {
 
         captureSession.beginConfiguration()
 
+        /*
+        let autoFramerate = AppState.instance
+                .userPreferences
+                .autoFramerate
+        let frameRate = AppState.instance
+                .userPreferences
+                .framerate
+         */
+
         screenInput.capturesCursor = true
+        screenInput.removesDuplicateFrames = true
+
+        /*
+        if (autoFramerate) {
+            screenInput.minFrameDuration = CMTime(value: 1, timescale: CMTimeScale(Int(frameRate)))
+        }
+         */
+
+        captureOutput.alwaysDiscardsLateVideoFrames = true
 
         captureOutput.setSampleBufferDelegate(self, queue: streamQueue)
         captureOutput.videoSettings = [
-            (kCVPixelBufferPixelFormatTypeKey as String): kCVPixelFormatType_32BGRA
+            (kCVPixelBufferPixelFormatTypeKey as String): kCVPixelFormatType_32BGRA,
         ]
 
         if (!captureSession.canAddInput(screenInput)) {

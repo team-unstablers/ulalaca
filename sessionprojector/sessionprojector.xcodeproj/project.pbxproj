@@ -30,6 +30,9 @@
 		F692C1ED298BD565004C584F /* AboutAppWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F692C1EC298BD565004C584F /* AboutAppWindowView.swift */; };
 		F692C1F8298BE6D5004C584F /* AboutAppWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F692C1F7298BE6D5004C584F /* AboutAppWindow.swift */; };
 		F692C1FB298BF3C6004C584F /* NilWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F692C1FA298BF3C6004C584F /* NilWindow.swift */; };
+		F696BA2F2996013D00D9DFED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F696BA2E2996013D00D9DFED /* Assets.xcassets */; };
+		F696BA322996013D00D9DFED /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F696BA302996013D00D9DFED /* MainMenu.xib */; };
+		F696BA3A2996017600D9DFED /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F696BA382996017200D9DFED /* AppMain.swift */; };
 		F69F5FD72980F3F600B92A14 /* PreferencesWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F5FD62980F3F600B92A14 /* PreferencesWindowView.swift */; };
 		F69F5FD9298102D200B92A14 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F5FD8298102D200B92A14 /* AppState.swift */; };
 		F69F5FE129812B0000B92A14 /* Encodable+toJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F5FE029812B0000B92A14 /* Encodable+toJSON.swift */; };
@@ -76,6 +79,11 @@
 		F692C1EC298BD565004C584F /* AboutAppWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAppWindowView.swift; sourceTree = "<group>"; };
 		F692C1F7298BE6D5004C584F /* AboutAppWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAppWindow.swift; sourceTree = "<group>"; };
 		F692C1FA298BF3C6004C584F /* NilWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NilWindow.swift; sourceTree = "<group>"; };
+		F696BA2A2996013C00D9DFED /* sessionprojector-launcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "sessionprojector-launcher.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F696BA2E2996013D00D9DFED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F696BA312996013D00D9DFED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		F696BA332996013D00D9DFED /* sessionprojector_launcher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = sessionprojector_launcher.entitlements; sourceTree = "<group>"; };
+		F696BA382996017200D9DFED /* AppMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMain.swift; sourceTree = "<group>"; };
 		F69F5FD62980F3F600B92A14 /* PreferencesWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowView.swift; sourceTree = "<group>"; };
 		F69F5FD8298102D200B92A14 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		F69F5FE029812B0000B92A14 /* Encodable+toJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+toJSON.swift"; sourceTree = "<group>"; };
@@ -87,6 +95,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				85721156283B607000C36D5F /* UlalacaCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F696BA272996013C00D9DFED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				F4EBD4FAC6CE68F9E6E2A43E /* sessionprojector.app */,
+				F696BA2A2996013C00D9DFED /* sessionprojector-launcher.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -154,6 +170,8 @@
 		F4EBDE03F3D9B15B1CC3E38B = {
 			isa = PBXGroup;
 			children = (
+				F696BA372996015C00D9DFED /* launcher */,
+				F696BA2B2996013C00D9DFED /* sessionprojector-launcher */,
 				F4EBD395941AA1C0143EE05A /* Products */,
 				F4EBD04EE5384ECCE555441A /* sessionprojector */,
 				85E99EB22832878F00743D34 /* Frameworks */,
@@ -171,6 +189,24 @@
 				1BA41F871456A0A8B6365728 /* createCoreImageContext.swift */,
 			);
 			path = recorder;
+			sourceTree = "<group>";
+		};
+		F696BA2B2996013C00D9DFED /* sessionprojector-launcher */ = {
+			isa = PBXGroup;
+			children = (
+				F696BA382996017200D9DFED /* AppMain.swift */,
+				F696BA2E2996013D00D9DFED /* Assets.xcassets */,
+				F696BA302996013D00D9DFED /* MainMenu.xib */,
+				F696BA332996013D00D9DFED /* sessionprojector_launcher.entitlements */,
+			);
+			path = "sessionprojector-launcher";
+			sourceTree = "<group>";
+		};
+		F696BA372996015C00D9DFED /* launcher */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = launcher;
 			sourceTree = "<group>";
 		};
 		F69F5FD22980F17400B92A14 /* ui */ = {
@@ -205,18 +241,40 @@
 			productReference = F4EBD4FAC6CE68F9E6E2A43E /* sessionprojector.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F696BA292996013C00D9DFED /* sessionprojector-launcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F696BA362996013D00D9DFED /* Build configuration list for PBXNativeTarget "sessionprojector-launcher" */;
+			buildPhases = (
+				F696BA262996013C00D9DFED /* Sources */,
+				F696BA272996013C00D9DFED /* Frameworks */,
+				F696BA282996013C00D9DFED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "sessionprojector-launcher";
+			productName = "sessionprojector-launcher";
+			productReference = F696BA2A2996013C00D9DFED /* sessionprojector-launcher.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		F4EBDD9F2CE690A0962F1060 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1330;
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					F4EBDE2C5FCD00665BEE5C74 = {
 						DevelopmentTeam = XHA76UVA95;
 						ProvisioningStyle = Manual;
+					};
+					F696BA292996013C00D9DFED = {
+						CreatedOnToolsVersion = 14.2;
+						DevelopmentTeam = XHA76UVA95;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -235,6 +293,7 @@
 			projectRoot = "";
 			targets = (
 				F4EBDE2C5FCD00665BEE5C74 /* sessionprojector */,
+				F696BA292996013C00D9DFED /* sessionprojector-launcher */,
 			);
 		};
 /* End PBXProject section */
@@ -247,6 +306,15 @@
 				F4EBD956FE871FFA877A4E29 /* Assets.xcassets in Resources */,
 				F4EBD517D25C43D7397EA0FD /* MainMenu.xib in Resources */,
 				F4EBDB56734BFEB96256AD50 /* pl.unstabler.ulalaca.sessionprojector.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F696BA282996013C00D9DFED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F696BA2F2996013D00D9DFED /* Assets.xcassets in Resources */,
+				F696BA322996013D00D9DFED /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +349,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F696BA262996013C00D9DFED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F696BA3A2996017600D9DFED /* AppMain.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -288,6 +364,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				F4EBDEC6CB9E4322333D6C24 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		F696BA302996013D00D9DFED /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F696BA312996013D00D9DFED /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -489,6 +573,62 @@
 			};
 			name = Release;
 		};
+		F696BA342996013D00D9DFED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "sessionprojector-launcher/sessionprojector_launcher.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XHA76UVA95;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.sessionprojector.launcher;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F696BA352996013D00D9DFED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "sessionprojector-launcher/sessionprojector_launcher.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XHA76UVA95;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.unstabler.ulalaca.sessionprojector.launcher;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -506,6 +646,15 @@
 			buildConfigurations = (
 				F4EBD73FB876295C3001260C /* Debug */,
 				F4EBDD15CD06368AF1675240 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F696BA362996013D00D9DFED /* Build configuration list for PBXNativeTarget "sessionprojector-launcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F696BA342996013D00D9DFED /* Debug */,
+				F696BA352996013D00D9DFED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
