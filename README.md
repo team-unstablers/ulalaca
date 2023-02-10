@@ -25,11 +25,11 @@ $ xcodebuild DSTROOT=/usr/local/opt -workspace Ulalaca.xcworkspace -scheme sessi
 $ sudo xcodebuild DSTROOT=/usr/local/opt -workspace Ulalaca.xcworkspace -scheme sessionbroker install
 
 # enable launchd service
-$ sudo cp /usr/local/opt/ulalaca-sessionprojector/pl.unstabler.ulalaca.sessionbroker.plist /Library/LaunchDaemons
+$ sudo cp /usr/local/opt/ulalaca-sessionbroker/pl.unstabler.ulalaca.sessionbroker.plist /Library/LaunchDaemons
 $ launchctl start pl.unstabler.ulalaca.sessionbroker
 
 # build sessionprojector
-$ xcodebuild DSTROOT=`pwd`/build -workspace Ulalaca.workspace -scheme sessionprojector
+$ xcodebuild DSTROOT=`pwd`/build -workspace Ulalaca.xcworkspace -scheme sessionprojector
 
 # copy sessionprojector.app to /Applications
 $ open build/ 
