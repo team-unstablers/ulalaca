@@ -3,15 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>pl.unstabler.ulalaca.sessionprojector</string>
+	<string>pl.unstabler.ulalaca.sessionprojector.launcher</string>
 	<key>RunAtLoad</key>
 	<true />
 	<key>KeepAlive</key>
 	<true />
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Library/PrivilegedHelperTools/sessionprojector.app/Contents/MacOS/sessionprojector</string>
-		<string>--launch</string>
+		<string>/Library/PrivilegedHelperTools/sessionprojector-launcher.app/Contents/MacOS/sessionprojector-launcher</string>
 	</array>
 	<key>LimitLoadToSessionType</key>
 	<array>
