@@ -122,8 +122,12 @@ class ProjectionSession {
             length: UInt64(messageLength)
         )
 
-        socket.write(withUnsafePointer(to: header) { $0 }, size: MemoryLayout.size(ofValue: header))
-        socket.write(withUnsafePointer(to: message) { $0 }, size: messageLength)
+        withUnsafePointer(to: header) { headerPtr in
+            socket.write(headerPtr, size: MemoryLayout.size(ofValue: header))
+        }
+        withUnsafePointer(to: message) { messagePtr in
+            socket.write(messagePtr, size: messageLength)
+        }
 
         messageId += 1
     }
