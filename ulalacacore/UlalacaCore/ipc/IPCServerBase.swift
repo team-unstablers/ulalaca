@@ -94,13 +94,15 @@ public class IPCServerConnection {
                 length: UInt64(messageLength)
         )
 
-        let headerPtr = withUnsafePointer(to: header) { $0 }
-        let messagePtr = withUnsafePointer(to: message) { $0 }
+        withUnsafePointer(to: header) { headerPtr in
+            connection.write(headerPtr, size: MemoryLayout.size(ofValue: header))
+        }
+        withUnsafePointer(to: message) { messagePtr in
+            connection.write(messagePtr, size: messageLength)
+        }
 
         // TODO: written = conneciton.write;
         //       if (written != size) throw Exception("X(")
-        connection.write(headerPtr, size: MemoryLayout.size(ofValue: header))
-        connection.write(messagePtr, size: messageLength)
 
         id = id + 1
     }
