@@ -40,11 +40,13 @@ open class IPCClientBase {
                 length: UInt64(messageLength)
         )
 
-        let headerPtr = withUnsafePointer(to: header) { $0 }
-        let messagePtr = withUnsafePointer(to: message) { $0 }
+        withUnsafePointer(to: header) { headerPtr in
+            socket.write(headerPtr, size: MemoryLayout.size(ofValue: header))
+        }
+        withUnsafePointer(to: message) { messagePtr in
+            socket.write(messagePtr, size: messageLength)
+        }
 
-        socket.write(headerPtr, size: MemoryLayout.size(ofValue: header))
-        socket.write(messagePtr, size: messageLength)
 
         id = id + 1
     }
