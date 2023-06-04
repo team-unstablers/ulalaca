@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1BA4102AF9986FB7E5B87E5D /* PIDLockErrorDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA41BC19AD35B7C57EBB6F5 /* PIDLockErrorDialog.swift */; };
+		1BA4105F05F0013D2B32375C /* ScreenRecorderErrorDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA4185C06456C7CA943CEBD /* ScreenRecorderErrorDialog.swift */; };
 		1BA4135F78C039F48C3C40DC /* ProjectionSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA41C7B76A425FE2CBE4424 /* ProjectionSession.swift */; };
 		1BA4164B01ECBFA46DAA7D41 /* createCoreImageContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA41F871456A0A8B6365728 /* createCoreImageContext.swift */; };
 		1BA4170D7F7B03360290F234 /* CMSampleBuffer+resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA41E8FB5AF341481797B68 /* CMSampleBuffer+resize.swift */; };
@@ -56,7 +58,9 @@
 		1BA4114256A6041A9024076D /* ProjectionServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectionServer.swift; sourceTree = "<group>"; };
 		1BA41428CC8179B6149885E2 /* EventInjector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventInjector.swift; sourceTree = "<group>"; };
 		1BA414A8380430551765FFBE /* PowerAssertion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerAssertion.swift; sourceTree = "<group>"; };
+		1BA4185C06456C7CA943CEBD /* ScreenRecorderErrorDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenRecorderErrorDialog.swift; sourceTree = "<group>"; };
 		1BA418EC7026B16C63E68A81 /* SessionManagerClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManagerClient.swift; sourceTree = "<group>"; };
+		1BA41BC19AD35B7C57EBB6F5 /* PIDLockErrorDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIDLockErrorDialog.swift; sourceTree = "<group>"; };
 		1BA41C7B76A425FE2CBE4424 /* ProjectionSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectionSession.swift; sourceTree = "<group>"; };
 		1BA41DE4C1D66522E666A922 /* ScreenLockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenLockObserver.swift; sourceTree = "<group>"; };
 		1BA41E8FB5AF341481797B68 /* CMSampleBuffer+resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CMSampleBuffer+resize.swift"; sourceTree = "<group>"; };
@@ -231,6 +235,8 @@
 				F692C1EC298BD565004C584F /* AboutAppWindowView.swift */,
 				F692C1F7298BE6D5004C584F /* AboutAppWindow.swift */,
 				F692C1FA298BF3C6004C584F /* NilWindow.swift */,
+				1BA4185C06456C7CA943CEBD /* ScreenRecorderErrorDialog.swift */,
+				1BA41BC19AD35B7C57EBB6F5 /* PIDLockErrorDialog.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -360,6 +366,8 @@
 				1BA417599E1830A25A3BDB31 /* PowerAssertion.swift in Sources */,
 				1BA4135F78C039F48C3C40DC /* ProjectionSession.swift in Sources */,
 				1BA41EC991D112A154A3A02B /* ProjectionServer.swift in Sources */,
+				1BA4105F05F0013D2B32375C /* ScreenRecorderErrorDialog.swift in Sources */,
+				1BA4102AF9986FB7E5B87E5D /* PIDLockErrorDialog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -29,6 +29,13 @@ struct SessionProjectorApp: App {
         }
         
         MenuBarExtra("SessionProjector Menu", image: "TrayIcon") {
+            Button("Stop Projection") {
+                // TODO: stop projection
+            }
+
+            Divider()
+
+
             Button("\(appState.connections) connection(s)") {
                 
             }
@@ -102,8 +109,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             do {
                 pidLock = try PIDLock.acquire(Bundle.main.bundleIdentifier!)
                 logger.info("acquired process lock")
-            } catch {
+            } catch let error as PIDLockError {
                 logger.error("failed to acquire process lock: is another instance running?")
+                let result = PIDLockErrorDialog(what: error).show()
+
+                switch (result) {
+                case .killPrevInstance:
+                    logger.info("killing previous instance (pid #\(error.pid!)) with SIGTERM...")
+                    kill(error.pid!, SIGTERM)
+                    break
+                case .quitApp:
+                    NSApp.terminate(self)
+                    break
+                case .ignore:
+                    break
+                }
+            } catch {
+                logger.error("failed to acquire process lock: unknown error")
                 NSApp.terminate(self)
             }
         }

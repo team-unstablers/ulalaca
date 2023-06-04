@@ -8,8 +8,18 @@
 import Foundation
 import Cocoa
 
-struct PIDLockError: Error {
-    
+struct PIDLockError: LocalizedError {
+    public var pid: pid_t?
+
+    public var localizedDescription: String {
+        get {
+            guard let pid = pid else {
+                return "PIDLockError: Unknown Error"
+            }
+
+            return "PIDLockError: The PID lock has already acquired by PID \(String(pid))."
+        }
+    }
 }
 
 class PIDLock {
@@ -38,8 +48,9 @@ class PIDLock {
      acquires PID Lock.
      */
     static func acquire(_ bundleId: String, force: Bool = false) throws -> PIDLock {
-        if (!force && isLocked(bundleId)) {
-            throw PIDLockError()
+        let _pid = isLocked(bundleId)
+        if (!force && _pid != nil) {
+            throw PIDLockError(pid: _pid!)
         }
 
         try? fileManager.removeItem(atPath: lockFileOf(bundleId).path)
@@ -51,9 +62,14 @@ class PIDLock {
         return lock
     }
         
-    static func isLocked(_ bundleId: String) -> Bool {
+    static func isLocked(_ bundleId: String) -> pid_t? {
         let pid = pidOf(bundleId)
-        return isProcessExists(bundleId, pid: pid)
+
+        if (isProcessExists(bundleId, pid: pid)) {
+            return pid
+        }
+
+        return nil
     }
     
     private static func pidOf(_ bundleId: String) -> pid_t {
