@@ -135,34 +135,41 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
             configuration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(Int(frameRate)))
         }
 
-        let displays = try await SCShareableContent.current.displays
-        let nilWindowID = await nilWindow!.windowNumber
-        guard let nilWindowHandle = try await SCShareableContent.current.windows.filter { window in
-            return window.windowID == nilWindowID
-        }.first else {
-            throw ScreenRecorderError.initializationError(reason: "could not found nilWindow handle")
+        do {
+            let displays = try await SCShareableContent.current.displays
+            let nilWindowID = await nilWindow!.windowNumber
+            guard let nilWindowHandle = try? await SCShareableContent.current.windows.filter { window in
+                return window.windowID == nilWindowID
+            }.first else {
+                throw ScreenRecorderError.initializationError(reason: "Could not acquire nilWindow handle: the 1x1-sized dummy window is required to capture the entire screen.")
+            }
+
+            guard let primaryDisplay = displays.first else {
+                throw ScreenRecorderError.initializationError(reason: "primary display is not available.")
+            }
+
+            configuration.width = primaryDisplay.width
+            configuration.height = primaryDisplay.height
+
+            // since macOS 12.3↑, passing empty array to excludingWindows breaks SCStream
+            let filter = SCContentFilter(
+                    display: primaryDisplay,
+                    excludingApplications: [],
+                    exceptingWindows: [nilWindowHandle]
+            )
+
+            stream = SCStream(filter: filter, configuration: configuration, delegate: self)
+            guard let stream = stream else {
+                throw ScreenRecorderError.initializationError(reason: "Could not open SCStream.")
+            }
+
+            try stream.addStreamOutput(self, type: .screen, sampleHandlerQueue: streamQueue)
+        } catch let error as SCStreamError {
+            if (error.localizedDescription.contains("declined TCCs")) {
+                throw ScreenRecorderError.insufficientPermission
+            }
+            throw ScreenRecorderError.initializationError(reason: "caught SCStreamError: \(error.localizedDescription)")
         }
-
-        guard let primaryDisplay = displays.first else {
-            throw ScreenRecorderError.initializationError(reason: "primary display is not available")
-        }
-
-        configuration.width = primaryDisplay.width
-        configuration.height = primaryDisplay.height
-
-        // since macOS 12.3↑, passing empty array to excludingWindows breaks SCStream
-        let filter = SCContentFilter(
-                display: primaryDisplay,
-                excludingApplications: [],
-                exceptingWindows: [nilWindowHandle]
-        )
-
-        stream = SCStream(filter: filter, configuration: configuration, delegate: self)
-        guard let stream = stream else {
-            throw ScreenRecorderError.initializationError(reason: "could not open stream")
-        }
-
-        try stream.addStreamOutput(self, type: .screen, sampleHandlerQueue: streamQueue)
     }
 
     func start() async throws {

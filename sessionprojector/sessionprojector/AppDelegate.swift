@@ -156,8 +156,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        try await screenRecorder.prepare()
-        try await screenRecorder.start()
+
+        do {
+            try await screenRecorder.prepare()
+            try await screenRecorder.start()
+        } catch let error as ScreenRecorderError {
+            let errorDialog = await ScreenRecorderErrorDialog(what: error)
+            let result = await errorDialog.show()
+
+            switch (result) {
+            case .openSystemPreferences:
+                // @copilot Open system preferences / security & privacy / privacy / screen recording
+                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture")!)
+                break
+            case .quitApp:
+                await NSApp.terminate(self)
+                break
+            case .ignore:
+                break
+            }
+        }
     }
 
     private func stopScreenRecorder() async throws {

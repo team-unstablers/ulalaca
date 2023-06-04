@@ -13,19 +13,32 @@ import UlalacaCore
 enum ScreenRecorderError: LocalizedError {
     case unknown
 
+    case insufficientPermission
     case initializationError(reason: String)
     case streamStartFailure
 
     var errorDescription: String? {
         switch (self) {
         case .unknown:
-            return "unknown error"
+            return "Unknown error."
+
+        case .insufficientPermission:
+            return """
+                   Insufficient permission to record screen.
+
+                   Note to developers: If you are building this app from source code, please choose one of the following options:
+
+                   - Sign this app with a valid Developer ID certificate 
+                   - Remove and re-add this app from the list of apps that can record screen on every build
+
+                   If you already granted permission to record screen, Please remove and re-add this app from the list of apps that can record screen.
+                   """
 
         case .initializationError(let reason):
-            return "could not initialize ScreenCaptureKit stream: \(reason)"
+            return "Could not initialize ScreenRecorder instance:\n\(reason)"
 
         case .streamStartFailure:
-            return "failed to start ScreenCaptureKit stream (insufficient permission?)"
+            return "Failed to start recording stream. (insufficient permission?)"
         }
     }
 }
