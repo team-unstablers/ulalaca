@@ -1,4 +1,4 @@
-# 麗 -ulalaca-
+# 麗 -Ulalaca-
 
 xrdp-powered remote session broker / projector for macOS
 
@@ -10,34 +10,24 @@ xrdp-powered remote session broker / projector for macOS
 # NOTE
 
 - **STILL IN HEAVY DEVELOPMENT, NOT SUITABLE FOR PRODUCTION USE YET**
-- This software requires [xrdp](https://github.com/neutrinolabs/xrdp) and [ulalaca-xrdp](https://github.com/neutrinolabs/ulalaca-xrdp) to be installed for work.
+- This software requires [xrdp](https://github.com/neutrinolabs/xrdp) and [XrdpUlalaca](https://github.com/neutrinolabs/ulalaca-xrdp) to be installed for work.
 - This software uses [ScreenCaptureKit](https://developer.apple.com/documentation/screencapturekit) which introduced with macOS 12.3, so macOS 12.3 or higher version is required.
 
+- The name of this project, '麗 -Ulalaca-' is derived from the song "Urara" from the music simulation game [beatmania IIDX](https://en.wikipedia.org/wiki/Beatmania_IIDX).
 
 # INSTALLATION
 
-```
-$ git clone https://github.com/unstabler/Ulalaca.git ulalaca
-$ cd ulalaca
+## USING PRE-BUILT BINARIES
+To install 麗 -Ulalaca- on your system, Please check our [INSTALLATION GUIDE](https://teamunstablers.notion.site/xrdp-Ulalaca-Getting-started-f82b0c55f0b540a6ac277cc5902361b1).
 
-# build sessionprojector
-$ xcodebuild DSTROOT=/usr/local/opt -workspace Ulalaca.xcworkspace -scheme sessionbroker
-$ sudo xcodebuild DSTROOT=/usr/local/opt -workspace Ulalaca.xcworkspace -scheme sessionbroker install
+## BUILD FROM SOURCE
+Also, you can build 麗 -Ulalaca- from source code. Since 麗 -Ulalaca- has no external dependencies yet, so you can build apps by just open the project with Xcode. 
 
-# enable launchd service
-$ sudo cp /usr/local/opt/ulalaca-sessionbroker/pl.unstabler.ulalaca.sessionbroker.plist /Library/LaunchDaemons
-$ launchctl start pl.unstabler.ulalaca.sessionbroker
+You can also check [ulalaca-installer](https://github.com/team-unstablers/ulalaca-installer) repository for automated build scripts.
 
-# build sessionprojector
-$ xcodebuild DSTROOT=`pwd`/build -workspace Ulalaca.xcworkspace -scheme sessionprojector
-
-# copy sessionprojector.app to /Applications
-$ open build/ 
-
-# register autostart entry
-$ sudo cp sessionprojector/LaunchAgents/pl.unstabler.ulalaca.sessionprojector.plist /Library/LaunchAgents/
-
-```
+### NOTE FOR DEVELOPERS
+- `sessionprojector.app` MUST BE signed with valid Apple Developer ID, or it will requests screen recording permission on every build.
+- `sessionbroker` should be run as root.
 
 # AUTHOR
 
@@ -46,7 +36,6 @@ This software brought to you by [team unstablers](https://unstabler.pl).
 ### team unstablers
 
 - Gyuhwan Park (@unstabler)
-
 
 ### THANKS TO
 
