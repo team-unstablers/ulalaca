@@ -8,7 +8,7 @@ public protocol IPCClientDelegate {
     func connected()
     func received(header: ULIPCHeader)
     func disconnected()
-    func error(_ what: Error?)
+    func error(what error: Error?)
 }
 
 open class IPCClientBase {
@@ -59,7 +59,7 @@ open class IPCClientBase {
                 delegate?.received(header: header)
             }
         } catch {
-            delegate?.error(error)
+            delegate?.error(what: error)
         }
     }
 
@@ -70,7 +70,7 @@ open class IPCClientBase {
                 delegate?.connected()
             }
         } catch {
-            delegate?.error(error)
+            delegate?.error(what: error)
             return
         }
 
