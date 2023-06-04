@@ -16,11 +16,13 @@ func main() {
 
     DispatchQueue.global().async {
         logger.info("Starting server: sesman")
-        sesman.start()
+        // FIXME: wrap using do-catch
+        try? sesman.start()
     }
 
     logger.info("Starting server: broker")
-    broker.start()
+    // FIXME: wrap using do-catch
+    try? broker.start()
 }
 
 main()

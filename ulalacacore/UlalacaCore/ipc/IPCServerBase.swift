@@ -30,26 +30,37 @@ open class IPCServerBase {
         self.socketPath = path
     }
 
-    public func start() {
-        serverSocket.bind()
-        chmod(socketPath.cString(using: .utf8), S_IRWXU | S_IRWXG | S_IRWXO);
+    public func start() throws {
+        try ObjC.evaluate {
+            serverSocket.bind()
+            chmod(socketPath.cString(using: .utf8), S_IRWXU | S_IRWXG | S_IRWXO);
 
-        serverSocket.listen()
-        serverRunning = true
+            serverSocket.listen()
+            serverRunning = true
+        }
 
         while (serverRunning) {
-            guard let clientSocket = serverSocket.accept() else {
+            do {
+                try ObjC.evaluate {
+                    guard let clientSocket = serverSocket.accept() else {
+                        return
+                    }
+
+                    let connection = IPCServerConnection(clientSocket)
+
+                    Task {
+                        delegate?.connectionEstablished(with: connection)
+                        await clientLoop(connection)
+                        delegate?.connectionClosed(with: connection)
+
+                        clientSocket.close()
+                    }
+                }
+            } catch let error as NestedNSExceptionError {
+                // TODO: handle error
+                print(error.localizedDescription)
+
                 continue
-            }
-
-            let connection = IPCServerConnection(clientSocket)
-
-            Task {
-                delegate?.connectionEstablished(with: connection)
-                await clientLoop(connection)
-                delegate?.connectionClosed(with: connection)
-
-                clientSocket.close()
             }
         }
     }
