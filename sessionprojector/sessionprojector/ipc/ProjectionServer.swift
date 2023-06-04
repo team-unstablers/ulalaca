@@ -50,7 +50,12 @@ class ProjectionServer {
                     let session = ProjectionSession.init(clientSocket)
                     sessions.append(session)
 
-            delegate?.projectionServer(sessionInitiated: session, id: 0)
+                    if (!session.readHello()) {
+                        session.stopSession()
+                        return
+                    }
+
+                    delegate?.projectionServer(sessionInitiated: session, id: 0)
 
                     session.startSession(errorHandler: { error in
                         if let index = self.sessions.index(where: { $0.socket.descriptor() == session.socket.descriptor() }) {

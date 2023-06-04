@@ -13,9 +13,61 @@ enum ProjectionSessionError: Error {
     case socketReadError
 }
 
+enum ClientCodec: UInt8 {
+    case none = 0
+    case rfx = 1
+    case h264 = 2
+    case nsCodec = 3
+}
 
 
-class ProjectionSession {
+struct ClientInfo: Hashable {
+    public static let CLIENT_ID_UNKNOWN = UUID(uuidString: "00000000-0000-0000-0000-000000000001")!
+
+    var id: UUID
+
+    var xrdpUlalacaVersion: String
+    var clientAddress: String
+    var clientDescription: String
+    var clientOSMajor: Int
+    var clientOSMinor: Int
+
+    var program: String
+
+    var codec: ClientCodec
+
+    var flags: Int
+
+    static func from(ipc message: ULIPCProjectionHello) -> ClientInfo {
+        return ClientInfo(
+            id: UUID(),
+            xrdpUlalacaVersion: withUnsafePointer(to: message.xrdpUlalacaVersion) { String(fromUnsafeCStr: $0, length: 32) },
+            clientAddress: withUnsafePointer(to: message.clientAddress) { String(fromUnsafeCStr: $0, length: 46) },
+            clientDescription: withUnsafePointer(to: message.clientDescription) { String(fromUnsafeCStr: $0, length: 256) },
+            clientOSMajor: Int(message.clientOSMajor),
+            clientOSMinor: Int(message.clientOSMinor),
+            program: withUnsafePointer(to: message.program) { String(fromUnsafeCStr: $0, length: 512) },
+            codec: ClientCodec(rawValue: message.codec) ?? .none,
+            flags: Int(message.flags)
+        )
+    }
+
+    static func unknown() -> ClientInfo {
+        return ClientInfo(
+            id: CLIENT_ID_UNKNOWN,
+            xrdpUlalacaVersion: "Unknown",
+            clientAddress: "Unknown",
+            clientDescription: "Unknown",
+            clientOSMajor: 0,
+            clientOSMinor: 0,
+            program: "Unknown",
+            codec: .none,
+            flags: 0
+        )
+    }
+}
+
+class ProjectionSession: Identifiable {
     private let logger: ULLogger
 
     public let socket: MMUnixSocketConnection
@@ -26,6 +78,10 @@ class ProjectionSession {
     public let mainDisplayId = CGMainDisplayID()
     public let serialQueue = DispatchQueue(label: "ProjectionSession")
 
+    public var id: UUID
+
+    private(set) public var clientInfo: ClientInfo = ClientInfo.unknown()
+
     private(set) public var isSessionRunning: Bool = true
 
     private(set) public var messageId: UInt64 = 1;
@@ -35,6 +91,7 @@ class ProjectionSession {
     private(set) public var mainViewport: ViewportInfo?
 
     init(_ socket: MMUnixSocketConnection) {
+        self.id = UUID()
         self.socket = socket
 
         self.logger = createLogger("ProjectionSession (fd \(self.socket.descriptor()))")
@@ -90,7 +147,9 @@ class ProjectionSession {
                 try socket.readCStruct(ULIPCProjectionStop.self)
                 suppressOutput = true
                 break
-
+            case TYPE_PROJECTION_HELLO:
+                // ???
+                break
             case TYPE_PROJECTION_SET_VIEWPORT:
                 self.setViewport(with: try socket.readCStruct(ULIPCProjectionSetViewport.self))
                 break
@@ -109,6 +168,25 @@ class ProjectionSession {
         }
 
         mainViewport = ViewportInfo(width: message.width, height: message.height)
+    }
+
+    public func readHello(timeout: Double = 0.5) -> Bool {
+        logger.debug("ProjectionSession::readHello(): timeout is not implemented yet")
+
+        guard let header = try? socket.readCStruct(ULIPCHeader.self) else {
+            return false
+        }
+
+        if (header.messageType != TYPE_PROJECTION_HELLO) {
+            return false
+        }
+
+        guard let message = try? socket.readCStruct(ULIPCProjectionHello.self) else {
+            return false
+        }
+        self.clientInfo = ClientInfo.from(ipc: message)
+
+        return true
     }
 
 
@@ -132,6 +210,17 @@ class ProjectionSession {
         messageId += 1
     }
 
+}
+
+extension ProjectionSession: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(socket.descriptor())
+    }
+
+    public static func ==(lhs: ProjectionSession, rhs: ProjectionSession) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
 }
 
 extension ProjectionSession: ScreenUpdateSubscriber {
