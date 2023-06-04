@@ -36,12 +36,4 @@ class SessionManagerClient: IPCClientBase {
 
         writeMessage(message, type: TYPE_ANNOUNCEMENT)
     }
-    
-    override func start() throws {
-        do {
-            try super.start()
-        } catch let error as NestedNSExceptionError {
-            // ...
-        }
-    }
 }
