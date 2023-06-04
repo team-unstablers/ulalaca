@@ -8,6 +8,7 @@ public protocol IPCClientDelegate {
     func connected()
     func received(header: ULIPCHeader)
     func disconnected()
+    func error(_ what: Error?)
 }
 
 open class IPCClientBase {
@@ -52,22 +53,27 @@ open class IPCClientBase {
     }
 
     private func clientLoop() async {
-        while (true) {
-            guard let header = try? read(ULIPCHeader.self) else {
-                break
+        do {
+            while (true) {
+                let header = try read(ULIPCHeader.self)
+                delegate?.received(header: header)
             }
-
-            delegate?.received(header: header)
+        } catch {
+            delegate?.error(error)
         }
     }
 
-    open func start() throws {
-        sleep(5) // FIXME: wait until server starts
-        
-        try ObjC.evaluate {
-            socket.connect()
-            delegate?.connected()
+    open func start() {
+        do {
+            try ObjC.evaluate {
+                socket.connect()
+                delegate?.connected()
+            }
+        } catch {
+            delegate?.error(error)
+            return
         }
+
         Task {
             await clientLoop()
             socket.close()
