@@ -9,6 +9,8 @@
 import Cocoa
 import SwiftUI
 
+import UserNotifications
+
 import UlalacaCore
 
 
@@ -65,6 +67,12 @@ class PreferenceWindowDelegate: NSObject, NSWindowDelegate {
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     let logger = createLogger("AppDelegate")
+
+    var userNotificationCenter: UNUserNotificationCenter {
+        get {
+            return UNUserNotificationCenter.current()
+        }
+    }
 
     var screenRecorder: ScreenRecorder? = nil
     let eventInjector = EventInjector()
@@ -219,6 +227,41 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func quitApplication() {
         NSApp.terminate(self)
     }
+
+    func postUserNotificationSync(title: String, message: String, identifier: UUID = UUID()) {
+        Task {
+            await postUserNotification(title: title, message: message, identifier: identifier)
+        }
+    }
+
+    func postUserNotification(title: String, message: String, identifier: UUID = UUID()) async {
+        logger.debug("posting user notification: [\(title)] \(message)")
+        guard let granted = try? await userNotificationCenter.requestAuthorization(options: [.alert, .sound]) else {
+            logger.error("postUserNotification: cannot request authorization for user notification")
+            return
+        }
+
+        if (!granted) {
+            logger.error("postUserNotification: user notification is not granted")
+            return
+        }
+
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = message
+
+        let request = UNNotificationRequest(
+                identifier: identifier.uuidString,
+                content: content,
+                trigger: nil
+        )
+
+        do {
+            try await userNotificationCenter.add(request)
+        } catch {
+            logger.error("postUserNotification: failed to post user notification: \(error.localizedDescription)")
+        }
+    }
 }
 
 extension AppDelegate: ProjectionServerDelegate {
@@ -227,7 +270,13 @@ extension AppDelegate: ProjectionServerDelegate {
         session.eventInjector = eventInjector
         
         AppState.instance.connections += 1
-        
+
+        postUserNotificationSync(
+                title: "New connection",
+                message: (AppState.instance.connections > 1) ?
+                    "A new connection has been established from (TODO: remote ip address).\nThe content of this session being shared with \(AppState.instance.connections) remote clients." :
+                    "A new connection has been established from (TODO: remote ip address).\nThe content of this session will be shared with the remote client."
+        )
     }
 
     func projectionServer(sessionClosed session: ProjectionSession, id: UInt64) {
@@ -235,11 +284,19 @@ extension AppDelegate: ProjectionServerDelegate {
         session.eventInjector = nil
         
         AppState.instance.connections -= 1
+
+        postUserNotificationSync(
+                title: "Connection closed",
+                message: (AppState.instance.connections > 0) ?
+                    "Connection has been closed from (TODO: remote ip address).\n\(AppState.instance.connections) remote clients are still connected." :
+                    "Connection has been closed from (TODO: remote ip address)."
+        )
     }
 }
 
 extension AppDelegate: IPCClientDelegate {
     func connected() {
+        logger.info("connected to sessionbroker. this graphical session will be announced as available to other clients.")
         sesmanClient.announceSelf(
                 ANNOUNCEMENT_TYPE_SESSION_CREATED,
                 endpoint: projectionServer.getSocketPath(),
@@ -249,15 +306,42 @@ extension AppDelegate: IPCClientDelegate {
     }
 
     func received(header: ULIPCHeader) {
+        logger.info("received header \(header.messageType) from sessionbroker")
+        logger.debug("... but not implemented yet.")
     }
 
     func disconnected() {
+        logger.info("disconnected from sessionbroker")
+        postUserNotificationSync(
+            title: "sessionbroker: Connection lost",
+            message: "The connection to sessionbroker has been lost.\nConnection will be re-established automatically after 15 seconds."
+        )
+
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 15) {
+            self.sesmanClient.start()
+        }
+    }
+
+    func error(what error: Error?) {
+        let message = error?.localizedDescription ?? "Unknown error."
+
+        logger.info("sessionbroker connection error: \(message)")
+
+        postUserNotificationSync(
+            title: "sessionbroker: Connection error",
+            message: "\(message)\nConnection will be re-established automatically after 15 seconds."
+        )
+
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 15) {
+            self.sesmanClient.start()
+        }
     }
 }
 
 extension AppDelegate: ScreenRecorderDelegate {
     func screenRecorder(didStopWithError error: Error) {
         // TODO: restart screen recorder
+        logger.error("screen recorder stopped with error: \(error.localizedDescription)")
     }
 }
 
