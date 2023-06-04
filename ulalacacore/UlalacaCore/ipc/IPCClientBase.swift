@@ -14,6 +14,7 @@ public protocol IPCClientDelegate {
 open class IPCClientBase {
     public let socketPath: String;
     private lazy var socket: MMUnixSocket = MMUnixSocket(socketPath)
+    private var ipcQueue: DispatchQueue = DispatchQueue(label: "pl.unstabler.ulalaca.core.ipcclient")
 
     public var delegate: IPCClientDelegate? = nil
 
@@ -23,6 +24,16 @@ open class IPCClientBase {
         signal(SIGPIPE, SIG_IGN)
 
         self.socketPath = socketPath;
+    }
+
+    public init(_ socketPath: String, queue: DispatchQueue? = nil) {
+        signal(SIGPIPE, SIG_IGN)
+
+        self.socketPath = socketPath;
+
+        if let queue = queue {
+            self.ipcQueue = queue
+        }
     }
 
     open func read<T>(_ type: T.Type) throws -> T {
@@ -42,10 +53,14 @@ open class IPCClientBase {
         )
 
         withUnsafePointer(to: header) { headerPtr in
-            socket.write(headerPtr, size: MemoryLayout.size(ofValue: header))
+            ipcQueue.sync {
+                socket.write(headerPtr, size: MemoryLayout.size(ofValue: header))
+            }
         }
         withUnsafePointer(to: message) { messagePtr in
-            socket.write(messagePtr, size: messageLength)
+            ipcQueue.sync {
+                socket.write(messagePtr, size: messageLength)
+            }
         }
 
 
