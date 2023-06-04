@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#define ULALACA_IPC_PROTO_VERSION 0x1000
+#define ULALACA_IPC_PROTO_VERSION_REVISION 0x0000
+
 /**
  * FIXME: naming
  */
