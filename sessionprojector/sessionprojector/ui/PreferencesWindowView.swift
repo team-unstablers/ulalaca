@@ -14,7 +14,7 @@ struct ConnectionRow: View {
         VStack() {
             Text("\(connection.clientInfo.clientAddress)")
                 .bold()
-            Text("\(connection.clientInfo.program); ulalaca \(connection.clientInfo.xrdpUlalacaVersion)")
+            Text("ulalaca-xrdp version \(connection.clientInfo.xrdpUlalacaVersion)")
         }
     }
 }
@@ -101,7 +101,7 @@ struct PreferencesWindowView: View {
             .frame(maxWidth: .infinity)
              */
             HStack {
-                GroupBox(label: Text("Current Sessions")) {
+                GroupBox(label: Text("Clients")) {
                     List(Array(appState.connections)) { connection in
                         ConnectionRow(connection: connection)
                     }
