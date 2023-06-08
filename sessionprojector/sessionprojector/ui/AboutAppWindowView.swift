@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import UlalacaCore
+
 struct AboutAppWindowView: View {
     
     @Environment(\.openURL)
@@ -31,9 +33,9 @@ struct AboutAppWindowView: View {
                             .font(.system(size: 36, weight: .ultraLight, design: .default))
                     }
                     VStack(alignment: .center) {
-                        Text("SessionProjector.app")
+                        Text("sessionprojector.app")
                             .bold()
-                        Text("Development Build")
+                        Text("Version \(UlalacaVersion())")
                     }
                 }
             }

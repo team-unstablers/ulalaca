@@ -35,26 +35,41 @@ class ProjectionServer {
                 .path
     }
 
-    func start() {
-        serverSocket.bind()
-        serverSocket.listen()
+    func start() throws {
+        try ObjC.evaluate {
+            serverSocket.bind()
+            serverSocket.listen()
+        }
 
         while (isServerRunning) {
-            guard let clientSocket = serverSocket.accept() else {
+            do {
+                try ObjC.evaluate {
+                    guard let clientSocket = serverSocket.accept() else {
+                        return
+                    }
+                    let session = ProjectionSession.init(clientSocket)
+                    sessions.append(session)
+
+                    if (!session.readHello()) {
+                        session.stopSession()
+                        return
+                    }
+
+                    delegate?.projectionServer(sessionInitiated: session, id: 0)
+
+                    session.startSession(errorHandler: { error in
+                        if let index = self.sessions.index(where: { $0.socket.descriptor() == session.socket.descriptor() }) {
+                            self.sessions.remove(at: index)
+                        }
+
+                        self.delegate?.projectionServer(sessionClosed: session, id: 0)
+                    })
+                }
+            } catch let error as NestedNSExceptionError {
+                // TODO: handle error
+                logger.error(error.localizedDescription)
                 continue
             }
-            let session = ProjectionSession.init(clientSocket)
-            sessions.append(session)
-
-            delegate?.projectionServer(sessionInitiated: session, id: 0)
-
-            session.startSession(errorHandler: { error in
-                if let index = self.sessions.index(where: { $0.socket.descriptor() == session.socket.descriptor() }) {
-                    self.sessions.remove(at: index)
-                }
-
-                self.delegate?.projectionServer(sessionClosed: session, id: 0)
-            })
         }
     }
     

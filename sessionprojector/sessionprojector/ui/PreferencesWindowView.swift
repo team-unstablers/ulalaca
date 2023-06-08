@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+struct ConnectionRow: View {
+    var connection: ProjectionSession
+    
+    var body: some View {
+        VStack() {
+            Text("\(connection.clientInfo.clientAddress)")
+                .bold()
+            Text("ulalaca-xrdp version \(connection.clientInfo.xrdpUlalacaVersion)")
+        }
+    }
+}
+
 struct PreferencesWindowView: View {
     @EnvironmentObject
     var appState: AppState
@@ -89,9 +101,9 @@ struct PreferencesWindowView: View {
             .frame(maxWidth: .infinity)
              */
             HStack {
-                GroupBox(label: Text("Current Sessions")) {
-                    List {
-                        
+                GroupBox(label: Text("Clients")) {
+                    List(Array(appState.connections)) { connection in
+                        ConnectionRow(connection: connection)
                     }
                 }
                 .frame(maxWidth: .infinity)

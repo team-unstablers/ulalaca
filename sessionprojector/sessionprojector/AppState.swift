@@ -8,6 +8,8 @@
 import Foundation
 import Cocoa
 
+import UlalacaCore
+
 enum ScreenRecorderType: String, Identifiable, CaseIterable, Codable {
     var id: Self {
         return self
@@ -145,11 +147,11 @@ class AppState: NSObject, ObservableObject {
     var userPreferences: UserPreferences
 
     @Published
-    var connections: Int = 0
+    var connections: Set<ProjectionSession> = []
 
     @Published
     var isScreenLocked: Bool = false
-    
+
     
     var preferencesWindow: NSWindow {
         get {
@@ -158,7 +160,6 @@ class AppState: NSObject, ObservableObject {
     }
     
     var aboutAppWindow: AboutAppWindow? = nil
-    
     
     override init() {
         let fileManager = FileManager.default

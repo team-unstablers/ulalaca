@@ -36,7 +36,7 @@ struct SessionProjectorApp: App {
             Divider()
 
 
-            Button("\(appState.connections) connection(s)") {
+            Button("\(appState.connections.count) connection(s)") {
                 
             }
             .disabled(true)
@@ -240,7 +240,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             try await startScreenRecorder()
             try sesmanClient.start()
-            projectionServer.start()
+            try projectionServer.start()
         } catch {
             print(error.localizedDescription)
 
@@ -309,27 +309,31 @@ extension AppDelegate: ProjectionServerDelegate {
         screenRecorder?.subscribeUpdate(session)
         session.eventInjector = eventInjector
         
-        AppState.instance.connections += 1
+        AppState.instance.connections.insert(session)
 
+        let clientInfo = session.clientInfo
+        
         postUserNotificationSync(
                 title: "New connection",
-                message: (AppState.instance.connections > 1) ?
-                    "A new connection has been established from (TODO: remote ip address).\nThe content of this session being shared with \(AppState.instance.connections) remote clients." :
-                    "A new connection has been established from (TODO: remote ip address).\nThe content of this session will be shared with the remote client."
+                message: (AppState.instance.connections.count > 1) ?
+                    "A new connection has been established from \(clientInfo.clientAddress).\nThe content of this session being shared with \(AppState.instance.connections.count) remote clients." :
+                    "A new connection has been established from \(clientInfo.clientAddress).\nThe content of this session will be shared with the remote client."
         )
     }
 
     func projectionServer(sessionClosed session: ProjectionSession, id: UInt64) {
+        let clientInfo = session.clientInfo
+        
         screenRecorder?.unsubscribeUpdate(session)
         session.eventInjector = nil
         
-        AppState.instance.connections -= 1
+        AppState.instance.connections.remove(session)
 
         postUserNotificationSync(
                 title: "Connection closed",
-                message: (AppState.instance.connections > 0) ?
-                    "Connection has been closed from (TODO: remote ip address).\n\(AppState.instance.connections) remote clients are still connected." :
-                    "Connection has been closed from (TODO: remote ip address)."
+                message: (AppState.instance.connections.count > 0) ?
+                    "Connection has been closed from \(clientInfo.clientAddress).\n\(AppState.instance.connections.count) remote clients are still connected." :
+                    "Connection has been closed from \(clientInfo.clientAddress)."
         )
     }
 }

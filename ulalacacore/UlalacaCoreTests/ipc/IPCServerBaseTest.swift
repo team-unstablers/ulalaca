@@ -32,7 +32,11 @@ final class IPCServerBaseTest: XCTestCase {
         server.delegate = self
 
         let serverTask = Task {
-            server.start()
+            do {
+                try server.start()
+            } catch {
+                XCTFail()
+            }
         }
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
@@ -60,7 +64,11 @@ final class IPCServerBaseTest: XCTestCase {
         server.delegate = self
 
         let serverTask = Task {
-            server.start()
+            do {
+                try server.start()
+            } catch {
+                XCTFail()
+            }
         }
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
