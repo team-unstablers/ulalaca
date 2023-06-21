@@ -172,6 +172,7 @@ fileprivate extension CGEvent {
     func sanitizeModifierFlags(with keyDownState: Set<Int>) {
         // HACK: 이유는 모르겠으나 fn 키가 계속 눌림
         flags.remove(.maskSecondaryFn)
+        flags.remove(.maskNumericPad)
         flags.remove(.maskShift)
         flags.remove(.maskAlternate)
         flags.remove(.maskControl)
