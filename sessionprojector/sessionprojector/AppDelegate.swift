@@ -99,6 +99,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private let preferenceWindowDelegate = PreferenceWindowDelegate()
     
     private func initializeApp() {
+        setGlobalLoggerLevel(.verbose)
+
         if let preferenceWindow = NSApp.windows.first {
             preferenceWindow.delegate = self.preferenceWindowDelegate
             preferenceWindow.setContentSize(NSSize(width: 640, height: 480))

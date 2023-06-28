@@ -88,7 +88,8 @@ class ProjectionSession: Identifiable {
     private(set) public var suppressOutput: Bool = true
 
     private(set) public var screenResolution: CGSize = CGSize(width: 0, height: 0)
-    private(set) public var mainViewport: ViewportInfo?
+    private(set) public var scaleFactor: CGFloat = 1.0
+    private(set) public var mainViewport: ViewportInfo = ViewportInfo(width: 640, height: 480)
 
     init(_ socket: MMUnixSocketConnection) {
         self.id = UUID()
@@ -126,10 +127,16 @@ class ProjectionSession: Identifiable {
                 eventInjector?.post(keyEvent: try socket.readCStruct(ULIPCKeyboardEvent.self))
                 break
             case TYPE_EVENT_MOUSE_MOVE:
+                // viewport      -> frameSize      -> screenResolution (actual)
+                // (1600x900@1x) -> (1920x1080@1x) -> (1920x1080@2x) (3840x2160)
+
+                let sx = screenResolution.width * scaleFactor / CGFloat(mainViewport.width)
+                let sy = screenResolution.height * scaleFactor / CGFloat(mainViewport.height)
+
                 eventInjector?.post(
                     mouseMoveEvent: try socket.readCStruct(ULIPCMouseMoveEvent.self),
-                    scaleX: Double(screenResolution.width) / Double(mainViewport!.width),
-                    scaleY: Double(screenResolution.height) / Double(mainViewport!.height)
+                    scaleX: sx,
+                    scaleY: sy
                 )
                 break
             case TYPE_EVENT_MOUSE_BUTTON:
@@ -230,13 +237,10 @@ extension ProjectionSession: ScreenUpdateSubscriber {
 
     func screenUpdated(where rect: CGRect) {
         self.serialQueue.sync {
-            let sx = mainViewport?.scaleX(Int(screenResolution.width)) ?? 1.0
-            let sy = mainViewport?.scaleY(Int(screenResolution.height)) ?? 1.0
-
             self.writeMessage(
                     ULIPCScreenUpdateNotify(
                     type: SCREEN_UPDATE_NOTIFY_TYPE_PARTIAL,
-                    rect: rect.toULIPCRect().scale(x: sx, y: sy)
+                    rect: rect.toULIPCRect()
                 ),
                 type: TYPE_SCREEN_UPDATE_NOTIFY
             )
@@ -250,13 +254,6 @@ extension ProjectionSession: ScreenUpdateSubscriber {
             let pointer = CFDataGetBytePtr(rawData)!
             let length = CFDataGetLength(rawData)
 
-            guard let mainViewport = self.mainViewport else {
-                return
-            }
-
-            let sx = mainViewport.scaleX(Int(screenResolution.width)) ?? 1.0
-            let sy = mainViewport.scaleY(Int(screenResolution.height)) ?? 1.0
-
             let message = ULIPCScreenUpdateCommit(
                 screenRect: ULIPCRect(x: 0, y: 0, width: Int16(mainViewport.width), height: Int16(mainViewport.height)),
                 bitmapLength: UInt64(length)
@@ -267,7 +264,7 @@ extension ProjectionSession: ScreenUpdateSubscriber {
         }
     }
 
-    func screenResolutionChanged(to resolution: CGSize) {
+    func screenResolutionChanged(to resolution: CGSize, scaleFactor: Double) {
         self.screenResolution = resolution
     }
 

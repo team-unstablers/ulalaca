@@ -4,6 +4,11 @@
 
 import Foundation
 
+
+public func UlalacaProductName() -> String {
+    return "麗 -Ulalaca-"
+}
+
 public func UlalacaVersion() -> String {
-    return "0.2.0-alpha1"
+    return "0.2.0-alpha2"
 }
