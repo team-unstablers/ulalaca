@@ -111,13 +111,17 @@ class EventInjector {
             let mask = EventInjector.MOUSE_DOWN_STATE_LEFT
 
             mouseType = (event.type == 1 ? .leftMouseUp : .leftMouseDown)
-            mouseDownState |= (event.type == 1 ? ~mask : mask)
+            mouseDownState =
+                    (mouseDownState & EventInjector.MOUSE_DOWN_STATE_RIGHT) |
+                    (event.type == 1 ? 0b0 : EventInjector.MOUSE_DOWN_STATE_LEFT)
             break
         case 1:
             let mask = EventInjector.MOUSE_DOWN_STATE_RIGHT
 
             mouseType = (event.type == 1 ? .rightMouseUp : .rightMouseDown)
-            mouseDownState |= (event.type == 1 ? ~mask : mask)
+            mouseDownState =
+                    (mouseDownState & EventInjector.MOUSE_DOWN_STATE_LEFT) |
+                    (event.type == 1 ? 0b0 : EventInjector.MOUSE_DOWN_STATE_RIGHT)
             break
 
         default:
