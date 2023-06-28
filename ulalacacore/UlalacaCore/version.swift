@@ -10,5 +10,5 @@ public func UlalacaProductName() -> String {
 }
 
 public func UlalacaVersion() -> String {
-    return "0.2.0-alpha2"
+    return "0.2.2"
 }
