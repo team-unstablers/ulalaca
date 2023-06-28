@@ -127,10 +127,16 @@ class ProjectionSession: Identifiable {
                 eventInjector?.post(keyEvent: try socket.readCStruct(ULIPCKeyboardEvent.self))
                 break
             case TYPE_EVENT_MOUSE_MOVE:
+                // viewport      -> frameSize      -> screenResolution (actual)
+                // (1600x900@1x) -> (1920x1080@1x) -> (1920x1080@2x) (3840x2160)
+
+                let sx = screenResolution.width * scaleFactor / CGFloat(mainViewport.width)
+                let sy = screenResolution.height * scaleFactor / CGFloat(mainViewport.height)
+
                 eventInjector?.post(
                     mouseMoveEvent: try socket.readCStruct(ULIPCMouseMoveEvent.self),
-                    scaleX: Double(screenResolution.width) / Double(mainViewport!.width),
-                    scaleY: Double(screenResolution.height) / Double(mainViewport!.height)
+                    scaleX: sx,
+                    scaleY: sy
                 )
                 break
             case TYPE_EVENT_MOUSE_BUTTON:
