@@ -76,10 +76,50 @@ extension OSLog: ULLogger {
     }
 }
 
+class MuxedLogger: ULLogger {
+
+    private let subsystem: String
+    private let tag: String
+
+    private var impls: Array<ULLogger> = []
+
+    init(tag: String, subsystem: String) {
+        self.subsystem = subsystem
+        self.tag = tag
+
+        impls.insert(createOSLogger(tag, subsystem: subsystem))
+        impls.insert(createLogger(tag, subsystem: subsystem))
+    }
+
+    public func debug(_ message: String) {
+        impls.forEach { $0.debug(message) }
+    }
+
+    public func info(_ message: String) {
+        impls.forEach { $0.info(message) }
+    }
+
+    public func warning(_ message: String) {
+        impls.forEach { $0.warning(message) }
+    }
+
+    public func error(_ message: String) {
+        impls.forEach { $0.error(message) }
+    }
+
+    public func fatal(_ message: String) {
+        impls.forEach { $0.fatal(message) }
+    }
+}
+
 public func createLogger(_ tag: String, subsystem: String = "Ulalaca") -> ULConsoleLogger {
     return ULConsoleLogger(tag: tag, subsystem: subsystem)
 }
 
 public func createOSLogger(_ tag: String, subsystem: String = "Ulalaca") -> ULLogger {
     return OSLog(subsystem: subsystem, category: tag)
+}
+
+public func createMuxedLogger(_ tag: String, subsystem: String = "Ulalaca") -> ULLogger {
+    return MuxedLogger(tag: tag, subsystem: subsystem)
 }
