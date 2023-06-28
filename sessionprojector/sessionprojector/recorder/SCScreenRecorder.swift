@@ -58,7 +58,13 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
     private var subscriptions: [ScreenUpdateSubscriber] = []
     private var prevDisplayTime: UInt64 = 0
 
-    private var currentScreenResolution = CGSize(width: 0, height: 0)
+    /**
+     non-scaled (1x) screen resolution
+     (1920x1080@1x) => 1920x1080
+     (1920x1080@2x) => 1920x1080
+     */
+    private(set) public var frameSize: CGSize = .zero
+    private(set) public var scaleFactor: CGFloat = 1.0
 
     private var nilWindow: NilWindow? = nil
     // HACK
@@ -96,7 +102,7 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
         }
 
         subscriptions.append(subscriber)
-        subscriber.screenResolutionChanged(to: self.currentScreenResolution)
+        subscriber.screenResolutionChanged(to: self.frameSize, scaleFactor: self.scaleFactor)
     }
 
     func unsubscribeUpdate(_ subscriber: ScreenUpdateSubscriber) {
@@ -209,12 +215,17 @@ extension SCScreenRecorder: SCStreamOutput {
             return
         }
 
-        if (frameInfo.contentRect!.size != self.currentScreenResolution) {
-            logger.debug("resolution changed to \(frameInfo.contentRect!.size)")
-            self.currentScreenResolution = frameInfo.contentRect!.size
+        let frameSize = CVImageBufferGetEncodedSize(sampleBuffer.imageBuffer!)
+        let scaleFactor = frameInfo.scaleFactor ?? 1.0
+
+        if (frameSize != self.frameSize || scaleFactor != self.scaleFactor) {
+            logger.debug("screen resolution changed to \(frameSize) @ \(scaleFactor)x")
+
+            self.frameSize = frameSize
+            self.scaleFactor = scaleFactor
 
             subscriptions.forEach { subscriber in
-                subscriber.screenResolutionChanged(to: frameInfo.contentRect!.size)
+                subscriber.screenResolutionChanged(to: frameSize, scaleFactor: scaleFactor)
             }
         }
 
@@ -225,33 +236,44 @@ extension SCScreenRecorder: SCStreamOutput {
 
         if let dirtyRects = frameInfo.dirtyRects {
             subscriptions.forEach { subscriber in
+                let sx = CGFloat(subscriber.mainViewport.width)  / self.frameSize.width
+                let sy = CGFloat(subscriber.mainViewport.height) / self.frameSize.height
+
                 dirtyRects.forEach { rect in
-                    subscriber.screenUpdated(where: rect)
+                    subscriber.screenUpdated(where: rect.scale(sx: sx, sy: sy))
                 }
             }
 
             subscriptions.forEach { subscriber in
                 if (!subscriber.suppressOutput) {
-                    notifyScreenReady(which: sampleBuffer, rect: frameInfo.contentRect!, to: subscriber)
+                    notifyScreenReady(which: sampleBuffer, to: subscriber)
                 }
             }
         }
     }
 
-    func notifyScreenReady(which sampleBuffer: CMSampleBuffer, rect: CGRect, to subscriber: ScreenUpdateSubscriber) {
+    func notifyScreenReady(which sampleBuffer: CMSampleBuffer, to subscriber: ScreenUpdateSubscriber) {
         var image: CGImage?
 
-        if let viewportInfo = subscriber.mainViewport {
-            let pixelBuffer = sampleBuffer.resize(size: viewportInfo.toCGSize(), context: ciContext)
+        let frameSize = CVImageBufferGetEncodedSize(sampleBuffer.imageBuffer!)
+        let frameRect = CGRect(x: 0, y: 0, width: frameSize.width, height: frameSize.height)
+
+        let viewport = subscriber.mainViewport
+
+        let sx = CGFloat(viewport.width)  / self.frameSize.width
+        let sy = CGFloat(viewport.height) / self.frameSize.height
+
+        if (sx != 1.0 || sy != 1.0) {
+            let pixelBuffer = sampleBuffer.resize(size: viewport.toCGSize(), context: ciContext)
             CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
             VTCreateCGImageFromCVPixelBuffer(pixelBuffer, options: nil, imageOut: &image)
             CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly)
-            subscriber.screenReady(image: image!, rect: CGRect(x: 0, y: 0, width: Int(viewportInfo.width), height: Int(viewportInfo.height)))
+            subscriber.screenReady(image: image!, rect: frameRect.scale(sx: sx, sy: sy))
         } else {
             CVPixelBufferLockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
             VTCreateCGImageFromCVPixelBuffer(sampleBuffer.imageBuffer!, options: nil, imageOut: &image)
             CVPixelBufferUnlockBaseAddress(sampleBuffer.imageBuffer!, .readOnly)
-            subscriber.screenReady(image: image!, rect: rect)
+            subscriber.screenReady(image: image!, rect: frameRect)
         }
     }
 }

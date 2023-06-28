@@ -76,13 +76,33 @@ protocol ScreenUpdateSubscriber {
         get
     }
 
-    var mainViewport: ViewportInfo? {
+    var mainViewport: ViewportInfo {
         get
     }
 
+    /**
+     Called when the area of screen marked as dirty.
+     - Parameter rect: dirty area
+     - Note: implementation of ScreenRecorder should pass `rect` scaled to the main viewport.
+     */
     func screenUpdated(where rect: CGRect)
+
+    /**
+     Called when screen capture is ready.
+     - Parameters:
+       - image: content of screen
+       - rect: area of screen captured
+     - Note: implementation of ScreenRecorder should pass `image` / `rect` scaled to the main viewport.
+     */
     func screenReady(image: CGImage, rect: CGRect)
-    func screenResolutionChanged(to resolution: CGSize)
+
+    /**
+     Called when screen resolution is changed.
+     - Parameters:
+       - resolution: new screen resolution
+       - scaleFactor: scale factor (e.g. 2.0 for Retina display)
+     */
+    func screenResolutionChanged(to resolution: CGSize, scaleFactor: Double)
 }
 
 protocol ScreenRecorderDelegate {
