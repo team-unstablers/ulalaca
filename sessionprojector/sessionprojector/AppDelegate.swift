@@ -367,6 +367,7 @@ extension AppDelegate: IPCClientDelegate {
         )
 
         DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 15) {
+            self.sesmanClient.reset()
             self.sesmanClient.start()
         }
     }
@@ -382,6 +383,7 @@ extension AppDelegate: IPCClientDelegate {
         )
 
         DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 15) {
+            self.sesmanClient.reset()
             self.sesmanClient.start()
         }
     }

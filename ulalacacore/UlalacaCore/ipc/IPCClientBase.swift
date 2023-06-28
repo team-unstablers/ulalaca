@@ -93,6 +93,12 @@ open class IPCClientBase {
             await clientLoop()
             socket.close()
         }
+    }
 
+    open func reset() {
+        socket.close()
+        id = 0
+
+        self.socket = MMUnixSocket(socketPath)
     }
 }
