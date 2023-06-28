@@ -6,12 +6,36 @@ import os
 
 import Foundation
 
+public enum ULGlobalLoggerLevel {
+    case verbose
+    case normal
+    case quiet
+
+    func shouldWriteLog(with level: String) -> Bool {
+        if (self == .verbose) {
+            return true
+        }
+
+        if (self == .normal) {
+            return level != "DEBUG"
+        }
+
+        return false
+    }
+}
+
 public protocol ULLogger {
     func debug(_ message: String)
     func info(_ message: String)
     func warning(_ message: String)
     func error(_ message: String)
     func fatal(_ message: String)
+}
+
+var UL_GLOBAL_LOG_LEVEL: ULGlobalLoggerLevel = .normal
+
+public func setGlobalLoggerLevel(_ level: ULGlobalLoggerLevel) {
+    UL_GLOBAL_LOG_LEVEL = level
 }
 
 open class ULConsoleLogger: ULLogger {
@@ -30,6 +54,10 @@ open class ULConsoleLogger: ULLogger {
     }
 
     public func write(level: String, tag: String, message: String) {
+        if (!UL_GLOBAL_LOG_LEVEL.shouldWriteLog(with: level)) {
+            return;
+        }
+
         fputs("[\(now)][\(tag):\(level)] \(message)\n", stderr)
     }
 
@@ -55,24 +83,32 @@ open class ULConsoleLogger: ULLogger {
 }
 
 extension OSLog: ULLogger {
+    func ul_log(level: String, type: OSLogType, message: String) {
+        if (!UL_GLOBAL_LOG_LEVEL.shouldWriteLog(with: level)) {
+            return;
+        }
+
+        os_log("[%@] %@", log: self, type: type, level, message)
+    }
+
     public func debug(_ message: String) {
-        os_log("[DEBUG] %@", log: self, type: .debug, message)
+        ul_log(level: "DEBUG", type: .debug, message: message)
     }
 
     public func info(_ message: String) {
-        os_log("[INFO] %@", log: self, type: .info, message)
+        ul_log(level: "INFO", type: .info, message: message)
     }
 
     public func warning(_ message: String) {
-        os_log("[WARNING] %@", log: self, type: .default, message)
+        ul_log(level: "WARNING", type: .default, message: message)
     }
 
     public func error(_ message: String) {
-        os_log("[ERROR] %@", log: self, type: .error, message)
+        ul_log(level: "ERROR", type: .error, message: message)
     }
 
     public func fatal(_ message: String) {
-        os_log("[FATAL] %@", log: self, type: .fault, message)
+        ul_log(level: "FATAL", type: .fault, message: message)
     }
 }
 
@@ -87,8 +123,8 @@ class MuxedLogger: ULLogger {
         self.subsystem = subsystem
         self.tag = tag
 
-        impls.insert(createOSLogger(tag, subsystem: subsystem))
-        impls.insert(createLogger(tag, subsystem: subsystem))
+        impls.append(createOSLogger(tag, subsystem: subsystem))
+        impls.append(createLogger(tag, subsystem: subsystem))
     }
 
     public func debug(_ message: String) {
