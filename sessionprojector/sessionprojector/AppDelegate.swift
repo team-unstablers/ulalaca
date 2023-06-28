@@ -135,6 +135,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         projectionServer.delegate = self
         sesmanClient.delegate = self
         screenLockObserver.delegate = self
+
+        appState.isScreenLocked = CGSessionUtil.isScreenLocked()
+        screenLockObserver.startObserve()
     }
 
     /**
@@ -397,6 +400,7 @@ extension AppDelegate: ScreenLockObserverDelegate {
         appState.isScreenLocked = true
 
         // FIXME: mutex
+        // should i use rxswift to observe appState.isScreenLocked?
         Task {
             await initializeScreenRecorder()
             try? await startScreenRecorder()

@@ -3,6 +3,9 @@
 //
 
 import Foundation
+import Quartz
+
+import UlalacaCore
 
 protocol ScreenLockObserverDelegate {
     func screenIsLocked()
@@ -10,21 +13,20 @@ protocol ScreenLockObserverDelegate {
 }
 
 class ScreenLockObserver: NSObject {
+    private let logger = createLogger("ScreenLockObserver")
     public var delegate: ScreenLockObserverDelegate? = nil
 
     private let notificationCenter = DistributedNotificationCenter.default
 
     override init() {
         super.init()
-
-        startObserve()
     }
 
     deinit {
         stopObserve()
     }
 
-    private func startObserve() {
+    public func startObserve() {
         notificationCenter.addObserver(
             self,
             selector: #selector(screenIsLocked(_:)),
@@ -40,7 +42,7 @@ class ScreenLockObserver: NSObject {
         )
     }
 
-    private func stopObserve() {
+    public func stopObserve() {
         notificationCenter.removeObserver(self)
     }
 
