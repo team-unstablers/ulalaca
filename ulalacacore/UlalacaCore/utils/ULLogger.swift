@@ -9,6 +9,7 @@ import Foundation
 public protocol ULLogger {
     func debug(_ message: String)
     func info(_ message: String)
+    func warning(_ message: String)
     func error(_ message: String)
     func fatal(_ message: String)
 }
@@ -40,6 +41,10 @@ open class ULConsoleLogger: ULLogger {
         write(level: "INFO", tag: tag, message: message)
     }
 
+    public func warning(_ message: String) {
+        write(level: "WARNING", tag: tag, message: message)
+    }
+
     public func error(_ message: String) {
         write(level: "ERROR", tag: tag, message: message)
     }
@@ -56,6 +61,10 @@ extension OSLog: ULLogger {
 
     public func info(_ message: String) {
         os_log("[INFO] %@", log: self, type: .info, message)
+    }
+
+    public func warning(_ message: String) {
+        os_log("[WARNING] %@", log: self, type: .default, message)
     }
 
     public func error(_ message: String) {
