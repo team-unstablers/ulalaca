@@ -72,7 +72,7 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
 
     private var streamQueue = DispatchQueue(
             label: "UlalacaStreamRecorder",
-            qos: .background
+            qos: .userInteractive
     )
 
     override init() {
