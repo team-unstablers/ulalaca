@@ -134,7 +134,15 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
                 .framerate
 
         configuration.pixelFormat = kCVPixelFormatType_32BGRA
-        configuration.queueDepth = 1
+
+        if #available (macOS 14.0, *) {
+            // in macOS 14.0↑, setting queueDepth to 1 breaks SCStream.
+            // SCStreamOutput::stream(:didOutputSampleBuffer:...) will be called only once
+            configuration.queueDepth = 2
+        } else {
+            configuration.queueDepth = 1
+        }
+
         configuration.showsCursor = true
 
         if (!autoFramerate) {
@@ -154,15 +162,28 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
                 throw ScreenRecorderError.initializationError(reason: "primary display is not available.")
             }
 
+
             configuration.width = primaryDisplay.width
             configuration.height = primaryDisplay.height
 
-            // since macOS 12.3↑, passing empty array to excludingWindows breaks SCStream
-            let filter = SCContentFilter(
+            var filter = SCContentFilter(
+                display: primaryDisplay,
+                excludingWindows: []
+            )
+            
+            if #available(macOS 14.0, *) {
+                filter = SCContentFilter(
+                    display: primaryDisplay,
+                    excludingWindows: []
+                )
+            } else if #available(macOS 12.3, *) {
+                // since macOS 12.3↑, passing empty array to excludingWindows breaks SCStream
+                filter = SCContentFilter(
                     display: primaryDisplay,
                     excludingApplications: [],
                     exceptingWindows: [nilWindowHandle]
-            )
+                )
+            }
 
             stream = SCStream(filter: filter, configuration: configuration, delegate: self)
             guard let stream = stream else {
