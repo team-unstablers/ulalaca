@@ -138,7 +138,7 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
         if #available (macOS 14.0, *) {
             // in macOS 14.0↑, setting queueDepth to 1 breaks SCStream.
             // SCStreamOutput::stream(:didOutputSampleBuffer:...) will be called only once
-            configuration.queueDepth = 2
+            configuration.queueDepth = 4    
         } else {
             configuration.queueDepth = 1
         }
@@ -200,15 +200,23 @@ class SCScreenRecorder: NSObject, ScreenRecorder {
     }
 
     func start() async throws {
+        guard let stream = self.stream else {
+            throw ScreenRecorderError.streamStartFailure
+        }
+        
         do {
-            try await stream!.startCapture()
+            try await stream.startCapture()
         } catch {
             throw ScreenRecorderError.streamStartFailure
         }
     }
 
     func stop() async throws {
-        try await stream!.stopCapture()
+        guard let stream = self.stream else {
+            return
+        }
+        
+        try await stream.stopCapture()
     }
 }
 
