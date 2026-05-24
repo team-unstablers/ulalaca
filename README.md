@@ -1,5 +1,9 @@
 # 麗 -Ulalaca-
 
+> [!IMPORTANT]
+> **This project is no longer actively maintained.**
+> Development has moved to its successor: **[Noctiluca](https://github.com/team-unstablers/NoctilucaServer)**.
+
 xrdp-powered remote session broker / projector for macOS
 
 ![Screenshot_20220527_171145](https://user-images.githubusercontent.com/964412/170659838-3843d5e9-3372-47f8-940b-4ce183ca5ec9.png)
